@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Wish {
+  Id          String  @id(map: "PK__Wish__3214EC07ED496142") @default(dbgenerated("newid()"), map: "DF__Wish__Id__5DCAEF64") @db.UniqueIdentifier
+  Name        String? @db.VarChar(Max)
+  Description String? @db.VarChar(Max)
+  Price       Int
+  Order       Int
+  Link        String? @db.VarChar(Max)
+}
