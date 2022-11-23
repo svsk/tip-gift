@@ -7,12 +7,6 @@ useHead({
         },
     ],
 });
-
-const linkActiveClass = `
-	text-blue-500
-	border-blue-500
-	border-b-2
-`;
 </script>
 
 <template>
@@ -20,16 +14,7 @@ const linkActiveClass = `
         <div class="w-full max-w-[920px] pt-20 px-6">
             <header class="flex gap-8 items-center pb-8">
                 <h1 class="text-2xl">🎁 Wish List</h1>
-                <nav>
-                    <ul class="flex gap-5">
-                        <li>
-                            <NuxtLink class="p-4" :active-class="linkActiveClass" to="/">Home</NuxtLink>
-                        </li>
-                        <li>
-                            <NuxtLink class="p-4" :active-class="linkActiveClass" to="/about">About</NuxtLink>
-                        </li>
-                    </ul>
-                </nav>
+                <Navigation />
             </header>
 
             <slot />

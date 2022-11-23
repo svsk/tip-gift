@@ -8,10 +8,36 @@ datasource db {
 }
 
 model Wish {
-  Id          String  @id(map: "PK__Wish__3214EC07ED496142") @default(dbgenerated("newid()"), map: "DF__Wish__Id__5DCAEF64") @db.UniqueIdentifier
+  Id          String  @id(map: "PK__Wish__3214EC073FF4C136") @default(dbgenerated("newid()"), map: "DF__Wish__Id__74794A92") @db.UniqueIdentifier
   Name        String? @db.VarChar(Max)
   Description String? @db.VarChar(Max)
   Price       Int
   Order       Int
   Link        String? @db.VarChar(Max)
+  UserId      String  @db.UniqueIdentifier
+  GroupId     String  @db.UniqueIdentifier
+}
+
+model WishUser {
+  Id    String  @id(map: "PK__WishUser__3214EC07F850D70D") @default(dbgenerated("newid()"), map: "DF__WishUser__Id__6BE40491") @db.UniqueIdentifier
+  Email String  @db.VarChar(Max)
+  Name  String? @db.VarChar(Max)
+}
+
+model WishPurchase {
+  Id          String   @id(map: "PK__WishPurc__3214EC075030E971") @default(dbgenerated("newid()"), map: "DF__WishPurchase__Id__7755B73D") @db.UniqueIdentifier
+  UserId      String   @db.UniqueIdentifier
+  WishId      String   @db.UniqueIdentifier
+  CreatedDate DateTime @default(dbgenerated("getutcdate()"), map: "DF__WishPurch__Creat__7849DB76") @db.DateTimeOffset
+}
+
+model WishUserGroup {
+  Id        String @id(map: "PK__WishUser__3214EC07C44A930C") @default(dbgenerated("newid()"), map: "DF__WishUserGrou__Id__6EC0713C") @db.UniqueIdentifier
+  GroupName String @db.VarChar(Max)
+}
+
+model WishUserGroupUser {
+  Id      String @id(map: "PK__WishUser__3214EC0760AAD65A") @default(dbgenerated("newid()"), map: "DF__WishUserGrou__Id__719CDDE7") @db.UniqueIdentifier
+  GroupId String @db.UniqueIdentifier
+  UserId  String @db.UniqueIdentifier
 }

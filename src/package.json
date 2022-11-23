@@ -6,11 +6,12 @@
         "dev": "nuxt dev",
         "generate": "nuxt generate",
         "preview": "nuxt preview",
-        "postinstall": "nuxt prepare"
+        "postinstall": "nuxt prepare",
+        "rebuild-prisma": "prisma db pull && prisma generate"
     },
     "devDependencies": {
         "@nuxtjs/tailwindcss": "^6.1.3",
-        "nuxt": "3.0.0-rc.13",
+        "nuxt": "3.0.0",
         "prisma": "^4.6.1",
         "sass": "^1.56.1",
         "sass-loader": "^13.2.0"
