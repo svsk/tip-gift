@@ -2,12 +2,12 @@
 import { Wish } from '@prisma/client';
 import { ref } from 'vue';
 
-const entries = new Array<Wish>();
+const { data: entries } = await useFetch('/api/entries/getall');
 
 const newEntry = ref<Wish | null>(null);
-const handleAddClicked = async () => { };
+const handleAddClicked = async () => {};
 
-const handleSaveNewEntry = async () => { };
+const handleSaveNewEntry = async () => {};
 </script>
 
 <template>
@@ -21,7 +21,12 @@ const handleSaveNewEntry = async () => { };
         </div>
 
         <EntryListItem class="py-2 border-b border-gray-500" v-for="entry in entries" :entry="entry" :key="entry.Id" />
-        <EntryListItem @save="handleSaveNewEntry" class="py-2 border-b border-gray-500" v-if="newEntry !== null"
-            :entry="newEntry" editable />
+        <EntryListItem
+            @save="handleSaveNewEntry"
+            class="py-2 border-b border-gray-500"
+            v-if="newEntry !== null"
+            :entry="newEntry"
+            editable
+        />
     </div>
 </template>

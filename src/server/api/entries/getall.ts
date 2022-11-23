@@ -1,3 +1,6 @@
+import { DbContext } from '~~/data/DbContext';
+
 export default defineEventHandler((_) => {
-    // Add code to get all wish entries from db.
+    const db = new DbContext();
+    return db.getWishes();
 });
