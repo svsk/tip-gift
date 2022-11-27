@@ -1,6 +1,9 @@
 import { DbContext } from '~~/data/DbContext';
+import { requireAuth } from '~~/lib/requireAuth';
 
-export default defineEventHandler((_) => {
-    const db = new DbContext();
-    return db.getWishes();
-});
+export default defineEventHandler((event) =>
+    requireAuth(event, (authData) => {
+        const db = new DbContext();
+        return db.getWishes(authData.id);
+    })
+);

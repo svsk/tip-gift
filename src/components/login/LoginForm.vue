@@ -1,23 +1,24 @@
 <script setup lang="ts">
-const { data: users } = useFetch('/api/users/getall');
+const supabase = useSupabaseClient();
 
-const loggingIn = ref(false);
+const email = ref('');
+const loading = ref(false);
+const successfulSignin = ref(false);
 
-const handleLoginClicked = async (email: string) => {
-    loggingIn.value = true;
+const handleLogin = async () => {
+    loading.value = true;
 
-    const { data: loginResult, error } = await useFetch('/api/users/login', {
-        key: crypto.randomUUID(),
-        method: 'POST',
-        body: {
-            username: email,
-        },
-    });
+    try {
+        const { error } = await supabase.auth.signInWithOtp({
+            email: email.value,
+        });
 
-    if (!error.value && loginResult.value) {
-        const auth = useAuth();
-        auth.value = { isAuthenticated: true, username: email, userId: loginResult.value.Id };
-        useRouter().push('/');
+        if (error) throw error;
+        successfulSignin.value = true;
+    } catch (error: any) {
+        alert(error.error_description || error.message);
+    } finally {
+        loading.value = false;
     }
 };
 </script>
@@ -25,20 +26,11 @@ const handleLoginClicked = async (email: string) => {
 <template>
     <h1 class="mb-2 text-2xl">Log In</h1>
     <div class="rounded bg-gray-800 p-6">
-        <ul>
-            <li class="flex items-center justify-between" v-for="user in users" :key="user.Id">
-                <div>{{ user.Name }}</div>
-                <div>
-                    <button
-                        @click="() => handleLoginClicked(user.Email)"
-                        :disabled="loggingIn"
-                        class="rounded px-4 py-1 bg-blue-600"
-                        type="button"
-                    >
-                        Log In
-                    </button>
-                </div>
-            </li>
-        </ul>
+        <form @submit.prevent="handleLogin" v-if="!loading && !successfulSignin">
+            <input class="rounded bg-gray-600 p-4 bg-opacity-50" v-model="email" />
+            <button type="submit">Log In</button>
+        </form>
+
+        <div v-if="successfulSignin">Check your email!</div>
     </div>
 </template>

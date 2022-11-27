@@ -5,11 +5,11 @@ const linkActiveClass = `
 	border-b-2
 `;
 
-const loggedIn = useAuth();
+const loggedIn = !!useAuth().value?.id;
 </script>
 
 <template>
-    <nav v-if="loggedIn?.isAuthenticated">
+    <nav v-if="loggedIn">
         <ul class="flex gap-5">
             <li>
                 <NuxtLink class="p-4" :active-class="linkActiveClass" to="/">Home</NuxtLink>
