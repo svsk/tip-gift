@@ -17,12 +17,12 @@ const handleLogOut = async () => {
 <template>
     <nav v-if="loggedIn" class="flex justify-between flex-grow">
         <ul class="flex gap-5">
-            <li>
+            <!-- <li>
                 <NuxtLink class="p-4" :active-class="linkActiveClass" to="/">Home</NuxtLink>
             </li>
             <li>
                 <NuxtLink class="p-4" :active-class="linkActiveClass" to="/about">About</NuxtLink>
-            </li>
+            </li> -->
         </ul>
 
         <ul>

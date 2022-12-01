@@ -1,5 +1,3 @@
 <template>
-    <div class="w-full">
-        <EntryList />
-    </div>
+    <StartMenu />
 </template>

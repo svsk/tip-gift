@@ -27,7 +27,7 @@ const handleLogin = async () => {
 </script>
 
 <template>
-    <div class="rounded bg-gray-800 p-6">
+    <Card>
         <h1 class="self-start mb-2 text-2xl">Log In</h1>
 
         <div class="py-8 w-full flex justify-center items-center">
@@ -35,6 +35,7 @@ const handleLogin = async () => {
                 <form class="w-full" @submit.prevent="handleLogin" v-if="!loading && !successfulSignin">
                     <div class="flex gap-4 flex-col">
                         <input
+                            type="email"
                             placeholder="E-mail"
                             class="flex-grow rounded bg-gray-600 p-4 bg-opacity-50"
                             v-model="email"
@@ -45,13 +46,14 @@ const handleLogin = async () => {
             </Transition>
 
             <Transition name="grow">
-                <div v-if="successfulSignin" class="flex flex-col items-center gap-2">
+                <div v-if="successfulSignin" class="flex flex-col items-center gap-2 text-center">
                     <span class="text-4xl">📧</span>
-                    Check your email, and click the magic link!
+                    <span>Check your email, and click the magic link!</span>
+                    <span>You can close this tab.</span>
                 </div>
             </Transition>
         </div>
-    </div>
+    </Card>
 </template>
 
 <style lang="scss" scoped>
