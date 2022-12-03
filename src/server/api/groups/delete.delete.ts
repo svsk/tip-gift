@@ -17,5 +17,7 @@ export default defineEventHandler(async (event) =>
         } else {
             event.res.statusCode = 403;
         }
+
+        return true;
     })
 );

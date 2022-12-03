@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { WishUserGroup } from '.prisma/client';
 
-const cookie = useRequestHeaders(['cookie']).cookie || '';
-const { data: groups, refresh } = await useFetch('/api/groups/getall', { headers: { cookie } });
+const { data: groups } = useGroups();
 
 const handleDeleteGroup = async (group: WishUserGroup) => {
     await deleteGroup(group);
@@ -10,8 +9,6 @@ const handleDeleteGroup = async (group: WishUserGroup) => {
 </script>
 
 <template>
-    <Button @click="refresh">Refresh</Button>
-
     <div class="flex flex-col">
         <EmptyState v-if="!groups?.length"> Nothing here yet... </EmptyState>
 

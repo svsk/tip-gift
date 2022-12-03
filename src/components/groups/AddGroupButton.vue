@@ -3,7 +3,11 @@ import { WishUserGroup } from '.prisma/client';
 
 const showDialog = ref(false);
 const groupName = ref('');
-const { refresh } = await useGroups();
+
+const handleAddGroupClicked = () => {
+    groupName.value = '';
+    showDialog.value = true;
+};
 
 const handleClose = async (confirm: boolean) => {
     showDialog.value = false;
@@ -11,13 +15,12 @@ const handleClose = async (confirm: boolean) => {
     if (confirm) {
         const grp = { GroupName: groupName.value } as WishUserGroup;
         await addGroup(grp);
-        refresh();
     }
 };
 </script>
 
 <template>
-    <Button @click="() => (showDialog = true)">Add Group</Button>
+    <Button @click="handleAddGroupClicked">Add Group</Button>
 
     <Dialog v-model="showDialog">
         <template #title> Add Group </template>
