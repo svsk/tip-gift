@@ -34,13 +34,8 @@ const handleLogin = async () => {
             <Transition name="growDown">
                 <form class="w-full" @submit.prevent="handleLogin" v-if="!loading && !successfulSignin">
                     <div class="flex gap-4 flex-col">
-                        <input
-                            type="email"
-                            placeholder="E-mail"
-                            class="flex-grow rounded bg-gray-600 p-4 bg-opacity-50"
-                            v-model="email"
-                        />
-                        <button class="rounded bg-blue-600 py-2 px-4" type="submit">Log In</button>
+                        <Input type="email" label="E-mail" v-model="email" />
+                        <Button type="submit">Log In</Button>
                     </div>
                 </form>
             </Transition>

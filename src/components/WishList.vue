@@ -25,6 +25,7 @@ const handleAddClicked = async () => {
             Order: nextOrder(),
             GroupId: groupId,
             UserId: userId,
+            Price: 0,
         } as Wish;
     }
 };
@@ -50,13 +51,29 @@ const handleSaveNewEntry = async () => {
 
         <EmptyState v-if="!entries?.length"> Nothing here yet... </EmptyState>
 
-        <EntryListItem class="py-2 border-b border-gray-500" v-for="entry in entries" :entry="entry" :key="entry.Id" />
-        <EntryListItem
-            @save="handleSaveNewEntry"
-            class="py-2 border-b border-gray-500"
-            v-if="newEntry !== null"
-            :entry="newEntry"
-            editable
-        />
+        <Transition name="slideIn">
+            <WishListItem
+                @save="handleSaveNewEntry"
+                class="py-2 border-b border-gray-600"
+                v-if="newEntry !== null"
+                :entry="newEntry"
+                editable
+            />
+        </Transition>
+
+        <WishListItem class="py-2 border-b border-gray-600" v-for="entry in entries" :entry="entry" :key="entry.Id" />
     </div>
 </template>
+
+<style lang="scss" scoped>
+.slideIn-enter-active,
+.slideIn-leave-active {
+    transition: all 0.1s linear;
+}
+
+.slideIn-enter-from,
+.slideIn-leave-to {
+    transform: translateX(20px);
+    opacity: 0;
+}
+</style>

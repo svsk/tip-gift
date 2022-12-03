@@ -1,5 +1,5 @@
 <template>
     <Card>
-        <EntryList />
+        <WishList />
     </Card>
 </template>

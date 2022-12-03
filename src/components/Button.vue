@@ -29,7 +29,10 @@ const classes = computed(() => {
 <template>
     <button
         :type="type"
-        :class="` transition-all uppercase tracking-wide font-medium text-sm ${classes}`"
+        :class="{
+            'focus-visible:outline-none transition-all uppercase tracking-wide font-medium text-sm': true,
+            [classes]: true,
+        }"
         @click="() => emit('click')"
     >
         <slot />

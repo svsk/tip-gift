@@ -27,7 +27,7 @@ const handleLogOut = async () => {
 
         <ul>
             <li>
-                <button @click="handleLogOut">Log out</button>
+                <Button flat @click="handleLogOut">Log out</Button>
             </li>
         </ul>
     </nav>
