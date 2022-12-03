@@ -26,7 +26,9 @@ const handleClose = async (confirm: boolean) => {
         <template #title> Add Group </template>
         <div class="flex flex-col gap-6 flex-nowrap">
             <Input v-model="groupName" label="Group Name" class="w-full" />
-            <div class="flex justify-end">
+
+            <div class="flex justify-end gap-2">
+                <Button flat @click="() => handleClose(false)">Cancel</Button>
                 <Button @click="() => handleClose(true)">Confirm</Button>
             </div>
         </div>
