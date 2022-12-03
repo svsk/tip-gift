@@ -16,7 +16,7 @@ const emit = defineEmits(['update:modelValue']);
                 v-if="modelValue"
                 class="fixed w-full h-full bg-opacity-30 bg-black top-0 left-0 flex flex-col items-center justify-center p-6"
             >
-                <Card @click.stop class="w-full max-w-[450px] p-0 drop-shadow-xl">
+                <Card @click.stop class="w-full max-w-[450px] p-0">
                     <div v-if="$slots.title" class="p-4">
                         <h2 class="font-medium text-lg">
                             <slot name="title" />
