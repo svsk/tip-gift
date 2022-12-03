@@ -3,9 +3,13 @@ interface Props {
     modelValue?: string;
     label?: string;
     inputClass?: string;
+    type?: string;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+    type: 'text',
+});
+
 const value = ref(props.modelValue);
 
 const emit = defineEmits(['update:modelValue']);
@@ -17,6 +21,7 @@ const emit = defineEmits(['update:modelValue']);
             {{ label }}
         </div>
         <input
+            :type="type"
             :class="{
                 [inputClass || '']: true,
                 'border-b-2 border-blue-600 bg-black bg-opacity-20 rounded-t p-2 pt-4 outline-none w-full': true,

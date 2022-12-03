@@ -20,6 +20,10 @@ export class DbContext {
         return this._db.wish.create({ data: wish });
     }
 
+    deleteWish(wishId: string) {
+        return this._db.wish.delete({ where: { Id: wishId } });
+    }
+
     saveGroup(group: WishUserGroup) {
         return this._db.wishUserGroup.create({ data: group });
     }

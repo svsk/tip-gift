@@ -2,26 +2,23 @@
 import { Wish } from '@prisma/client';
 import { ref } from 'vue';
 
-const cookie = useRequestHeaders(['cookie']).cookie || '';
-const { data: entries, refresh: refreshEntries } = await useFetch('/api/entries/getall', {
-    headers: { cookie },
-});
+const { data: wishes } = useWishes();
 
 const nextOrder = () => {
-    if (entries.value?.length) {
-        return Math.max(...(entries.value?.map((w) => w.Order) || [0])) + 1;
+    if (wishes.value?.length) {
+        return Math.max(...(wishes.value?.map((w) => w.Order) || [0])) + 1;
     }
 
     return 1;
 };
 
-const newEntry = ref<Wish | null>(null);
+const newWish = ref<Wish | null>(null);
 const handleAddClicked = async () => {
     const userId = useAuth().value?.id;
     const groupId = crypto.randomUUID();
 
     if (userId && groupId) {
-        newEntry.value = {
+        newWish.value = {
             Order: nextOrder(),
             GroupId: groupId,
             UserId: userId,
@@ -31,15 +28,15 @@ const handleAddClicked = async () => {
 };
 
 const handleSaveNewEntry = async () => {
-    await useFetch('/api/entries/add', {
-        key: crypto.randomUUID(),
-        body: newEntry.value,
-        method: 'POST',
-        headers: { cookie },
-    });
-    await refreshEntries();
+    if (newWish.value) {
+        await addWish(newWish.value);
+    }
 
-    newEntry.value = null;
+    newWish.value = null;
+};
+
+const handleDeleteEntry = async (entry: Wish) => {
+    deleteWish(entry);
 };
 </script>
 
@@ -49,19 +46,25 @@ const handleSaveNewEntry = async () => {
             <Button @click="handleAddClicked">Add New</Button>
         </div>
 
-        <EmptyState v-if="!entries?.length"> Nothing here yet... </EmptyState>
+        <EmptyState v-if="!wishes?.length"> Nothing here yet... </EmptyState>
 
         <Transition name="slideIn">
             <WishListItem
                 @save="handleSaveNewEntry"
                 class="py-2 border-b border-gray-600"
-                v-if="newEntry !== null"
-                :entry="newEntry"
+                v-if="newWish !== null"
+                :entry="newWish"
                 editable
             />
         </Transition>
 
-        <WishListItem class="py-2 border-b border-gray-600" v-for="entry in entries" :entry="entry" :key="entry.Id" />
+        <WishListItem
+            class="py-2 border-b border-gray-600"
+            v-for="wish in wishes"
+            :entry="wish"
+            :key="wish.Id"
+            @delete="handleDeleteEntry"
+        />
     </div>
 </template>
 
