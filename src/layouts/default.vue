@@ -14,7 +14,7 @@ useHead({
         <div class="w-full max-w-[920px] pt-20 px-6">
             <header class="flex gap-8 items-center pb-8">
                 <NuxtLink to="/">
-                    <h1 class="text-2xl">🎁 Wish List</h1>
+                    <h1 class="text-2xl">🎁 TipWish</h1>
                 </NuxtLink>
                 <Navigation />
             </header>
