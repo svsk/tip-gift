@@ -45,12 +45,10 @@ const handleSaveNewEntry = async () => {
 <template>
     <div class="flex flex-col flex-nowrap">
         <div class="flex justify-end pb-4">
-            <button @click="handleAddClicked" class="rounded px-3 py-1 bg-blue-500 text-white">Add New</button>
+            <Button @click="handleAddClicked">Add New</Button>
         </div>
 
-        <div v-if="!entries?.length" class="flex flex-col justify-center items-center text-gray-500 py-12">
-            Nothing here yet...
-        </div>
+        <EmptyState v-if="!entries?.length"> Nothing here yet... </EmptyState>
 
         <EntryListItem class="py-2 border-b border-gray-500" v-for="entry in entries" :entry="entry" :key="entry.Id" />
         <EntryListItem

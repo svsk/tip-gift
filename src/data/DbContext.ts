@@ -1,4 +1,4 @@
-import { Wish } from '.prisma/client';
+import { Wish, WishUserGroup, WishUserGroupUser } from '.prisma/client';
 import { usePrisma } from './usePrisma';
 
 export class DbContext {
@@ -18,5 +18,25 @@ export class DbContext {
 
     saveWish(wish: Wish) {
         return this._db.wish.create({ data: wish });
+    }
+
+    saveGroup(group: WishUserGroup) {
+        return this._db.wishUserGroup.create({ data: group });
+    }
+
+    saveGroupUser(groupUser: WishUserGroupUser) {
+        return this._db.wishUserGroupUser.create({ data: groupUser });
+    }
+
+    async getUserGroups(userId: string) {
+        const memberships = (await this._db.wishUserGroupUser.findMany({ where: { UserId: userId } })).map(
+            (g) => g.GroupId
+        );
+
+        return this._db.wishUserGroup.findMany({ where: { Id: { in: memberships } } });
+    }
+
+    deleteUserGroup(groupId: string) {
+        return this._db.wishUserGroup.delete({ where: { Id: groupId } });
     }
 }

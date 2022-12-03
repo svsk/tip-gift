@@ -61,7 +61,6 @@ const handleSaveClicked = () => {
                 <button class="bg-green-500 rounded px-2 py-1" v-if="editable" type="button" @click="handleSaveClicked">
                     Save
                 </button>
-                <!-- <a v-if="entry.Link" :href="entry.Link" target="_blank"> [Link] </a> -->
             </div>
         </div>
     </div>
