@@ -7,3 +7,8 @@ export const logout = async () => {
     accessToken.value = null;
     refreshToken.value = null;
 };
+
+export const useAuthentication = () => {
+    const cookie = useRequestHeaders(['cookie'])?.cookie || '';
+    return { headers: { cookie } };
+};

@@ -3,6 +3,9 @@ import { Wish } from '@prisma/client';
 import { ref } from 'vue';
 
 const { data: wishes } = useWishes();
+const adding = ref(false);
+const newWish = ref<Wish | null>(null);
+const busyAdding = ref(false);
 
 const nextOrder = () => {
     if (wishes.value?.length) {
@@ -12,31 +15,26 @@ const nextOrder = () => {
     return 1;
 };
 
-const newWish = ref<Wish | null>(null);
 const handleAddClicked = async () => {
-    const userId = useAuth().value?.id;
-    const groupId = crypto.randomUUID();
-
-    if (userId && groupId) {
-        newWish.value = {
-            Order: nextOrder(),
-            GroupId: groupId,
-            UserId: userId,
-            Price: 0,
-        } as Wish;
-    }
-};
-
-const handleSaveNewEntry = async () => {
-    if (newWish.value) {
-        await addWish(newWish.value);
-    }
-
-    newWish.value = null;
+    newWish.value = {
+        GroupId: crypto.randomUUID(),
+        Order: 999,
+    } as Wish;
+    adding.value = true;
 };
 
 const handleDeleteEntry = async (entry: Wish) => {
     deleteWish(entry);
+};
+
+const handleSaveNewEntry = async () => {
+    if (newWish.value) {
+        busyAdding.value = true;
+        await addWish(newWish.value);
+        busyAdding.value = false;
+        newWish.value = null;
+        adding.value = false;
+    }
 };
 </script>
 
@@ -48,16 +46,6 @@ const handleDeleteEntry = async (entry: Wish) => {
 
         <EmptyState v-if="!wishes?.length"> Nothing here yet... </EmptyState>
 
-        <Transition name="slideIn">
-            <WishListItem
-                @save="handleSaveNewEntry"
-                class="py-2 border-b border-gray-600"
-                v-if="newWish !== null"
-                :entry="newWish"
-                editable
-            />
-        </Transition>
-
         <WishListItem
             class="py-2 border-b border-gray-600"
             v-for="wish in wishes"
@@ -66,17 +54,16 @@ const handleDeleteEntry = async (entry: Wish) => {
             @delete="handleDeleteEntry"
         />
     </div>
+
+    <Dialog v-model="adding">
+        <template #title>Add New Wish</template>
+
+        <form @submit.prevent="handleSaveNewEntry" class="flex flex-col gap-4">
+            <WishInputFields v-if="newWish" v-model="newWish" />
+            <div class="flex justify-end items-center gap-2">
+                <Button :disable="busyAdding" @click="() => (adding = false)" flat>Cancel</Button>
+                <Button :disable="busyAdding" type="submit">Confirm</Button>
+            </div>
+        </form>
+    </Dialog>
 </template>
-
-<style lang="scss" scoped>
-.slideIn-enter-active,
-.slideIn-leave-active {
-    transition: all 0.1s linear;
-}
-
-.slideIn-enter-from,
-.slideIn-leave-to {
-    transform: translateX(20px);
-    opacity: 0;
-}
-</style>

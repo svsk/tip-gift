@@ -2,11 +2,6 @@ import { Wish } from '@prisma/client';
 
 const storeKey = 'wishes';
 
-const useAuthentication = () => {
-    const cookie = useRequestHeaders(['cookie'])?.cookie || '';
-    return { headers: { cookie } };
-};
-
 export const useWishes = () =>
     useAsyncData(storeKey, async () => {
         return await $fetch('/api/wishes/getall', useAuthentication());

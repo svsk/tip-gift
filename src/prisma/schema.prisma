@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Wish {
-  Id          String  @id(map: "PK__Wish__3214EC073FF4C136") @default(dbgenerated("newid()"), map: "DF__Wish__Id__74794A92") @db.UniqueIdentifier
+  Id          String  @id(map: "PK__Wish__3214EC076C466BEE") @default(dbgenerated("newid()"), map: "DF__Wish__Id__7B264821") @db.UniqueIdentifier
   Name        String? @db.VarChar(Max)
   Description String? @db.VarChar(Max)
   Price       Int
@@ -16,6 +16,7 @@ model Wish {
   Link        String? @db.VarChar(Max)
   UserId      String  @db.UniqueIdentifier
   GroupId     String  @db.UniqueIdentifier
+  ImageUrl    String? @db.VarChar(Max)
 }
 
 model WishUser {
