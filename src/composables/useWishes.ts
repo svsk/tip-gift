@@ -1,6 +1,7 @@
 import { Wish } from '@prisma/client';
 
 const storeKey = 'wishes';
+const shareKey = 'wish-shares';
 
 export const useWishes = () =>
     useAsyncData(storeKey, async () => {
@@ -37,6 +38,14 @@ export const updateWishes = async (wishes: Wish[]) => {
     });
 
     refreshWishes();
+};
+
+export const generateShareKey = async (listName: string) => {
+    return await $fetch('/api/wishes/share', {
+        body: { slug: listName },
+        method: 'POST',
+        ...useAuthentication(),
+    });
 };
 
 export const refreshWishes = () => refreshNuxtData(storeKey);

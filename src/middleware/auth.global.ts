@@ -1,6 +1,9 @@
 export default defineNuxtRouteMiddleware((to) => {
-    const auth = useSupabaseUser();
+    if (to.path.startsWith('/wishes')) {
+        return;
+    }
 
+    const auth = useSupabaseUser();
     if (to.path !== '/login' && to.path !== '/auth' && !auth.value) {
         return navigateTo('/login');
     }

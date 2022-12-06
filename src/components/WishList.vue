@@ -3,13 +3,21 @@ import { Wish } from '@prisma/client';
 import { ref } from 'vue';
 import draggable from 'vuedraggable';
 
-const { data: wishes } = useWishes();
+interface Props {
+    items?: Wish[];
+    readonly?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), { readonly: false });
+const wishes = props.items ? ref(props.items) : (await useWishes())?.data;
+
 const adding = ref(false);
 const newWish = ref<Wish | null>(null);
 const busyAdding = ref(false);
 const orderedWishes = computed(() => (wishes.value || []).sort((a, b) => a.Order - b.Order));
 const reorderMode = ref(false);
 const reordering = ref(false);
+const sharing = ref(false);
 
 const handleAddClicked = async () => {
     newWish.value = {
@@ -31,6 +39,10 @@ const handleSaveNewEntry = async () => {
         newWish.value = null;
         adding.value = false;
     }
+};
+
+const handleShareClicked = () => {
+    sharing.value = true;
 };
 
 const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: number } }) => {
@@ -62,8 +74,11 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
 
 <template>
     <div class="flex flex-col flex-nowrap relative">
-        <div class="flex justify-end pb-4 gap-2">
-            <Button @click="reorderMode = !reorderMode">Reorder</Button>
+        <div class="flex justify-end pb-4 gap-2" v-if="!readonly">
+            <Button @click="handleShareClicked" class="flex items-center justify-center">
+                <Icon name="share" />
+            </Button>
+            <Button @click="reorderMode = !reorderMode">{{ reorderMode ? 'Finish' : 'Reorder' }}</Button>
             <Button @click="handleAddClicked">Add New</Button>
         </div>
 
@@ -73,7 +88,7 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
             :list="orderedWishes"
             @change="handleReorder"
             animation="400"
-            :disabled="!reorderMode"
+            :disabled="!reorderMode || readonly"
             handle=".handle"
             item-key="Id"
         >
@@ -81,7 +96,7 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
                 <div class="flex items-center border-b border-gray-600 bg-gray-800">
                     <WishListItem class="py-3 flex-grow" :entry="wish" />
 
-                    <div class="flex gap-1 items-center">
+                    <div class="flex gap-1 items-center" v-if="!readonly">
                         <Button v-show="!reorderMode" @click="() => handleDeleteEntry(wish)" round>
                             <Icon name="delete" font-size="20px" />
                         </Button>
@@ -105,5 +120,17 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
                 <Button :disable="busyAdding" type="submit">Confirm</Button>
             </div>
         </form>
+    </Dialog>
+
+    <Dialog v-model="sharing">
+        <template #title>Share Wish List</template>
+
+        <div class="flex flex-col gap-4">
+            <ShareDialog />
+
+            <div class="flex justify-end items-center gap-2">
+                <Button @click="() => (sharing = false)" flat>Close</Button>
+            </div>
+        </div>
     </Dialog>
 </template>

@@ -5,10 +5,12 @@ interface Props {
     inputClass?: string;
     type?: string;
     step?: string;
+    readonly?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     type: 'text',
+    readonly: false,
 });
 const emit = defineEmits(['update:modelValue']);
 
@@ -45,11 +47,13 @@ defineExpose({
         </div>
         <input
             ref="input"
+            :readonly="readonly"
             :step="step"
             :type="type"
             :class="{
                 [inputClass || '']: true,
                 'border-b-2 border-blue-600 bg-black bg-opacity-20 rounded-t p-2 pt-4 outline-none w-full text-base': true,
+                'read-only:border-gray-400 read-only:border-dashed read-only:border-b': true,
             }"
             v-model="value"
         />

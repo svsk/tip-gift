@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
@@ -42,4 +41,13 @@ model WishUserGroupUser {
   Id      String @id(map: "PK__WishUser__3214EC0760AAD65A") @default(dbgenerated("newid()"), map: "DF__WishUserGrou__Id__719CDDE7") @db.UniqueIdentifier
   GroupId String @db.UniqueIdentifier
   UserId  String @db.UniqueIdentifier
+}
+
+model WishListShare {
+  Id          String   @id(map: "PK__WishList__3214EC0783481245") @default(dbgenerated("newid()"), map: "DF__WishListShar__Id__01D345B0") @db.UniqueIdentifier
+  UserId      String   @db.UniqueIdentifier
+  UniqueKey   String   @db.VarChar(20)
+  Slug        String   @db.VarChar(1000)
+  Name        String   @db.VarChar(1000)
+  CreatedDate DateTime @default(dbgenerated("getutcdate()"), map: "DF__WishListS__Creat__02C769E9") @db.DateTimeOffset
 }

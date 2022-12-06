@@ -8,12 +8,27 @@ export class DbContext {
         return this._db.wish.findMany({ where: { UserId: { equals: userId } }, orderBy: [{ Order: 'asc' }] });
     }
 
+    getShareByKey(key: string) {
+        return this._db.wishListShare.findFirst({ where: { UniqueKey: key } });
+    }
+
     getUsers() {
         return this._db.wishUser.findMany({ orderBy: [{ Name: 'asc' }] });
     }
 
     getUserByUsername(username: string) {
         return this._db.wishUser.findFirst({ where: { Email: username } });
+    }
+
+    createShare(userId: string, uniqueKey: string, name: string, slug: string) {
+        return this._db.wishListShare.create({
+            data: {
+                UserId: userId,
+                UniqueKey: uniqueKey,
+                Name: name,
+                Slug: slug,
+            },
+        });
     }
 
     saveWish(wish: Wish) {
