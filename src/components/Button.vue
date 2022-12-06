@@ -34,7 +34,7 @@ const classes = computed(() => {
         :disabled="disable"
         :class="{
             'focus-visible:outline-none transition-all uppercase tracking-wide font-medium text-sm': true,
-            'disabled:opacity-50 disabled:cursor-not-allowed': true,
+            'disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none': true,
             [classes]: true,
         }"
         @click="() => emit('click')"

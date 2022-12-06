@@ -20,6 +20,38 @@ export class DbContext {
         return this._db.wish.create({ data: wish });
     }
 
+    async updateWishes(userId: string, wishes: Wish[]) {
+        return await this._db.$transaction(async (tx) => {
+            const updatesWishes = new Array<Wish>();
+
+            for (var i = 0; i < wishes.length; i++) {
+                const w = wishes[i];
+
+                const updated = await tx.wish.update({
+                    data: {
+                        Name: w.Name,
+                        Description: w.Description,
+                        Price: w.Price,
+                        Order: w.Order,
+                        Link: w.Link,
+                        ImageUrl: w.ImageUrl,
+                    },
+                    where: {
+                        Id: w.Id,
+                    },
+                });
+
+                if (updated.UserId !== userId) {
+                    throw new Error('User does not own wish.');
+                }
+
+                updatesWishes.push(updated);
+            }
+
+            return updatesWishes;
+        });
+    }
+
     deleteWish(wishId: string) {
         return this._db.wish.delete({ where: { Id: wishId } });
     }

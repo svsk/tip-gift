@@ -19,8 +19,6 @@ export const addWish = async (wish: Wish) => {
 };
 
 export const deleteWish = async (wish: Wish) => {
-    console.log(wish);
-
     const result = await $fetch('/api/wishes/delete', {
         query: { id: wish.Id },
         method: 'DELETE',
@@ -29,6 +27,16 @@ export const deleteWish = async (wish: Wish) => {
 
     refreshWishes();
     return result;
+};
+
+export const updateWishes = async (wishes: Wish[]) => {
+    await $fetch('/api/wishes/update-many', {
+        body: wishes,
+        method: 'PATCH',
+        ...useAuthentication(),
+    });
+
+    refreshWishes();
 };
 
 export const refreshWishes = () => refreshNuxtData(storeKey);

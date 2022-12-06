@@ -18,6 +18,8 @@
         "sass-loader": "^13.2.0"
     },
     "dependencies": {
-        "@prisma/client": "^4.6.1"
+        "@prisma/client": "^4.6.1",
+        "@tailwindcss/line-clamp": "^0.4.2",
+        "vuedraggable": "^4.1.0"
     }
 }
