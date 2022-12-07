@@ -5,6 +5,8 @@ const { data: shareData } = await useFetch('/api/wishes/get-shared', {
     query: { uniqueKey },
     key: uniqueKey.toString(),
 });
+
+usePageTitle(shareData?.value?.share?.Name);
 </script>
 
 <template>
