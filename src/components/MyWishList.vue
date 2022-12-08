@@ -87,7 +87,7 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
             item-key="Id"
         >
             <template #item="{ element: wish }">
-                <div class="flex items-center border-b border-gray-600 bg-gray-800">
+                <div class="flex items-center border-b border-slate-600 bg-gray-800 gap-1 last:border-b-0">
                     <WishListItem class="py-3 flex-grow" :entry="wish" />
 
                     <div class="flex gap-1 items-center">
