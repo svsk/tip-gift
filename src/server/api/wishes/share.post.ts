@@ -2,6 +2,13 @@ import { WishListShare } from '@prisma/client';
 import { DbContext } from '~~/data/DbContext';
 import { requireAuth } from '~~/lib/requireAuth';
 
+const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+const getRandomLetters = (from: string, amount: number) =>
+    new Array(amount)
+        .fill(0)
+        .map(() => from[Math.floor(Math.random() * from.length)])
+        .join('');
+
 export default defineEventHandler(async (event) =>
     requireAuth(event, async (auth) => {
         try {
@@ -14,9 +21,6 @@ export default defineEventHandler(async (event) =>
                 .replaceAll('æ', 'ae')
                 .replace(/[^a-z-]/gi, '');
 
-            const rngLetters = () =>
-                Buffer.from(Math.random().toString()).toString('base64').substring(10, 13).toLowerCase();
-
             let retries = 0;
             const db = new DbContext();
             let share: WishListShare | null = null;
@@ -28,7 +32,12 @@ export default defineEventHandler(async (event) =>
                 }
 
                 try {
-                    const random = `${rngLetters()}-${rngLetters()}-${rngLetters()}`;
+                    const random = [
+                        getRandomLetters(alphabet, 3),
+                        getRandomLetters(alphabet, 3),
+                        getRandomLetters(alphabet, 3),
+                    ].join('-');
+
                     share = await db.createShare(auth.id, random, body.slug, urlSlug);
                 } catch (error: any) {
                     console.warn(error);
