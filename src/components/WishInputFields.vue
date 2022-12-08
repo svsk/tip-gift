@@ -20,7 +20,6 @@ onMounted(() => {
 
 const getMetadata = async () => {
     await nextTick();
-    console.log('should get!', model.value.Link);
 
     if (model.value.Link?.startsWith('http')) {
         const { data: result, error } = await useFetch('/api/wishes/extract-metadata', {
