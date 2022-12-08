@@ -13,7 +13,7 @@ usePageTitle(shareData?.value?.share?.Name);
     <Card>
         <div v-if="shareData">
             <h1 class="text-xl mb-6">{{ shareData.share.Name }}</h1>
-            <WishList :items="shareData.wishes" readonly />
+            <WishListItem v-for="wish in shareData.wishes" :key="wish.Id" :entry="wish" />
         </div>
         <div v-else>
             <EmptyState> Nothing could be found... </EmptyState>

@@ -4,6 +4,6 @@ usePageTitle('My Wishes');
 
 <template>
     <Card>
-        <WishList />
+        <MyWishList />
     </Card>
 </template>

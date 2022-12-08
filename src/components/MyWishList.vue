@@ -3,13 +3,7 @@ import { Wish } from '@prisma/client';
 import { ref } from 'vue';
 import draggable from 'vuedraggable';
 
-interface Props {
-    items?: Wish[];
-    readonly?: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), { readonly: false });
-const wishes = props.items ? ref(props.items) : (await useWishes())?.data;
+const { data: wishes } = await useWishes();
 
 const adding = ref(false);
 const newWish = ref<Wish | null>(null);
@@ -74,7 +68,7 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
 
 <template>
     <div class="flex flex-col flex-nowrap relative">
-        <div class="flex justify-end pb-4 gap-2" v-if="!readonly">
+        <div class="flex justify-end pb-4 gap-2">
             <Button @click="handleShareClicked" class="flex items-center justify-center">
                 <Icon name="share" />
             </Button>
@@ -88,7 +82,7 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
             :list="orderedWishes"
             @change="handleReorder"
             animation="400"
-            :disabled="!reorderMode || readonly"
+            :disabled="!reorderMode"
             handle=".handle"
             item-key="Id"
         >
@@ -96,7 +90,7 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
                 <div class="flex items-center border-b border-gray-600 bg-gray-800">
                     <WishListItem class="py-3 flex-grow" :entry="wish" />
 
-                    <div class="flex gap-1 items-center" v-if="!readonly">
+                    <div class="flex gap-1 items-center">
                         <Button v-show="!reorderMode" @click="() => handleDeleteEntry(wish)" round>
                             <Icon name="delete" font-size="20px" />
                         </Button>
