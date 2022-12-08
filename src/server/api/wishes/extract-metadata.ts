@@ -1,26 +1,16 @@
 import { URL } from 'url';
 import { requireAuth } from '~~/lib/requireAuth';
+import { JSDOM } from 'jsdom';
 
 const decodeEntities = (encodedString: string | undefined | null) => {
     if (!encodedString) return null;
 
-    const translate_re = /&(nbsp|amp|quot|lt|gt);/g;
-    const translate: { [key: string]: string } = {
-        nbsp: ' ',
-        amp: '&',
-        quot: '"',
-        lt: '<',
-        gt: '>',
-    };
+    const result =
+        new JSDOM(`<html><body><div id="result">${encodedString}</div></body></html>`).window.document.getElementById(
+            'result'
+        )?.innerText || null;
 
-    return encodedString
-        .replace(translate_re, (_, entity: string) => {
-            return translate[entity];
-        })
-        .replace(/&#(\d+);/gi, (_, numStr) => {
-            const num = parseInt(numStr, 10);
-            return String.fromCharCode(num);
-        });
+    return result;
 };
 
 export default defineEventHandler((event) =>
