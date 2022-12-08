@@ -1,7 +1,6 @@
 import { Wish } from '@prisma/client';
 
 const storeKey = 'wishes';
-const shareKey = 'wish-shares';
 
 export const useWishes = () =>
     useAsyncData(storeKey, async () => {

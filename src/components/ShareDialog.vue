@@ -4,8 +4,19 @@ import Input from './Input.vue';
 const listName = ref('');
 const nameInput = ref<InstanceType<typeof Input> | null>();
 const copied = ref(false);
-const listUrl = ref('');
-const linkExists = ref(false);
+const { data: shares, refresh: refreshShares } = await useShares();
+const baseUrl = () => (process.client ? window.location.origin : '');
+
+const listUrl = computed(() => {
+    if (shares.value instanceof Array && shares.value.length > 0) {
+        const shareData = shares.value.at(0);
+        listName.value = shares.value.at(0)?.Name || '';
+        return `${baseUrl()}/wishes/${shareData?.UniqueKey}/${shareData?.Slug}`;
+    }
+
+    return null;
+});
+const linkExists = computed(() => !!listUrl.value);
 const generating = ref(false);
 
 watch(copied, () => {
@@ -29,8 +40,7 @@ const handleGenerateClicked = async () => {
     try {
         const shareData = await generateShareKey(listName.value);
         if (shareData) {
-            listUrl.value = window.location.origin + `/wishes/${shareData?.UniqueKey}/${shareData?.Slug}`;
-            linkExists.value = true;
+            refreshShares();
         }
     } finally {
         generating.value = false;
@@ -38,8 +48,10 @@ const handleGenerateClicked = async () => {
 };
 
 const handleCopyClicked = async () => {
-    await navigator.clipboard.writeText(listUrl.value);
-    copied.value = true;
+    if (listUrl.value) {
+        await navigator.clipboard.writeText(listUrl.value);
+        copied.value = true;
+    }
 };
 </script>
 
@@ -59,7 +71,7 @@ const handleCopyClicked = async () => {
         </div>
 
         <div class="w-full flex gap-3">
-            <Input label="Link" readonly v-model="listUrl" class="flex-grow w-full" />
+            <Input label="Link" readonly :model-value="listUrl" class="flex-grow w-full" />
             <Button
                 :disable="!linkExists"
                 @click="handleCopyClicked"

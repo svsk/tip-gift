@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const { uniqueKey } = useRoute().params;
 
-const { data: shareData } = await useFetch('/api/wishes/get-shared', {
+const { data: shareData } = await useFetch('/api/wishes/get-shared-by-key', {
     query: { uniqueKey },
     key: uniqueKey.toString(),
 });

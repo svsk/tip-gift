@@ -8,6 +8,10 @@ export class DbContext {
         return this._db.wish.findMany({ where: { UserId: { equals: userId } }, orderBy: [{ Order: 'asc' }] });
     }
 
+    getSharesForUser(userId: string) {
+        return this._db.wishListShare.findMany({ where: { UserId: userId } });
+    }
+
     getShareByKey(key: string) {
         return this._db.wishListShare.findFirst({ where: { UniqueKey: key } });
     }
