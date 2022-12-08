@@ -6,25 +6,30 @@ interface Props {
     type?: string;
     step?: string;
     readonly?: boolean;
+    rules?: ((v: any) => string | boolean)[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
     type: 'text',
     readonly: false,
 });
+
+const validators = inject<(() => boolean)[]>('formValidators', []);
 const emit = defineEmits(['update:modelValue']);
+const errorMessage = ref<string | null>(null);
+const value = ref(props.modelValue);
+const input = ref<HTMLInputElement>();
 
 watch(
     () => props.modelValue,
     () => (value.value = props.modelValue)
 );
 
-const value = ref(props.modelValue);
-const input = ref<any>(null);
-
 watch(
     () => value.value,
     () => {
+        errorMessage.value = null;
+
         if (value.value !== props.modelValue) {
             emit('update:modelValue', value.value);
         }
@@ -35,8 +40,20 @@ const focus = () => {
     input.value?.focus();
 };
 
+const validate = () => {
+    const brokenRule = props.rules?.map((rule) => rule(value.value)).find((result) => result !== true);
+    if (brokenRule !== true && brokenRule !== false && !!brokenRule) {
+        errorMessage.value = brokenRule;
+    }
+
+    return !brokenRule;
+};
+
+validators.push(validate);
+
 defineExpose({
     focus,
+    validate,
 });
 </script>
 
@@ -54,9 +71,17 @@ defineExpose({
                 [inputClass || '']: true,
                 'border-b-2 border-blue-600 bg-black bg-opacity-20 rounded-t p-2 pt-4 outline-none w-full text-base': true,
                 'read-only:border-gray-400 read-only:border-dashed read-only:border-b': true,
+                'border-red-500': !!errorMessage,
+                'transition-colors': true,
             }"
             v-model="value"
         />
+
+        <Transition name="shake">
+            <Badge v-if="errorMessage" class="absolute right-3 top-[27%] bg-red-500">
+                {{ errorMessage }}
+            </Badge>
+        </Transition>
     </div>
 </template>
 
@@ -73,5 +98,32 @@ defineExpose({
 
 .label {
     font-size: 1em;
+}
+
+.shake-enter-active {
+    animation: bounce-in 0.2s;
+}
+.shake-leave-active {
+    animation: bounce-in 0.2s reverse;
+}
+
+@keyframes bounce-in {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    75% {
+        transform: translateX(10px);
+    }
+
+    100% {
+        transform: translateX(0px);
+        opacity: 1;
+    }
 }
 </style>

@@ -28,10 +28,13 @@ const handleDeleteEntry = async (entry: Wish) => {
 const handleSaveNewEntry = async () => {
     if (newWish.value) {
         busyAdding.value = true;
-        await addWish(newWish.value);
-        busyAdding.value = false;
-        newWish.value = null;
-        adding.value = false;
+        try {
+            await addWish(newWish.value);
+            newWish.value = null;
+            adding.value = false;
+        } finally {
+            busyAdding.value = false;
+        }
     }
 };
 
@@ -107,13 +110,13 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
     <Dialog v-model="adding">
         <template #title>Add New Wish</template>
 
-        <form @submit.prevent="handleSaveNewEntry" class="flex flex-col gap-4">
+        <Form @submit="handleSaveNewEntry" class="flex flex-col gap-4">
             <WishInputFields v-if="newWish" v-model="newWish" />
             <div class="flex justify-end items-center gap-2">
                 <Button :disable="busyAdding" @click="() => (adding = false)" flat>Cancel</Button>
                 <Button :disable="busyAdding" type="submit">Confirm</Button>
             </div>
-        </form>
+        </Form>
     </Dialog>
 
     <Dialog v-model="sharing">

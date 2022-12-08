@@ -39,19 +39,38 @@ const getMetadata = async () => {
         }
     }
 };
+
+const required = (val: any) => {
+    if (val instanceof Number) {
+        return true;
+    }
+
+    return !!val ? true : 'Required';
+};
+
+const shouldBeUrl = (val: any) => {
+    return val?.toString()?.startsWith('http') ? true : 'Must be a URL';
+};
 </script>
 
 <template>
     <div class="flex items-center gap-4 flex-wrap justify-center">
-        <Input ref="urlInput" @update:model-value="getMetadata" class="w-full" v-model="model.Link" label="Link" />
+        <Input
+            :rules="[required, shouldBeUrl]"
+            ref="urlInput"
+            @update:model-value="getMetadata"
+            class="w-full"
+            v-model="model.Link"
+            label="Link *"
+        />
 
         <Transition name="slideIn">
             <img v-if="model.ImageUrl" class="rounded max-h-20" :src="model.ImageUrl" />
         </Transition>
 
-        <Input v-model="model.Name" label="Title" class="w-full" />
+        <Input :rules="[required]" v-model="model.Name" label="Title *" class="w-full" />
         <Input v-model="model.Description" label="Description" class="w-full" />
-        <Input type="number" v-model="model.Price" label="Price" class="w-full" />
+        <Input :rules="[required]" type="number" v-model="model.Price" label="Price *" class="w-full" />
     </div>
 </template>
 
