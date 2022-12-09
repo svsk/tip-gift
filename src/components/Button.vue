@@ -4,6 +4,7 @@ interface Props {
     round?: boolean;
     flat?: boolean;
     disable?: boolean;
+    color?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -11,6 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
     flat: false,
     type: 'button',
     disable: false,
+    color: 'bg-blue-600',
 });
 
 const emit = defineEmits(['click']);
@@ -24,7 +26,7 @@ const classes = computed(() => {
         return 'rounded bg-opacity-0 bg-white py-2 px-4 active:bg-opacity-10 hover:bg-opacity-10';
     }
 
-    return 'rounded bg-blue-600 py-2 px-4';
+    return `rounded ${props.color} py-2 px-4`;
 });
 </script>
 

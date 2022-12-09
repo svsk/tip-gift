@@ -12,6 +12,8 @@ const orderedWishes = computed(() => (wishes.value || []).sort((a, b) => a.Order
 const reorderMode = ref(false);
 const reordering = ref(false);
 const sharing = ref(false);
+const showDeleteConfirmation = ref(false);
+const wishForDeletion = ref<Wish | null>(null);
 
 const handleAddClicked = async () => {
     newWish.value = {
@@ -21,8 +23,18 @@ const handleAddClicked = async () => {
     adding.value = true;
 };
 
-const handleDeleteEntry = async (entry: Wish) => {
-    deleteWish(entry);
+const handleDeleteEntryClicked = (entry: Wish) => {
+    wishForDeletion.value = entry;
+    showDeleteConfirmation.value = true;
+};
+
+const handleDeleteConfirmed = async () => {
+    if (wishForDeletion.value) {
+        await deleteWish(wishForDeletion.value);
+        wishForDeletion.value = null;
+    }
+
+    showDeleteConfirmation.value = false;
 };
 
 const handleSaveNewEntry = async () => {
@@ -94,7 +106,7 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
                     <WishListItem class="py-3 flex-grow" :entry="wish" />
 
                     <div class="flex gap-1 items-center">
-                        <Button v-show="!reorderMode" @click="() => handleDeleteEntry(wish)" round>
+                        <Button v-show="!reorderMode" @click="() => handleDeleteEntryClicked(wish)" round>
                             <Icon name="delete" font-size="20px" />
                         </Button>
 
@@ -127,6 +139,20 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
 
             <div class="flex justify-end items-center gap-2">
                 <Button @click="() => (sharing = false)" flat>Close</Button>
+            </div>
+        </div>
+    </Dialog>
+
+    <Dialog v-model="showDeleteConfirmation">
+        <template #title>Delete Wish?</template>
+
+        <div class="flex flex-col gap-4">
+            Are you sure you want to delete {{ wishForDeletion?.Name ? `"${wishForDeletion.Name}"` : 'this wish' }} from
+            the list?
+
+            <div class="flex justify-end items-center gap-2">
+                <Button @click="() => (showDeleteConfirmation = false)" flat>Cancel</Button>
+                <Button color="bg-red-500" @click="handleDeleteConfirmed">Delete</Button>
             </div>
         </div>
     </Dialog>
