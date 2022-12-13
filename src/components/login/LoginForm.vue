@@ -1,9 +1,11 @@
 <script setup lang="ts">
-const supabase = useSupabaseClient();
+import Input from '../Input.vue';
 
+const supabase = useSupabaseClient();
 const email = ref('');
 const loading = ref(false);
 const successfulSignin = ref(false);
+const login = ref<InstanceType<typeof Input>>();
 
 const handleLogin = async () => {
     loading.value = true;
@@ -24,6 +26,20 @@ const handleLogin = async () => {
         loading.value = false;
     }
 };
+
+onMounted(() => {
+    login.value?.focus();
+});
+
+const required = (val: any) => {
+    return !!val ? true : 'Required';
+};
+
+const mustBeEmail = (val: string) => {
+    return val.includes('@') && val.length > 2 && val.at(0) !== '@' && val.at(-1) !== '@'
+        ? true
+        : 'Must be an e-mail address';
+};
 </script>
 
 <template>
@@ -32,12 +48,19 @@ const handleLogin = async () => {
 
         <div class="py-8 w-full flex justify-center items-center">
             <Transition name="growDown">
-                <form class="w-full" @submit.prevent="handleLogin" v-if="!loading && !successfulSignin">
+                <Form class="w-full" @submit="handleLogin" v-if="!loading && !successfulSignin">
                     <div class="flex gap-4 flex-col">
-                        <Input type="email" label="E-mail" v-model="email" />
+                        <Input
+                            ref="login"
+                            name="Email"
+                            type="email"
+                            label="E-mail"
+                            v-model="email"
+                            :rules="[required, mustBeEmail]"
+                        />
                         <Button type="submit">Log In</Button>
                     </div>
-                </form>
+                </Form>
             </Transition>
 
             <Transition name="grow">
