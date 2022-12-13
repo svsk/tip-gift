@@ -1,5 +1,6 @@
 <script setup lang="ts">
 interface Props {
+    id?: string;
     modelValue?: string | number | null;
     label?: string;
     inputClass?: string;
@@ -7,9 +8,15 @@ interface Props {
     step?: string;
     readonly?: boolean;
     rules?: ((v: any) => string | boolean)[];
+    name?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
+    id:
+        'v-input-' +
+        Math.floor(Math.random() * 99999999)
+            .toString()
+            .padStart(8, '0'),
     type: 'text',
     readonly: false,
 });
@@ -59,14 +66,20 @@ defineExpose({
 
 <template>
     <div :class="{ 'relative input-container': true, 'has-value': value != null && value !== '' }">
-        <div v-if="label" class="label transition-all absolute top-[22%] left-[8px] opacity-50 pointer-events-none">
+        <label
+            :for="id"
+            v-if="label"
+            class="label transition-all absolute top-[22%] left-[8px] opacity-50 pointer-events-none"
+        >
             {{ label }}
-        </div>
+        </label>
         <input
             ref="input"
+            :id="id"
             :readonly="readonly"
             :step="step"
             :type="type"
+            :name="name"
             :class="{
                 [inputClass || '']: true,
                 'border-b-2 border-blue-600 bg-black bg-opacity-20 rounded-t p-2 pt-4 outline-none w-full text-base': true,
