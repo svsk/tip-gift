@@ -7,6 +7,8 @@ const { data: wishes } = await useWishes();
 
 const adding = ref(false);
 const newWish = ref<Wish | null>(null);
+const editing = ref(false);
+const editWish = ref<Wish | null>(null);
 const busyAdding = ref(false);
 const orderedWishes = computed(() => (wishes.value || []).sort((a, b) => a.Order - b.Order));
 const reorderMode = ref(false);
@@ -44,6 +46,23 @@ const handleSaveNewEntry = async () => {
             await addWish(newWish.value);
             newWish.value = null;
             adding.value = false;
+        } finally {
+            busyAdding.value = false;
+        }
+    }
+};
+
+const handleEditClicked = async (wish: Wish) => {
+    editWish.value = { ...wish };
+    editing.value = true;
+};
+
+const handleUpdateEntry = async () => {
+    if (editWish.value) {
+        busyAdding.value = true;
+        try {
+            await updateWishes([editWish.value]);
+            editing.value = false;
         } finally {
             busyAdding.value = false;
         }
@@ -106,6 +125,10 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
                     <WishListItem class="py-3 flex-grow" :entry="wish" />
 
                     <div class="flex gap-1 items-center">
+                        <Button v-show="!reorderMode" @click="() => handleEditClicked(wish)" round>
+                            <Icon name="edit" font-size="20px" />
+                        </Button>
+
                         <Button v-show="!reorderMode" @click="() => handleDeleteEntryClicked(wish)" round>
                             <Icon name="delete" font-size="20px" />
                         </Button>
@@ -127,6 +150,18 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
             <div class="flex justify-end items-center gap-2">
                 <Button :disable="busyAdding" @click="() => (adding = false)" flat>Cancel</Button>
                 <Button :disable="busyAdding" type="submit">Confirm</Button>
+            </div>
+        </Form>
+    </Dialog>
+
+    <Dialog v-model="editing">
+        <template #title>Editing Wish</template>
+
+        <Form @submit="handleUpdateEntry" class="flex flex-col gap-4">
+            <WishInputFields v-if="editWish" v-model="editWish" />
+            <div class="flex justify-end items-center gap-2">
+                <Button :disable="busyAdding" @click="() => (editing = false)" flat>Cancel</Button>
+                <Button :disable="busyAdding" type="submit">Save</Button>
             </div>
         </Form>
     </Dialog>
