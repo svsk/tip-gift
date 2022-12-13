@@ -65,26 +65,35 @@ const handleCopyClicked = async () => {
                 v-model="listName"
                 class="flex-grow w-full"
             />
-            <Button @click="handleGenerateClicked" :disable="linkExists || generating" class="w-[160px]"
-                >Create Link</Button
-            >
+
+            <Transition name="slideIn">
+                <Button
+                    v-if="!linkExists"
+                    @click="handleGenerateClicked"
+                    :disable="linkExists || generating"
+                    class="w-[160px]"
+                    >Create Link</Button
+                >
+            </Transition>
         </div>
 
-        <div class="w-full flex gap-3">
-            <Input label="Link" readonly :model-value="listUrl" class="flex-grow w-full" />
-            <Button
-                :disable="!linkExists"
-                @click="handleCopyClicked"
-                round
-                class="flex items-center justify-center w-[50px]"
-            >
-                <Transition name="slideDown">
-                    <Icon class="absolute" v-if="copied" font-size="24px" name="check" />
-                </Transition>
-                <Transition name="slideUp">
-                    <Icon class="absolute" v-if="!copied" font-size="24px" name="content_copy" />
-                </Transition>
-            </Button>
-        </div>
+        <Transition name="slideDown">
+            <div class="w-full flex gap-3" v-if="linkExists">
+                <Input label="Link" readonly :model-value="listUrl" class="flex-grow w-full" />
+                <Button
+                    :disable="!linkExists"
+                    @click="handleCopyClicked"
+                    round
+                    class="flex items-center justify-center w-[50px]"
+                >
+                    <Transition name="slideDown">
+                        <Icon class="absolute" v-if="copied" font-size="24px" name="check" />
+                    </Transition>
+                    <Transition name="slideUp">
+                        <Icon class="absolute" v-if="!copied" font-size="24px" name="content_copy" />
+                    </Transition>
+                </Button>
+            </div>
+        </Transition>
     </div>
 </template>
