@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { WishUserGroup } from '.prisma/client';
 
-const { data: groups } = useGroups();
+const { data: groups } = await useGroups();
 
 const handleDeleteGroup = async (group: WishUserGroup) => {
     await deleteGroup(group);

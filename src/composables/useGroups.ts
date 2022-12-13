@@ -3,31 +3,26 @@ import { WishUserGroup } from '@prisma/client';
 const storeKey = 'userGroups';
 
 export const useGroups = () =>
-    useAsyncData(storeKey, async () => {
-        const cookie = useRequestHeaders(['cookie'])?.cookie || '';
-        return await $fetch('/api/groups/getall', { headers: { cookie } });
-    });
+    useAsyncState(storeKey, () => $fetch('/api/groups/getall', useAuthentication()), { immediate: true });
 
 export const addGroup = async (group: WishUserGroup) => {
-    const cookie = useRequestHeaders(['cookie'])?.cookie || '';
     await $fetch('/api/groups/add', {
         method: 'POST',
         body: group,
-        headers: { cookie },
+        ...useAuthentication(),
     });
 
     refreshGroups();
 };
 
 export const deleteGroup = async (group: WishUserGroup) => {
-    const cookie = useRequestHeaders(['cookie'])?.cookie || '';
     await $fetch('/api/groups/delete', {
         method: 'DELETE',
         query: { id: group.Id },
-        headers: { cookie },
+        ...useAuthentication(),
     });
 
     refreshGroups();
 };
 
-export const refreshGroups = () => refreshNuxtData(storeKey);
+export const refreshGroups = async () => await (await useGroups()).refresh();

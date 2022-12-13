@@ -4,7 +4,7 @@ import Input from './Input.vue';
 const listName = ref('');
 const nameInput = ref<InstanceType<typeof Input> | null>();
 const copied = ref(false);
-const { data: shares, refresh: refreshShares } = await useShares();
+const { data: shares } = await useShares();
 const baseUrl = () => (process.client ? window.location.origin : '');
 
 const listUrl = computed(() => {
