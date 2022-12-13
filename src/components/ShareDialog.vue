@@ -88,27 +88,3 @@ const handleCopyClicked = async () => {
         </div>
     </div>
 </template>
-
-<style lang="scss" scoped>
-.slideDown-enter-active,
-.slideDown-leave-active {
-    transition: all 0.1s linear;
-}
-
-.slideDown-enter-from,
-.slideDown-leave-to {
-    transform: translateY(20px);
-    opacity: 0;
-}
-
-.slideUp-enter-active,
-.slideUp-leave-active {
-    transition: all 0.1s linear;
-}
-
-.slideUp-enter-from,
-.slideUp-leave-to {
-    transform: translateY(-20px);
-    opacity: 0;
-}
-</style>

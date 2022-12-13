@@ -50,26 +50,3 @@ const handleLogin = async () => {
         </div>
     </Card>
 </template>
-
-<style lang="scss" scoped>
-.growDown-enter-active,
-.growDown-leave-active {
-    transition: all 0.1s linear;
-}
-
-.growDown-enter-from,
-.growDown-leave-to {
-    transform: translateY(-20);
-    opacity: 0;
-}
-
-.grow-enter-active,
-.grow-leave-active {
-    transition: all 0.1s linear;
-}
-
-.grow-enter-from,
-.grow-leave-to {
-    transform: scale(0);
-}
-</style>

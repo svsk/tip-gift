@@ -73,16 +73,3 @@ const shouldBeUrl = (val: any) => {
         <Input :rules="[required]" type="number" v-model="model.Price" label="Price *" class="w-full" />
     </div>
 </template>
-
-<style lang="scss" scoped>
-.slideIn-enter-active,
-.slideIn-leave-active {
-    transition: all 0.1s linear;
-}
-
-.slideIn-enter-from,
-.slideIn-leave-to {
-    transform: translateX(20px);
-    opacity: 0;
-}
-</style>

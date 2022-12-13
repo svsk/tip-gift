@@ -1,0 +1,97 @@
+/** fade **/
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 0.1s linear;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+/** shake **/
+.shake-enter-active {
+    animation: bounce-in 0.2s;
+}
+.shake-leave-active {
+    animation: bounce-in 0.2s reverse;
+}
+
+@keyframes bounce-in {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    75% {
+        transform: translateX(10px);
+    }
+
+    100% {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
+/** slideDown **/
+.slideDown-enter-active,
+.slideDown-leave-active {
+    transition: all 0.1s linear;
+}
+
+.slideDown-enter-from,
+.slideDown-leave-to {
+    transform: translateY(20px);
+    opacity: 0;
+}
+
+/** slideUp **/
+.slideUp-enter-active,
+.slideUp-leave-active {
+    transition: all 0.1s linear;
+}
+
+.slideUp-enter-from,
+.slideUp-leave-to {
+    transform: translateY(-20px);
+    opacity: 0;
+}
+
+/** slideIn **/
+.slideIn-enter-active,
+.slideIn-leave-active {
+    transition: all 0.1s linear;
+}
+
+.slideIn-enter-from,
+.slideIn-leave-to {
+    transform: translateX(20px);
+    opacity: 0;
+}
+
+/** growDown **/
+.growDown-enter-active,
+.growDown-leave-active {
+    transition: all 0.1s linear;
+}
+
+.growDown-enter-from,
+.growDown-leave-to {
+    transform: translateY(-20);
+    opacity: 0;
+}
+
+/** grow **/
+.grow-enter-active,
+.grow-leave-active {
+    transition: all 0.1s linear;
+}
+
+.grow-enter-from,
+.grow-leave-to {
+    transform: scale(0);
+}

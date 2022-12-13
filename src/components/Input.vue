@@ -99,31 +99,4 @@ defineExpose({
 .label {
     font-size: 1em;
 }
-
-.shake-enter-active {
-    animation: bounce-in 0.2s;
-}
-.shake-leave-active {
-    animation: bounce-in 0.2s reverse;
-}
-
-@keyframes bounce-in {
-    0% {
-        opacity: 0;
-        transform: translateX(20px);
-    }
-
-    25% {
-        transform: translateX(-10px);
-    }
-
-    75% {
-        transform: translateX(10px);
-    }
-
-    100% {
-        transform: translateX(0px);
-        opacity: 1;
-    }
-}
 </style>
