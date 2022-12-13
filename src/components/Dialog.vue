@@ -33,15 +33,3 @@ const emit = defineEmits(['update:modelValue']);
         </Transition>
     </Teleport>
 </template>
-
-<style lang="scss" scoped>
-.fade-enter-active,
-.fade-leave-active {
-    transition: all 0.1s linear;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
-}
-</style>
