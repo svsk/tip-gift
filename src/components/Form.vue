@@ -20,7 +20,7 @@ defineExpose({
 </script>
 
 <template>
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="handleSubmit" novalidate>
         <slot />
     </form>
 </template>
