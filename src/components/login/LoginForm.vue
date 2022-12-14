@@ -48,8 +48,12 @@ const mustBeEmail = (val: string) => {
 
         <div class="py-8 w-full flex justify-center items-center">
             <Transition name="growDown">
-                <Form class="w-full" @submit="handleLogin" v-if="!loading && !successfulSignin">
-                    <div class="flex gap-4 flex-col">
+                <Form
+                    class="w-full flex flex-col gap-4 items-center"
+                    @submit="handleLogin"
+                    v-if="!loading && !successfulSignin"
+                >
+                    <div class="flex gap-4 flex-col w-full max-w-[450px]">
                         <Input
                             ref="login"
                             name="Email"
@@ -59,6 +63,10 @@ const mustBeEmail = (val: string) => {
                             :rules="[required, mustBeEmail]"
                         />
                         <Button type="submit">Log In</Button>
+
+                        <div class="w-full text-center text-sm opacity-70">
+                            Don't have an account? Don't worry!<br />We only need your e-mail address to log you in.
+                        </div>
                     </div>
                 </Form>
             </Transition>
@@ -73,3 +81,4 @@ const mustBeEmail = (val: string) => {
         </div>
     </Card>
 </template>
+7

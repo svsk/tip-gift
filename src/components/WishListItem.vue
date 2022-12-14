@@ -23,15 +23,16 @@ defineProps<Props>();
 
             <a class="cursor-pointer hover:underline flex flex-col gap-1" :href="entry.Link || '#'" target="_blank">
                 <div class="flex items-center justify-between gap-1">
-                    <div class="text-base line-clamp-1 md:line-clamp-2">
+                    <div class="text-sm md:text-base line-clamp-3">
                         {{ entry.Name }}
                     </div>
-                    <Badge v-if="entry.Price" class="md:hidden">Kr. {{ entry.Price }},-</Badge>
                 </div>
 
-                <div class="text-xs max-w-[450px] line-clamp-2 md:line-clamp-3">
+                <div class="text-xs max-w-[450px] md:line-clamp-3 hidden">
                     {{ entry.Description }}
                 </div>
+
+                <Badge v-if="entry.Price" class="md:hidden self-start mt-1">Kr. {{ entry.Price }},-</Badge>
             </a>
         </div>
 
