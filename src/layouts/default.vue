@@ -21,7 +21,7 @@ usePageTitle();
 
         <footer class="w-full bottom-0 flex justify-center py-12">
             <div class="w-full max-w-[920px] flex items-center px-6">
-                <div>© sverr.es | 2022</div>
+                <div>© sverr.es | {{ new Date().getFullYear() }}</div>
             </div>
         </footer>
     </div>
