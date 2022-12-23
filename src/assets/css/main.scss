@@ -4,7 +4,11 @@
 
 @import "./transitions.scss";
 
-:root {
+body {
     background-color: #202020;
     color: white;
+}
+
+body.embedded {
+	background-color: transparent;
 }
