@@ -23,7 +23,7 @@ const handleClose = async (confirm: boolean) => {
 </script>
 
 <template>
-    <Button @click="handleAddGroupClicked">Add Group</Button>
+    <Button @click="handleAddGroupClicked" class="whitespace-nowrap">Add Group</Button>
 
     <Dialog v-model="showDialog">
         <template #title> Add Group </template>
