@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware((to) => {
-    if (to.path.startsWith('/wishes')) {
+    if (to.path.startsWith('/wishes') || to.path.startsWith('/embed')) {
         return;
     }
 

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useBodyAttrs } from '@unhead/vue';
 
-const { embedded } = useRoute().query;
+const embedded = useRoute().query.embedded === 'true';
 
-const layoutName = embedded === 'true' ? 'embed' : 'default';
+const layoutName = embedded ? 'embed' : 'default';
 
 if (layoutName === 'embed') {
     useBodyAttrs({

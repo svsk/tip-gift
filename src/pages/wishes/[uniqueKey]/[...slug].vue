@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { Wish } from '@prisma/client';
 
+const embedded = useRoute().query.embedded === 'true';
 const { uniqueKey } = useRoute().params;
 
 const { data: shareData } = await useFetch('/api/wishes/get-shared-by-key', {
@@ -12,9 +13,11 @@ usePageTitle(shareData?.value?.share?.Name);
 
 const showToast = ref(false);
 const boughtItemName = ref<string | null>(null);
+const currentLocation = ref('/');
 
 const handleBuyClicked = (wish: Wish) => {
     boughtItemName.value = wish.Name;
+    currentLocation.value = window.location.origin + window.location.pathname;
 
     if (!useAuth().value) {
         showToast.value = true;
@@ -25,7 +28,16 @@ const handleBuyClicked = (wish: Wish) => {
 <template>
     <Card>
         <div v-if="shareData">
-            <h1 class="text-xl mb-6">{{ shareData.share.Name }}</h1>
+            <h1 class="text-xl mb-6 flex items-center gap-2 flex-wrap">
+                {{ shareData.share.Name }}
+                <a
+                    :href="currentLocation"
+                    v-if="embedded"
+                    target="_parent"
+                    class="text-xs text-gray-400 hover:underline"
+                    >Powered by 🎁TipGift</a
+                >
+            </h1>
             <div class="flex flex-col">
                 <div
                     v-for="wish in shareData.wishes"
@@ -45,16 +57,7 @@ const handleBuyClicked = (wish: Wish) => {
     </Card>
 
     <Toast v-model="showToast">
-        <div class="pb-4 text-lg">🎁 Excellent!</div>
-
-        Sign in to tell others that you've bought {{ boughtItemName }}!
-
-        <div class="pt-4 flex w-full justify-between">
-            <div>😸 Logging in is super easy!</div>
-
-            <NuxtLink to="/login">
-                <Button>Log In</Button>
-            </NuxtLink>
-        </div>
+        <BoughtToast v-if="!embedded && boughtItemName" :bought-item-name="boughtItemName" />
+        <EmbeddedBoughtToast v-else-if="boughtItemName" :bought-item-name="boughtItemName" />
     </Toast>
 </template>
