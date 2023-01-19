@@ -39,7 +39,10 @@ const groupMemberWishes = computed(() => {
                     :key="wish.Id"
                     class="flex items-center justify-between border-b border-1 border-slate-600 last:border-0 py-3 gap-4 w-full overflow-hidden"
                 >
-                    <WishListItem :class="{ grow: true, 'opacity-40': !wishSharedWithGroup(wish) }" :entry="wish" />
+                    <WishListItem
+                        :class="{ 'grow transition-opacity': true, 'opacity-40': !wishSharedWithGroup(wish) }"
+                        :entry="wish"
+                    />
 
                     <Button round v-if="!wishSharedWithGroup(wish)" @click="() => handleAddWishToGroup(wish)">
                         <Icon font-size="24px" name="visibility_off" />
