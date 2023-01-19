@@ -38,7 +38,7 @@ const handleSubmit = (confirm: boolean) => {
 
 <template>
     <Dialog v-model="showDialog" @update:model-value="handleDialogChange">
-        <template #title> Add Group </template>
+        <template #title> {{ !!group.Id ? 'Edit' : 'Add' }} Group </template>
 
         <form @submit.prevent="() => handleSubmit(true)" class="flex flex-col gap-6 flex-nowrap">
             <Input ref="input" v-model="group.GroupName" label="Group Name" class="w-full" />
