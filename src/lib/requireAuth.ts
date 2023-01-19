@@ -10,5 +10,10 @@ export async function requireAuth<T>(event: H3Event, successDelegate: (auth: Aut
         return null;
     }
 
-    return await successDelegate(event.context.auth.data.user);
+    try {
+        return await successDelegate(event.context.auth.data.user);
+    } catch (error: any) {
+        console.log(error);
+        throw error;
+    }
 }

@@ -19,8 +19,10 @@
         "sass-loader": "^13.2.0"
     },
     "dependencies": {
+        "@emoji-mart/data": "^1.1.2",
         "@prisma/client": "^4.7.1",
         "@tailwindcss/line-clamp": "^0.4.2",
+        "emoji-mart": "^5.5.1",
         "jsdom": "^20.0.3",
         "vuedraggable": "^4.1.0"
     }

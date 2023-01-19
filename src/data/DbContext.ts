@@ -1,4 +1,4 @@
-import { Wish, WishUserGroup, WishUserGroupUser } from '.prisma/client';
+import { Wish, WishUser, WishUserGroup, WishUserGroupUser } from '.prisma/client';
 import { usePrisma } from './usePrisma';
 
 export class DbContext {
@@ -20,6 +20,36 @@ export class DbContext {
         return this._db.wishUser.findMany({ orderBy: [{ Name: 'asc' }] });
     }
 
+    async updateUser(user: WishUser) {
+        return await this._db.wishUser.update({
+            data: {
+                Name: user.Name,
+                AvatarEmoji: user.AvatarEmoji,
+                AvatarColour: user.AvatarColour,
+            },
+            where: {
+                Id: user.Id,
+            },
+        });
+    }
+
+    async getUserById(id: string) {
+        return (await this._db.wishUser.findFirst({ where: { Id: id } })) || null;
+    }
+
+    async ensureUserExists(id: string | undefined, email: string | undefined) {
+        if (id && email) {
+            const user = await this.getUserById(id);
+            if (!user) {
+                await this.createUser(id, email);
+            }
+        }
+    }
+
+    createUser(id: string, email: string) {
+        return this._db.wishUser.create({ data: { Id: id, Email: email } });
+    }
+
     getUserByUsername(username: string) {
         return this._db.wishUser.findFirst({ where: { Email: username } });
     }
@@ -31,6 +61,45 @@ export class DbContext {
                 UniqueKey: uniqueKey,
                 Name: name,
                 Slug: slug,
+            },
+        });
+    }
+
+    async getGroupWishes(groupId: string) {
+        const wishRefs = await this._db.wishGroupWish.findMany({ where: { GroupId: groupId } });
+        const wishIds = wishRefs.map((wr) => wr.WishId);
+        return this._db.wish.findMany({ where: { Id: { in: wishIds } } });
+    }
+
+    async getGroupUsers(groupId: string) {
+        const userRefs = await this._db.wishUserGroupUser.findMany({ where: { GroupId: groupId } });
+        return userRefs;
+    }
+
+    saveWishGroupWish(groupId: string, wishId: string) {
+        return this._db.wishGroupWish.create({
+            data: {
+                WishId: wishId,
+                GroupId: groupId,
+            },
+        });
+    }
+
+    async deleteWishGroupWish(wishId: string, groupId: string) {
+        const wish = await this._db.wishGroupWish.findFirst({
+            where: {
+                GroupId: groupId,
+                WishId: wishId,
+            },
+        });
+
+        if (!wish) {
+            throw new Error("Couldn't find wish");
+        }
+
+        return this._db.wishGroupWish.delete({
+            where: {
+                Id: wish.Id,
             },
         });
     }
@@ -77,6 +146,17 @@ export class DbContext {
 
     saveGroup(group: WishUserGroup) {
         return this._db.wishUserGroup.create({ data: group });
+    }
+
+    async updateGroup(group: WishUserGroup) {
+        return await this._db.wishUserGroup.update({
+            data: {
+                GroupName: group.GroupName,
+            },
+            where: {
+                Id: group.Id,
+            },
+        });
     }
 
     saveGroupUser(groupUser: WishUserGroupUser) {

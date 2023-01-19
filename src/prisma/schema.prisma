@@ -20,9 +20,11 @@ model Wish {
 }
 
 model WishUser {
-  Id    String  @id(map: "PK__WishUser__3214EC07F850D70D") @default(dbgenerated("newid()"), map: "DF__WishUser__Id__6BE40491") @db.UniqueIdentifier
-  Email String  @db.VarChar(Max)
-  Name  String? @db.VarChar(Max)
+  Id           String  @id(map: "PK__WishUser__3214EC07F850D70D") @default(dbgenerated("newid()"), map: "DF__WishUser__Id__6BE40491") @db.UniqueIdentifier
+  Email        String  @db.VarChar(Max)
+  Name         String? @db.VarChar(Max)
+  AvatarColour String? @db.VarChar(24)
+  AvatarEmoji  String? @db.NVarChar(24)
 }
 
 model WishPurchase {
@@ -44,10 +46,16 @@ model WishUserGroupUser {
 }
 
 model WishListShare {
-  Id          String   @id(map: "PK__WishList__3214EC0783481245") @default(dbgenerated("newid()"), map: "DF__WishListShar__Id__01D345B0") @db.UniqueIdentifier
+  Id          String   @id(map: "PK__WishList__3214EC07D11C3F6F") @default(dbgenerated("newid()"), map: "DF__WishListShar__Id__0A688BB1") @db.UniqueIdentifier
   UserId      String   @db.UniqueIdentifier
-  UniqueKey   String   @db.VarChar(20)
+  UniqueKey   String   @unique(map: "UQ__WishList__2DE46E9301F0B1EE") @db.VarChar(20)
   Slug        String   @db.VarChar(1000)
   Name        String   @db.VarChar(1000)
-  CreatedDate DateTime @default(dbgenerated("getutcdate()"), map: "DF__WishListS__Creat__02C769E9") @db.DateTimeOffset
+  CreatedDate DateTime @default(dbgenerated("getutcdate()"), map: "DF__WishListS__Creat__0B5CAFEA") @db.DateTimeOffset
+}
+
+model WishGroupWish {
+  Id      String @id(map: "PK__WishGrou__3214EC07B60DBF46") @default(dbgenerated("newid()"), map: "DF__WishGroupWis__Id__1B9317B3") @db.UniqueIdentifier
+  GroupId String @db.UniqueIdentifier
+  WishId  String @db.UniqueIdentifier
 }

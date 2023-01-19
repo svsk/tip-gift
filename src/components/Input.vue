@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { clear } from 'console';
+
 interface Props {
     id?: string;
     modelValue?: string | number | null;
@@ -9,6 +11,7 @@ interface Props {
     readonly?: boolean;
     rules?: ((v: any) => string | boolean)[];
     name?: string;
+    debounce?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -19,6 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
             .padStart(8, '0'),
     type: 'text',
     readonly: false,
+    debounce: 0,
 });
 
 const validators = inject<(() => boolean)[]>('formValidators', []);
@@ -26,6 +30,7 @@ const emit = defineEmits(['update:modelValue']);
 const errorMessage = ref<string | null>(null);
 const value = ref(props.modelValue);
 const input = ref<HTMLInputElement>();
+let to: NodeJS.Timeout | undefined = undefined;
 
 watch(
     () => props.modelValue,
@@ -35,10 +40,19 @@ watch(
 watch(
     () => value.value,
     () => {
-        errorMessage.value = null;
+        const doUpdate = () => {
+            errorMessage.value = null;
 
-        if (value.value !== props.modelValue) {
-            emit('update:modelValue', value.value);
+            if (value.value !== props.modelValue) {
+                emit('update:modelValue', value.value);
+            }
+        };
+
+        if (props.debounce > 0) {
+            clearTimeout(to);
+            to = setTimeout(doUpdate, props.debounce);
+        } else {
+            doUpdate();
         }
     }
 );

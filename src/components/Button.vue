@@ -19,7 +19,7 @@ const emit = defineEmits(['click']);
 
 const classes = computed(() => {
     if (props.round) {
-        return 'rounded-full bg-white p-2 bg-opacity-0 active:bg-opacity-10';
+        return 'rounded-full bg-white p-2 bg-opacity-0 active:bg-opacity-10 flex items-center justify-center';
     }
 
     if (props.flat) {
