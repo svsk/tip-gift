@@ -20,6 +20,10 @@ export class DbContext {
         return this._db.wishUser.findMany({ orderBy: [{ Name: 'asc' }] });
     }
 
+    searchUsers(search: string) {
+        return this._db.wishUser.findMany({ where: { Name: { contains: search } } });
+    }
+
     async updateUser(user: WishUser) {
         return await this._db.wishUser.update({
             data: {
@@ -144,8 +148,8 @@ export class DbContext {
         return this._db.wish.delete({ where: { Id: wishId } });
     }
 
-    saveGroup(group: WishUserGroup) {
-        return this._db.wishUserGroup.create({ data: group });
+    saveGroup(group: WishUserGroup, createdById: string) {
+        return this._db.wishUserGroup.create({ data: { ...group, CreatedByUserId: createdById } });
     }
 
     async updateGroup(group: WishUserGroup) {
@@ -169,6 +173,15 @@ export class DbContext {
         );
 
         return this._db.wishUserGroup.findMany({ where: { Id: { in: memberships } } });
+    }
+
+    async addUserToGroup(groupId: string, userId: string) {
+        const existing = await this._db.wishUserGroupUser.findFirst({ where: { UserId: userId, GroupId: groupId } });
+        if (existing) {
+            return existing;
+        }
+
+        return this._db.wishUserGroupUser.create({ data: { GroupId: groupId, UserId: userId } });
     }
 
     deleteUserGroup(groupId: string) {

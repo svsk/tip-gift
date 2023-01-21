@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) =>
     requireAuth(event, async (auth) => {
         const db = new DbContext();
         const group = await readBody<WishUserGroup>(event);
-        const grp = await db.saveGroup(group);
+        const grp = await db.saveGroup(group, auth.id);
 
         await db.saveGroupUser({
             GroupId: grp.Id,

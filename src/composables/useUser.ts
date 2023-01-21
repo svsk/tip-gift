@@ -18,3 +18,7 @@ export const updateUser = async (user: WishUser) => {
 
     refreshUser(user.Id);
 };
+
+export const searchUsers = async (search: string) => {
+    return await $fetch('/api/users/search', { query: { search }, ...useAuthentication() });
+};

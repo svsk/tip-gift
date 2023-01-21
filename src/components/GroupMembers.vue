@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { WishUser } from '@prisma/client';
+
 interface Props {
     groupId: string;
     selectedMemberId: string;
@@ -6,24 +8,38 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const showAddUserDialog = ref(false);
+
 const { data: members } = await useGroupUsers(props.groupId);
+const { data: groups } = await useGroups();
 
 const emit = defineEmits(['update:selectedMemberId']);
 
 const handleMemberClicked = (userId: string) => {
     emit('update:selectedMemberId', userId);
 };
+
+const canAdd = isGroupAdmin(() => groups.value?.find((g) => g.Id === props.groupId));
+
+const handleAddUserClicked = () => {
+    showAddUserDialog.value = true;
+};
+
+const handleUserAdded = (user: WishUser) => {
+    addUserToGroup(props.groupId, user.Id);
+    showAddUserDialog.value = false;
+};
 </script>
 
 <template>
-    <div class="flex gap-4">
+    <div class="flex gap-4 items-center">
         <button
             v-for="member in members"
             :key="member.Id"
             @click="() => handleMemberClicked(member.UserId)"
             :class="{
                 'flex items-center justify-center p-4 flex-col gap-2 rounded w-[90px]': true,
-                'bg-gray-600': selectedMemberId === member.UserId,
+                'bg-white bg-opacity-20': selectedMemberId === member.UserId,
             }"
         >
             <User
@@ -31,5 +47,14 @@ const handleMemberClicked = (userId: string) => {
                 :user-id="member.UserId"
             />
         </button>
+
+        <Button @click="handleAddUserClicked" class="bg-white bg-opacity-20" round v-if="canAdd">
+            <Icon font-size="24px" name="add" />
+        </Button>
     </div>
+
+    <Dialog v-model="showAddUserDialog">
+        <template #title> Add User </template>
+        <AddUserForm :group-id="groupId" @confirm="handleUserAdded" @cancel="showAddUserDialog = false" />
+    </Dialog>
 </template>

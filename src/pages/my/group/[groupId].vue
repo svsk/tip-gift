@@ -13,6 +13,8 @@ const showEditDialog = ref(false);
 const handleGroupEdited = (updatedGroup: WishUserGroup) => {
     updateGroup(updatedGroup);
 };
+
+const canEdit = isGroupAdmin(() => group.value);
 </script>
 
 <template>
@@ -28,7 +30,7 @@ const handleGroupEdited = (updatedGroup: WishUserGroup) => {
             </div>
 
             <!-- Buttons go here -->
-            <Button round @click="() => (showEditDialog = true)">
+            <Button v-if="canEdit" round @click="() => (showEditDialog = true)">
                 <Icon name="edit" font-size="24px" />
             </Button>
         </div>

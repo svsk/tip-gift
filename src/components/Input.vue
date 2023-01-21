@@ -104,11 +104,15 @@ defineExpose({
             v-model="value"
         />
 
-        <Transition name="shake">
-            <Badge v-if="errorMessage" class="absolute right-3 top-[27%] bg-red-500">
-                {{ errorMessage }}
-            </Badge>
-        </Transition>
+        <div class="absolute h-full w-full flex items-center justify-end top-0 gap-2 pointer-events-none p-2">
+            <slot name="suffix" />
+
+            <Transition name="shake">
+                <Badge v-if="errorMessage" class="bg-red-500">
+                    {{ errorMessage }}
+                </Badge>
+            </Transition>
+        </div>
     </div>
 </template>
 

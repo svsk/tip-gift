@@ -67,5 +67,16 @@ export const useGroupUsers = (groupId: string) =>
         immediate: true,
     });
 
+export const addUserToGroup = async (groupId: string, userId: string) => {
+    const result = await $fetch(`/api/groups/${groupId}/users/${userId}`, {
+        method: 'POST',
+        ...useAuthentication(),
+    });
+
+    refreshGroupUsers(groupId);
+    return result;
+};
+
 export const refreshGroups = async () => await (await useGroups()).refresh();
 export const refreshGroupWishes = async (groupId: string) => await (await useGroupWishes(groupId)).refresh();
+export const refreshGroupUsers = async (groupId: string) => await (await useGroupUsers(groupId)).refresh();

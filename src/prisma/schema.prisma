@@ -35,8 +35,9 @@ model WishPurchase {
 }
 
 model WishUserGroup {
-  Id        String @id(map: "PK__WishUser__3214EC07C44A930C") @default(dbgenerated("newid()"), map: "DF__WishUserGrou__Id__6EC0713C") @db.UniqueIdentifier
-  GroupName String @db.VarChar(Max)
+  Id              String  @id(map: "PK__WishUser__3214EC07C44A930C") @default(dbgenerated("newid()"), map: "DF__WishUserGrou__Id__6EC0713C") @db.UniqueIdentifier
+  GroupName       String  @db.VarChar(Max)
+  CreatedByUserId String? @db.UniqueIdentifier
 }
 
 model WishUserGroupUser {

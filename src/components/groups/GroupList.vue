@@ -6,6 +6,10 @@ const { data: groups } = await useGroups();
 const handleDeleteGroup = async (group: WishUserGroup) => {
     await deleteGroup(group);
 };
+
+const memberCount = async (group: WishUserGroup) => {
+    return await useGroupUsers(group.Id);
+};
 </script>
 
 <template>
@@ -21,16 +25,10 @@ const handleDeleteGroup = async (group: WishUserGroup) => {
         >
             <NuxtLink :to="`/my/group/${group.Id}`" class="flex items-center gap-2 flex-nowrap">
                 <EmojiAvatar />
-
-                <div>
-                    <div>
-                        {{ group.GroupName }}
-                    </div>
-                    <div class="text-xs opacity-60">14 members • Owned by Sverre S.</div>
-                </div>
+                <GroupsGroupListItem :group="group" />
             </NuxtLink>
 
-            <Button round @click="handleDeleteGroup(group)">
+            <Button v-if="isGroupAdmin(() => group)" round @click="handleDeleteGroup(group)">
                 <Icon font-size="20px" name="delete" />
             </Button>
         </div>
