@@ -10,6 +10,8 @@ const props = defineProps<Props>();
 const emit = defineEmits(['update:modelValue']);
 
 const model = ref<Partial<Wish>>(props.modelValue);
+const possibleImages = ref<string[]>([]);
+
 watch(props.modelValue, () => (model.value = props.modelValue));
 
 const urlInput = ref<InstanceType<typeof Input> | null>();
@@ -33,7 +35,8 @@ const getMetadata = async () => {
             model.value.Name = result.value?.title || '';
             model.value.Description = result.value?.description || '';
             model.value.Price = parseInt(result.value?.price || '0') || undefined;
-            model.value.ImageUrl = result.value?.image || '';
+            model.value.ImageUrl = result.value?.possibleImages?.[0] || '';
+            possibleImages.value = (result.value?.possibleImages.filter((img) => !!img) as string[]) || [];
 
             emit('update:modelValue', props.modelValue);
         }
@@ -65,7 +68,18 @@ const shouldBeUrl = (val: any) => {
         />
 
         <Transition name="slideIn">
-            <img v-if="model.ImageUrl" class="rounded max-h-20" :src="model.ImageUrl" />
+            <div v-if="possibleImages.length" class="flex items-center gap-4">
+                <img
+                    :class="{
+                        'rounded max-h-20 cursor-pointer border-4 ': true,
+                        'border-white': image !== model.ImageUrl,
+                        'border-blue-500': image === model.ImageUrl,
+                    }"
+                    v-for="image in possibleImages"
+                    :src="image"
+                    @click="model.ImageUrl = image"
+                />
+            </div>
         </Transition>
 
         <Input :rules="[required]" v-model="model.Name" label="Title *" class="w-full" />
