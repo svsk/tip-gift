@@ -18,8 +18,8 @@ const user = ref<WishUser | null>(null);
 
 const updateUser = async () => {
     try {
-        const stuff = await useUser(props.userId);
-        user.value = stuff.data.value;
+        const userResponse = await useUser(props.userId);
+        user.value = userResponse.data.value;
     } catch (err: any) {
         console.error(err);
     }

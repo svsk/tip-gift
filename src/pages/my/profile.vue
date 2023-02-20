@@ -8,6 +8,7 @@ const { data: user } = await useUser(userId);
 
 const colorPicker = ref<any>(null);
 const emojiPickerContainer = ref<any>(null);
+let appendTry: any = null;
 
 onMounted(() => {
     const emojiPicker = new EmojiPicker({
@@ -16,7 +17,16 @@ onMounted(() => {
         onEmojiSelect: handleEmojiClicked,
     });
 
-    emojiPickerContainer.value.appendChild(emojiPicker);
+    appendTry = setInterval(() => {
+        if (emojiPickerContainer.value?.appendChild) {
+            emojiPickerContainer.value.appendChild(emojiPicker);
+            clearInterval(appendTry);
+        }
+    }, 500);
+});
+
+onBeforeUnmount(() => {
+    clearInterval(appendTry);
 });
 
 const handleNameChanged = (newName: string) => {
@@ -64,6 +74,8 @@ const handleLogOut = async () => {
 </script>
 
 <template>
+    {{ pending }}
+
     <Card class="flex flex-col gap-4 pb-8" v-if="user">
         <div>
             <h1 class="font-medium text-lg">Profile</h1>

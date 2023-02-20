@@ -14,14 +14,6 @@ interface AsyncStateReturnType<T> {
 export async function useAsyncState<T>(
     key: string,
     fetchData: () => Promise<T>,
-    options: AsyncStateOptions
-): Promise<AsyncStateReturnType<T>>;
-
-export async function useAsyncState<T>(key: string, fetchData: () => Promise<T>): Promise<AsyncStateReturnType<T>>;
-
-export async function useAsyncState<T>(
-    key: string,
-    fetchData: () => Promise<T>,
     options?: AsyncStateOptions
 ): Promise<AsyncStateReturnType<T>> {
     const data = useState<T | null>(key, () => null);
@@ -35,10 +27,7 @@ export async function useAsyncState<T>(
     };
 
     const execute = async () => {
-        if (pending.value || data.value) return;
-
         await fetchNewData();
-        return;
     };
 
     const refresh = async () => await fetchNewData();
