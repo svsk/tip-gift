@@ -74,8 +74,6 @@ const handleLogOut = async () => {
 </script>
 
 <template>
-    {{ pending }}
-
     <Card class="flex flex-col gap-4 pb-8" v-if="user">
         <div>
             <h1 class="font-medium text-lg">Profile</h1>

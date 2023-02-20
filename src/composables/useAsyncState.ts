@@ -27,7 +27,9 @@ export async function useAsyncState<T>(
     };
 
     const execute = async () => {
-        await fetchNewData();
+        if (data.value != null) {
+            await fetchNewData();
+        }
     };
 
     const refresh = async () => await fetchNewData();
