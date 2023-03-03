@@ -1,7 +1,7 @@
 const shareKey = 'user-shares';
 
 export const useShares = () =>
-    useAsyncState(shareKey, () => $fetch('/api/wishes/share', useAuthentication()), {
+    useAsyncData(shareKey, () => $fetch('/api/wishes/share', useAuthentication()), {
         immediate: true,
     });
 

@@ -4,7 +4,7 @@ import { Picker as EmojiPicker } from 'emoji-mart';
 
 usePageTitle('My Profile');
 const userId = useAuth().value?.id || '';
-const { data: user } = await useUser(userId);
+const { data: user } = useUser(userId);
 
 const colorPicker = ref<any>(null);
 const emojiPickerContainer = ref<any>(null);

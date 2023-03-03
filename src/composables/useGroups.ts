@@ -5,7 +5,7 @@ const groupWishKey = 'userGroupWishes';
 const groupUserKey = 'userGroupUsers';
 
 export const useGroups = () =>
-    useAsyncState(storeKey, () => $fetch('/api/groups/getall', useAuthentication()), { immediate: true });
+    useAsyncData(storeKey, () => $fetch('/api/groups/getall', useAuthentication()), { immediate: true });
 
 export const addGroup = async (group: WishUserGroup) => {
     await $fetch('/api/groups/add', {
@@ -38,7 +38,7 @@ export const deleteGroup = async (group: WishUserGroup) => {
 };
 
 export const useGroupWishes = (groupId: string) =>
-    useAsyncState(`${groupWishKey}-${groupId}`, () => $fetch(`/api/groups/${groupId}/wishes`, useAuthentication()), {
+    useAsyncData(`${groupWishKey}-${groupId}`, () => $fetch(`/api/groups/${groupId}/wishes`, useAuthentication()), {
         immediate: true,
     });
 
@@ -63,7 +63,7 @@ export const removeWishFromGroup = async (wishGroupWishId: string, groupId: stri
 };
 
 export const useGroupUsers = (groupId: string) =>
-    useAsyncState(`${groupUserKey}-${groupId}`, () => $fetch(`/api/groups/${groupId}/users`, useAuthentication()), {
+    useAsyncData(`${groupUserKey}-${groupId}`, () => $fetch(`/api/groups/${groupId}/users`, useAuthentication()), {
         immediate: true,
     });
 

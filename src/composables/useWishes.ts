@@ -3,7 +3,7 @@ import { Wish } from '@prisma/client';
 const storeKey = 'wishes';
 
 export const useWishes = () =>
-    useAsyncState(
+    useAsyncData(
         storeKey,
         async () => {
             return await $fetch('/api/wishes/getall', useAuthentication());

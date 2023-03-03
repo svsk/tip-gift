@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { WishUser } from '@prisma/client';
-
 interface Props {
     userId: string;
     withoutAvatar?: boolean;
@@ -14,18 +12,17 @@ const props = withDefaults(defineProps<Props>(), {
     avatarClass: '',
 });
 
-const user = ref<WishUser | null>(null);
+const userResult = useUser(props.userId);
+const user = userResult.data;
 
 const updateUser = async () => {
     try {
-        const userResponse = await useUser(props.userId);
+        const userResponse = useUser(props.userId);
         user.value = userResponse.data.value;
     } catch (err: any) {
         console.error(err);
     }
 };
-
-updateUser();
 
 watch(() => props.userId, updateUser);
 </script>

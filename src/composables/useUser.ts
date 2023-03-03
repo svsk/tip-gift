@@ -3,9 +3,7 @@ import { WishUser } from '@prisma/client';
 const storeKey = (id: string) => `user-${id}`;
 
 export const useUser = (id: string) =>
-    useAsyncState(storeKey(id), () => $fetch<WishUser | null>(`/api/users/${id}`, useAuthentication()), {
-        immediate: true,
-    });
+    useAsyncData(storeKey(id), () => $fetch<WishUser>(`/api/users/${id}`, useAuthentication()));
 
 export const refreshUser = async (id: string) => await (await useUser(id)).refresh();
 
