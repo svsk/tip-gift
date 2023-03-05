@@ -10,8 +10,12 @@ const props = defineProps<Props>();
 
 const { data: groupWishes } = await useGroupWishes(props.groupId);
 const { data: currentUserWishes } = await useWishes();
+const { data: givenGifts } = await useGroupGivenGifts(props.groupId);
 
 const currentUserId = useAuth()?.value?.id;
+
+const boughtItem = ref<Wish | null>(null);
+const showBoughtItemDialog = ref<boolean>(false);
 
 const wishSharedWithGroup = (wish: Wish) => {
     return groupWishes.value?.some((gw) => gw.Id === wish.Id);
@@ -28,6 +32,15 @@ const handleRemoveWishFromGroup = async (wish: Wish) => {
 const groupMemberWishes = computed(() => {
     return groupWishes.value?.filter((gw) => gw.UserId === props.groupMemberId);
 });
+
+const handleBuyClicked = (wish: Wish) => {
+    boughtItem.value = wish;
+    showBoughtItemDialog.value = true;
+};
+
+const findGivers = (wish: Wish) => {
+    return givenGifts.value?.filter((gg) => gg.WishId === wish.Id);
+};
 </script>
 
 <template>
@@ -63,10 +76,32 @@ const groupMemberWishes = computed(() => {
                         :key="wish.Id"
                         class="flex items-center justify-between border-b border-1 border-slate-600 last:border-0 py-3 gap-4 w-full overflow-hidden"
                     >
-                        <WishListItem :class="{ grow: true }" :entry="wish" />
+                        <WishListItem :class="{ grow: true }" :entry="wish"> </WishListItem>
+
+                        <div class="flex no-wrap items-center">
+                            <div v-for="buyer in findGivers(wish)" :key="buyer.Id" class="relative select-none">
+                                <div class="scale-[0.5]">
+                                    <User without-username :user-id="buyer.UserId" />
+                                </div>
+                                <div class="absolute bottom-[4px] right-[4px] scale-75">🎁</div>
+                            </div>
+
+                            <Button round @click="() => handleBuyClicked(wish)">
+                                <Icon font-size="24px" name="shopping_cart" />
+                            </Button>
+                        </div>
                     </div>
                 </span>
             </div>
         </div>
     </div>
+
+    <Dialog v-model="showBoughtItemDialog">
+        <BoughtItemForm
+            @close="(_) => (showBoughtItemDialog = false)"
+            v-if="boughtItem"
+            :item="boughtItem"
+            :group-id="groupId"
+        />
+    </Dialog>
 </template>

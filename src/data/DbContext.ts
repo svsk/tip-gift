@@ -2,6 +2,14 @@ import { Wish, WishUser, WishUserGroup, WishUserGroupUser } from '.prisma/client
 import { usePrisma } from './usePrisma';
 
 export class DbContext {
+    async getGivenGifts(groupId: any, userId: string) {
+        const myWishes = await this.getWishes(userId);
+        const givenGifts = await this._db.wishPurchase.findMany({ where: { GroupId: groupId } });
+
+        const myWishIds = myWishes.map((w) => w.Id);
+        return givenGifts.filter((gg) => !myWishIds.includes(gg.WishId));
+    }
+
     private _db = usePrisma();
 
     getWishes(userId: string) {
@@ -87,6 +95,14 @@ export class DbContext {
                 GroupId: groupId,
             },
         });
+    }
+
+    async giveGroupGift(userId: string, wishId: string, groupId: string) {
+        await this._db.wishPurchase.create({ data: { UserId: userId, WishId: wishId, GroupId: groupId } });
+    }
+
+    async ungiveGroupGift(userId: string, wishId: string, groupId: string) {
+        // todo: make this
     }
 
     async deleteWishGroupWish(wishId: string, groupId: string) {
