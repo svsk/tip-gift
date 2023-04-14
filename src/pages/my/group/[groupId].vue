@@ -42,7 +42,9 @@ const canEdit = isGroupAdmin(() => group.value);
 
         <div class="h-[1px] bg-slate-600 w-full" />
 
-        <GroupMembers v-model:selectedMemberId="groupMemberId" :group-id="groupId" />
+        <div class="overflow-x-auto">
+            <GroupMembers v-model:selectedMemberId="groupMemberId" :group-id="groupId" />
+        </div>
         <GroupMemberWishes :group-id="groupId.toString()" :group-member-id="groupMemberId" />
     </Card>
 
