@@ -30,7 +30,9 @@ const handleRemoveWishFromGroup = async (wish: Wish) => {
 };
 
 const groupMemberWishes = computed(() => {
-    return groupWishes.value?.filter((gw) => gw.UserId === props.groupMemberId);
+    return groupWishes.value
+        ?.filter((gw) => gw.UserId === props.groupMemberId)
+        .sort((a, b) => (a.Order || 0) - (b.Order || 1));
 });
 
 const handleBuyClicked = (wish: Wish) => {
