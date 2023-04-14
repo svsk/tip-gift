@@ -102,10 +102,23 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
 
 <template>
     <div class="flex flex-col flex-nowrap relative">
-        <div class="flex justify-end pb-4 gap-2">
-            <Button @click="handleShareClicked" class="flex items-center justify-center">
-                <Icon name="share" />
+        <div class="flex w-full justify-between items-center gap-4 mb-4">
+            <div class="flex justify-between items-center gap-2">
+                <NuxtLink to="/">
+                    <Button round>
+                        <Icon font-size="24px" name="arrow_back" />
+                    </Button>
+                </NuxtLink>
+
+                <h1 class="font-medium text-lg">My Wishes</h1>
+            </div>
+
+            <Button round flat @click="handleShareClicked" class="flex items-center justify-center">
+                <Icon font-size="20px" name="share" />
             </Button>
+        </div>
+
+        <div class="flex justify-end pb-4 gap-2">
             <Button @click="reorderMode = !reorderMode">{{ reorderMode ? 'Finish' : 'Reorder' }}</Button>
             <Button @click="handleAddClicked">Add New</Button>
         </div>

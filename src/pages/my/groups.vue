@@ -5,7 +5,13 @@ usePageTitle('My Groups');
 <template>
     <Card class="flex flex-col gap-4">
         <div class="flex w-full justify-between items-center gap-4">
-            <div>
+            <div class="flex justify-between items-center gap-2">
+                <NuxtLink to="/">
+                    <Button round>
+                        <Icon font-size="24px" name="arrow_back" />
+                    </Button>
+                </NuxtLink>
+
                 <h1 class="font-medium text-lg">My Groups</h1>
             </div>
 
