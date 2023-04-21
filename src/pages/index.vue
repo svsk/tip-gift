@@ -3,5 +3,5 @@ usePageTitle('Main Menu');
 </script>
 
 <template>
-    <StartMenu />
+    <GroupMenu />
 </template>
