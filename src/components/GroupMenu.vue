@@ -2,7 +2,9 @@
     <Card class="flex flex-col gap-4">
         <div class="flex w-full justify-between items-center gap-4">
             <div class="flex justify-between items-center gap-2">
-                <h1 class="font-medium text-lg">My Wish Lists</h1>
+                <h1 class="font-medium text-lg">
+                    <Localized tkey="MyWishLists" />
+                </h1>
             </div>
             <GroupsAddGroupButton />
         </div>
@@ -11,9 +13,11 @@
             <EmojiAvatar :color="'#2563eb'"> 📃 </EmojiAvatar>
 
             <div>
-                <div>My Wishes</div>
+                <div>
+                    <Localized tkey="MyWishes" />
+                </div>
                 <div class="text-xs opacity-60">
-                    <span>Owned by you</span>
+                    <Localized tkey="OwnedByYou" />
                 </div>
             </div>
         </NuxtLink>
@@ -22,8 +26,7 @@
 
         <div class="flex items-center justify-between gap-4">
             <div class="text-sm opacity-60">
-                Join different groups with different sets of friends and family. Choose what wishes to share with which
-                group.
+                <Localized tkey="GroupHelpText" />
             </div>
         </div>
 
