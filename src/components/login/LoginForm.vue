@@ -10,6 +10,8 @@ const login = ref<InstanceType<typeof Input>>();
 const handleLogin = async () => {
     loading.value = true;
 
+    localStorage.setItem('last-login-email', email.value);
+
     try {
         const { error } = await supabase.auth.signInWithOtp({
             email: email.value,
@@ -29,6 +31,7 @@ const handleLogin = async () => {
 
 onMounted(() => {
     login.value?.focus();
+    email.value = localStorage.getItem('last-login-email') || '';
 });
 
 const required = (val: any) => {
