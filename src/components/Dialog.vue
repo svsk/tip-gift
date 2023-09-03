@@ -1,18 +1,27 @@
 <script setup lang="ts">
 interface Props {
     modelValue: boolean;
+    persistent?: boolean;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const emit = defineEmits(['update:modelValue']);
+
+const handleClickOutside = () => {
+    if (props.persistent) {
+        return;
+    }
+
+    emit('update:modelValue', false);
+};
 </script>
 
 <template>
     <Teleport to="body">
         <Transition name="fade">
             <div
-                @click="() => emit('update:modelValue', false)"
+                @click="handleClickOutside"
                 v-if="modelValue"
                 class="fixed w-full h-full bg-opacity-30 bg-black top-0 left-0 flex flex-col items-center justify-center p-6 z-50"
             >

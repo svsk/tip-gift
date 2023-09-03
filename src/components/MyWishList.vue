@@ -155,7 +155,7 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
         </draggable>
     </div>
 
-    <Dialog v-model="adding">
+    <Dialog v-model="adding" persistent>
         <template #title>Add New Wish</template>
 
         <Form @submit="handleSaveNewEntry" class="flex flex-col gap-4">
