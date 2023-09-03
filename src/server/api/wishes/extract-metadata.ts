@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import { requireAuth } from '~~/lib/requireAuth';
 import { JSDOM } from 'jsdom';
+import puppeteer from 'puppeteer';
 
 const decodeEntities = (encodedString: string | undefined | null) => {
     if (!encodedString) return null;
@@ -16,41 +17,36 @@ const decodeEntities = (encodedString: string | undefined | null) => {
 export default defineEventHandler((event) =>
     requireAuth(event, async (_) => {
         const body = await readBody<{ url: string }>(event);
-        const userAgent =
-            'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1';
+        const browser = await puppeteer.launch({ headless: 'new' });
 
+        let headString: string | undefined = '';
         let resultString: string | undefined = '';
-        try {
-            const result = await $fetch(body.url, {
-                headers: {
-                    accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-                    'accept-language': 'en;q=0.9',
-                    'cache-control': 'max-age=0',
-                    'sec-fetch-dest': 'document',
-                    'sec-fetch-mode': 'navigate',
-                    'sec-fetch-site': 'cross-site',
-                    'sec-fetch-user': '?1',
-                    'sec-gpc': '1',
-                    'upgrade-insecure-requests': '1',
-                    'Referrer-Policy': 'strict-origin-when-cross-origin',
-                    'user-agent': userAgent,
-                },
-            });
 
-            resultString = result?.toString();
+        try {
+            const page = await browser.newPage();
+            await page.setUserAgent(
+                'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
+            );
+
+            await page.goto(body.url, { waitUntil: 'networkidle2', timeout: 10000 });
+
+            resultString = await page.evaluate(() => document.documentElement.outerHTML);
+            headString = await page.evaluate(() => document.head.outerHTML);
         } catch (err: any) {
             console.error(err);
             event.res.statusCode = 500;
             return null;
+        } finally {
+            browser.close();
         }
 
-        if (!resultString) {
+        if (!headString) {
             console.warn('Failed to get it');
             event.res.statusCode = 400;
             return null;
         }
 
-        const head = resultString.split('<head').at(1)?.split('</head').at(0);
+        const head = headString;
         const metadata = head
             ?.split('<meta')
             .map((meta) => {
@@ -96,8 +92,16 @@ export default defineEventHandler((event) =>
             );
 
         const findPossiblePrice = () => {
-            const items = resultString?.matchAll(/^price(.*?)(\d{1,100}\.\d{1,2})/g);
-            console.log(items);
+            // try {
+            //     // look for dom elements with 'price' in attribute value. Then grab the innertext of those elements.
+            //     const dom = new JSDOM(resultString || '');
+            //     const elements = dom.window.document.querySelectorAll('[*|price]');
+
+            //     const prices = Array.from(elements).map((element) => element.textContent);
+            // } catch (err: any) {
+            //     console.log('Failed to find price', err);
+            // }
+
             return '';
         };
 

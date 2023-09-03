@@ -24,6 +24,7 @@
         "@tailwindcss/line-clamp": "^0.4.2",
         "emoji-mart": "^5.5.1",
         "jsdom": "^20.0.3",
+        "puppeteer": "^21.1.1",
         "vuedraggable": "^4.1.0"
     }
 }
