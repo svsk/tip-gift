@@ -16,7 +16,7 @@ WORKDIR /src
 # Build
 FROM base as build
 
-RUN npm install --omit=dev
+RUN npm install --production=false
 
 RUN npm run build
 RUN npm prune
