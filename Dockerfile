@@ -6,10 +6,9 @@ ARG DATABASE_URL=""
 ARG SUPABASE_URL=""
 ARG SUPABASE_KEY=""
 
-ENV NODE_ENV=production
-
 FROM node:${NODE_VERSION}-slim as base
 
+ENV NODE_ENV=production
 
 #COPY --link . .
 COPY . .
