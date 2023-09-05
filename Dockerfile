@@ -1,30 +1,34 @@
 # syntax = docker/dockerfile:1
 
 ARG NODE_VERSION=16.15.1
-
-FROM node:${NODE_VERSION}-slim as base
-
 ARG PORT=3000
+ARG DATABASE_URL=""
+ARG SUPABASE_URL=""
+ARG SUPABASE_KEY=""
 
 ENV NODE_ENV=production
 
+FROM node:${NODE_VERSION}-slim as base
+
+
 #COPY --link . .
 COPY . .
-
 WORKDIR /src
 
 # Build
 FROM base as build
 
 RUN npm install --production=false
-
 RUN npm run build
 RUN npm prune
 
 # Run
 FROM base
 
-ENV PORT=$PORT
+ENV PORT = $PORT
+ENV DATABASE_URL = $DATABASE_URL
+ENV SUPABASE_URL = $SUPABASE_URL
+ENV SUPABASE_KEY = $SUPABASE_KEY
 
 COPY --from=build /src/.output /src/.output
 
