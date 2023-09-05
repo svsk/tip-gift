@@ -8,7 +8,8 @@ ARG PORT=3000
 
 ENV NODE_ENV=production
 
-COPY --link . .
+#COPY --link . .
+COPY . .
 
 WORKDIR /src
 
