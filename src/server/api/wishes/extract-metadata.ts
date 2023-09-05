@@ -2,6 +2,7 @@ import { URL } from 'url';
 import { requireAuth } from '~~/lib/requireAuth';
 import { JSDOM } from 'jsdom';
 import puppeteer from 'puppeteer';
+import fs from 'fs';
 
 const decodeEntities = (encodedString: string | undefined | null) => {
     if (!encodedString) return null;
@@ -17,7 +18,13 @@ const decodeEntities = (encodedString: string | undefined | null) => {
 export default defineEventHandler((event) =>
     requireAuth(event, async (_) => {
         const body = await readBody<{ url: string }>(event);
-        const browser = await puppeteer.launch({ headless: 'new' });
+        const chromePath = fs.existsSync('/usr/bin/google-chrome-stable') ? '/usr/bin/google-chrome-stable' : undefined;
+
+        const browser = await puppeteer.launch({
+            headless: 'new',
+            executablePath: chromePath,
+            args: ['--no-sandbox'],
+        });
 
         let headString: string | undefined = '';
         let resultString: string | undefined = '';
