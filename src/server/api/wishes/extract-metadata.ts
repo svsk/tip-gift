@@ -15,45 +15,92 @@ const decodeEntities = (encodedString: string | undefined | null) => {
     return result;
 };
 
+const getWithPuppeteer = async (url: string) => {
+    let head: string | null = null;
+    let fullDOM: string | null = null;
+    let error: string | null = null;
+
+    const chromePath = fs.existsSync('/usr/bin/google-chrome-stable') ? '/usr/bin/google-chrome-stable' : undefined;
+    const browser = await puppeteer.launch({
+        headless: 'new',
+        executablePath: chromePath,
+        args: ['--no-sandbox'],
+    });
+
+    try {
+        const page = await browser.newPage();
+        await page.setUserAgent(
+            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
+        );
+
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 10000 });
+
+        fullDOM = await page.evaluate(() => document.documentElement.outerHTML);
+        head = await page.evaluate(() => document.head.outerHTML);
+    } catch (err: any) {
+        error = '' + err;
+    } finally {
+        browser.close();
+    }
+
+    if (error) {
+        throw new Error(error);
+    }
+
+    return {
+        head,
+        fullDOM,
+    };
+};
+
+const getWithOFetch = async (url: string) => {
+    const headers = {
+        accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+        'accept-language': 'en;q=0.9',
+        'cache-control': 'max-age=0',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-site': 'cross-site',
+        'sec-fetch-user': '?1',
+        'sec-gpc': '1',
+        'upgrade-insecure-requests': '1',
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
+        'user-agent':
+            'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1',
+    };
+
+    const result = await $fetch.raw<string>(url, {
+        headers,
+        timeout: 10000,
+    });
+
+    if (result.status !== 200 || !result._data) {
+        throw new Error(`OFetch failed to get ${url}`);
+    }
+
+    return {
+        fullDOM: result._data,
+        head: result._data.split('</head>')[0],
+    };
+};
+
 export default defineEventHandler((event) =>
     requireAuth(event, async (_) => {
         const body = await readBody<{ url: string }>(event);
-        const chromePath = fs.existsSync('/usr/bin/google-chrome-stable') ? '/usr/bin/google-chrome-stable' : undefined;
 
-        const browser = await puppeteer.launch({
-            headless: 'new',
-            executablePath: chromePath,
-            args: ['--no-sandbox'],
-        });
-
-        let headString: string | undefined = '';
-        let resultString: string | undefined = '';
+        let head: string | null = null;
+        let fullDOM: string | null = null;
 
         try {
-            const page = await browser.newPage();
-            await page.setUserAgent(
-                'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
-            );
-
-            await page.goto(body.url, { waitUntil: 'domcontentloaded', timeout: 10000 });
-
-            resultString = await page.evaluate(() => document.documentElement.outerHTML);
-            headString = await page.evaluate(() => document.head.outerHTML);
-        } catch (err: any) {
-            console.error(err);
+            const result = await Promise.any([getWithPuppeteer(body.url), getWithOFetch(body.url)]);
+            head = result.head;
+            fullDOM = result.fullDOM;
+        } catch {
+            console.warn('Failed to get it');
             setResponseStatus(event, 500);
             return null;
-        } finally {
-            browser.close();
         }
 
-        if (!headString) {
-            console.warn('Failed to get it');
-            setResponseStatus(event, 400);
-            return null;
-        }
-
-        const head = headString;
         const metadata = head
             ?.split('<meta')
             .map((meta) => {
@@ -101,7 +148,7 @@ export default defineEventHandler((event) =>
         const findPossiblePrice = () => {
             // try {
             //     // look for dom elements with 'price' in attribute value. Then grab the innertext of those elements.
-            //     const dom = new JSDOM(resultString || '');
+            //     const dom = new JSDOM(result.fullDOM || '');
             //     const elements = dom.window.document.querySelectorAll('[*|price]');
 
             //     const prices = Array.from(elements).map((element) => element.textContent);
