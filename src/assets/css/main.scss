@@ -12,3 +12,26 @@ body {
 body.embedded {
 	background-color: transparent;
 }
+
+[data-has-ripple] {
+    overflow: hidden;
+
+    .ripple {
+        background-color: white;
+        border-radius: 50%;
+        pointer-events: none;
+        position: absolute;
+        transform: scale(0);
+        opacity: 0.2;
+
+        &.start {
+            transform: scale(0.2);
+        }
+
+        &.active {
+            transform: scale(2);
+            transition: transform 700ms, opacity 700ms;
+            opacity: 0.2;
+        }
+    }
+}

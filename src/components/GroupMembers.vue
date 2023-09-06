@@ -34,11 +34,12 @@ const handleUserAdded = (user: WishUser) => {
 <template>
     <div class="flex gap-4 items-center">
         <button
+            v-ripple
             v-for="member in members"
             :key="member.Id"
             @click="() => handleMemberClicked(member.UserId)"
             :class="{
-                'flex items-center justify-center p-4 flex-col gap-2 rounded w-[90px]': true,
+                'relative flex items-center justify-center p-4 flex-col gap-2 rounded w-[90px]': true,
                 'bg-white bg-opacity-20': selectedMemberId === member.UserId,
             }"
         >

@@ -32,10 +32,11 @@ const classes = computed(() => {
 
 <template>
     <button
+        v-ripple
         :type="type"
         :disabled="disable"
         :class="{
-            'focus-visible:outline-none transition-all uppercase tracking-wide font-medium text-sm': true,
+            'relative focus-visible:outline-none transition-all uppercase tracking-wide font-medium text-sm': true,
             'disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none': true,
             [classes]: true,
         }"

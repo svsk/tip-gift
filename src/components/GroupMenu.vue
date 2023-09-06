@@ -6,6 +6,7 @@
                     <Localized tkey="MyWishLists" />
                 </h1>
             </div>
+
             <GroupsAddGroupButton />
         </div>
 
