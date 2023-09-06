@@ -6,7 +6,7 @@ type Auth = {
 
 export async function requireAuth<T>(event: H3Event, successDelegate: (auth: Auth) => T | Promise<T>) {
     if (!event.context.auth) {
-        event.res.statusCode = 403;
+        setResponseStatus(event, 403);
         return null;
     }
 

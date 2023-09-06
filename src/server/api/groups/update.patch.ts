@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) =>
 
         // todo: verify owner is updater
         // if (user.Id !== auth.id) {
-        //     event.res.statusCode = 403;
+        //     setResponseStatus(event, 403);
         //     return '';
         // }
 

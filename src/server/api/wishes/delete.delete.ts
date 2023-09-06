@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) =>
 
         const wishId = getQuery(event).id?.toString();
         if (!wishId) {
-            event.res.statusCode = 400;
+            setResponseStatus(event, 400);
             return;
         }
 
@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) =>
         if (wishes.some((w) => w.Id === wishId)) {
             await db.deleteWish(wishId);
         } else {
-            event.res.statusCode = 403;
+            setResponseStatus(event, 403);
         }
 
         return true;

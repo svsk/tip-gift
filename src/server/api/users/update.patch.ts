@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) =>
         const user = await readBody<WishUser>(event);
 
         if (user.Id !== auth.id) {
-            event.res.statusCode = 403;
+            setResponseStatus(event, 403);
             return '';
         }
 

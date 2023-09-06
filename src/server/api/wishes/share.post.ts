@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) =>
             let share: WishListShare | null = null;
             while (!share) {
                 if (retries > 5) {
-                    event.res.statusCode = 500;
+                    setResponseStatus(event, 500);
                     console.error('Failed to generate unique key for share.');
                     return null;
                 }
@@ -49,7 +49,7 @@ export default defineEventHandler(async (event) =>
             return share;
         } catch (error: any) {
             console.error(error);
-            event.res.statusCode = 400;
+            setResponseStatus(event, 400);
             return null;
         }
     })

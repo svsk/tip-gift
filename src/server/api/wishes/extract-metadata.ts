@@ -41,7 +41,7 @@ export default defineEventHandler((event) =>
             headString = await page.evaluate(() => document.head.outerHTML);
         } catch (err: any) {
             console.error(err);
-            event.res.statusCode = 500;
+            setResponseStatus(event, 500);
             return null;
         } finally {
             browser.close();
@@ -49,7 +49,7 @@ export default defineEventHandler((event) =>
 
         if (!headString) {
             console.warn('Failed to get it');
-            event.res.statusCode = 400;
+            setResponseStatus(event, 400);
             return null;
         }
 

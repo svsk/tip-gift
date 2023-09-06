@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) =>
 
         const grpId = getQuery(event).id?.toString();
         if (!grpId) {
-            event.res.statusCode = 400;
+            setResponseStatus(event, 400);
             return;
         }
 
@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) =>
         if (grps.some((g) => g.Id === grpId)) {
             await db.deleteUserGroup(grpId?.toString());
         } else {
-            event.res.statusCode = 403;
+            setResponseStatus(event, 403);
         }
 
         return true;

@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
     const { uniqueKey } = getQuery(event);
     const key = uniqueKey?.toString();
     if (!key) {
-        event.res.statusCode = 400;
+        setResponseStatus(event, 400);
         return null;
     }
 
@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     const share = await db.getShareByKey(key);
 
     if (!share) {
-        event.res.statusCode = 400;
+        setResponseStatus(event, 400);
         return null;
     }
 
