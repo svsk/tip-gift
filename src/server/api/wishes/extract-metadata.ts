@@ -35,7 +35,7 @@ export default defineEventHandler((event) =>
                 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
             );
 
-            await page.goto(body.url, { waitUntil: 'networkidle2', timeout: 20000 });
+            await page.goto(body.url, { waitUntil: 'domcontentloaded', timeout: 10000 });
 
             resultString = await page.evaluate(() => document.documentElement.outerHTML);
             headString = await page.evaluate(() => document.head.outerHTML);
