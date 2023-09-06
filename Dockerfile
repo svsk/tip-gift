@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1
 
-ARG NODE_VERSION=16.15.1
+ARG NODE_VERSION=18.12.1
 
 FROM node:${NODE_VERSION}-slim as base
 
@@ -18,6 +18,8 @@ ENV SUPABASE_KEY=$SUPABASE_KEY
 COPY . .
 WORKDIR /src
 
+RUN echo "DATABASE_URL=\"$DATABASE_URL\"" >> .env
+
 # Build
 FROM base as build
 
@@ -28,7 +30,10 @@ RUN npm prune
 # Run
 FROM base
 
-ENV PORT = $PORT
+ENV PORT=$PORT
+ENV DATABASE_URL=$DATABASE_URL
+ENV SUPABASE_URL=$SUPABASE_URL
+ENV SUPABASE_KEY=$SUPABASE_KEY
 
 COPY --from=build /src/.output /src/.output
 
