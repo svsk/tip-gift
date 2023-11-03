@@ -24,11 +24,11 @@ body.embedded {
         transform: scale(0);
         opacity: 0.2;
 
-        &.start {
+        &.ripple-start {
             transform: scale(0.2);
         }
 
-        &.active {
+        &.ripple-active {
             transform: scale(2);
             transition: transform 700ms, opacity 700ms;
             opacity: 0.2;

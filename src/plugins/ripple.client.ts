@@ -6,6 +6,12 @@ export default defineNuxtPlugin((nuxtApp) => {
 
             parent.addEventListener('mousedown', (e: MouseEvent) => {
                 clearTimeout(timerId);
+
+                document.querySelectorAll('.ripple.ripple-active').forEach((alreadyRippledElement) => {
+                    alreadyRippledElement.classList.remove('ripple-active');
+                    alreadyRippledElement.classList.remove('ripple-start');
+                });
+
                 let ripple = parent.querySelector<HTMLDivElement>('.ripple');
                 if (!ripple) {
                     ripple = document.createElement('div');
@@ -23,13 +29,13 @@ export default defineNuxtPlugin((nuxtApp) => {
                 ripple.style.left = `${x}px`;
                 ripple.style.width = `${size * 2}px`;
                 ripple.style.height = `${size * 2}px`;
-                ripple.classList.remove('active');
-                ripple.classList.remove('start');
+                ripple.classList.remove('ripple-active');
+                ripple.classList.remove('ripple-start');
 
                 setTimeout(() => {
-                    ripple?.classList.add('start');
+                    ripple?.classList.add('ripple-start');
                     setTimeout(() => {
-                        ripple?.classList.add('active');
+                        ripple?.classList.add('ripple-active');
                     }, 0);
                 }, 0);
             });
@@ -39,8 +45,8 @@ export default defineNuxtPlugin((nuxtApp) => {
                 clearTimeout(timerId);
 
                 timerId = setTimeout(() => {
-                    ripple?.classList.remove('active');
-                    ripple?.classList.remove('start');
+                    ripple?.classList.remove('ripple-active');
+                    ripple?.classList.remove('ripple-start');
                 }, 500);
             });
         },
