@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { WishUser } from '.prisma/client';
+import { type WishUser } from '@prisma-app/client';
 
 interface Props {
     user?: WishUser;

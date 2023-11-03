@@ -1,4 +1,4 @@
-import { WishUserGroup } from '@prisma/client';
+import { type WishUserGroup } from '@prisma-app/client';
 
 export const isGroupAdmin = (resolveGroup: () => WishUserGroup | undefined) =>
     computed(() => {

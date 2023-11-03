@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { WishUserGroup } from '@prisma/client';
+import { type WishUserGroup } from '@prisma-app/client';
 
 interface Props {
     modelValue: boolean;

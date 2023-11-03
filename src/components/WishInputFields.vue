@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Wish } from '@prisma/client';
+import { type Wish } from '@prisma-app/client';
 import Input from './Input.vue';
 
 interface Props {

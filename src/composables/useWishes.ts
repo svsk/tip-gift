@@ -1,4 +1,4 @@
-import { Wish } from '@prisma/client';
+import { type Wish } from '@prisma-app/client';
 
 const storeKey = 'wishes';
 

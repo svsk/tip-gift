@@ -1,4 +1,4 @@
-import { WishUser } from '@prisma/client';
+import { type WishUser } from '@prisma-app/client';
 import { DbContext } from '~~/data/DbContext';
 import { requireAuth } from '~~/lib/requireAuth';
 

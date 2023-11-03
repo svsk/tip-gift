@@ -1,15 +1,16 @@
 <script setup lang="ts">
 const loginAttempted = ref(false);
 
-onMounted(() => {
-    loginAttempted.value = window.location.href.includes('?auth');
-
-    setTimeout(() => {
-        if (!loginAttempted.value) {
-            window.location.href = window.location.href + '?auth=' + crypto.randomUUID();
+const user = useSupabaseUser();
+watch(
+    user,
+    () => {
+        if (user.value) {
+            return navigateTo('/');
         }
-    }, 2000);
-});
+    },
+    { immediate: true }
+);
 </script>
 
 <template>

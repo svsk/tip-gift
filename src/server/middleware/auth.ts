@@ -3,7 +3,7 @@ import { DbContext } from '~~/data/DbContext';
 
 export default defineEventHandler(async (event) => {
     try {
-        const e = serverSupabaseClient(event);
+        const e = await serverSupabaseClient(event);
         const user = await e.auth.getUser();
         event.context.auth = user;
 

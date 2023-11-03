@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { clear } from 'console';
-
 interface Props {
     id?: string;
     modelValue?: string | number | null;

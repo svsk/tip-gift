@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { WishUserGroup } from '@prisma/client';
+import { type WishUserGroup } from '@prisma-app/client';
 
 const showDialog = ref(false);
 const groupName = ref('');

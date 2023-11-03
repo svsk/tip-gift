@@ -1,4 +1,4 @@
-import { WishUserGroup } from '@prisma/client';
+import { type WishUserGroup } from '@prisma-app/client';
 
 const storeKey = 'userGroups';
 const groupWishKey = 'userGroupWishes';

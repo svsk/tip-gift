@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Wish } from '@prisma/client';
+import { type Wish } from '@prisma-app/client';
 
 const embedded = useRoute().query.embedded === 'true';
 const { uniqueKey } = useRoute().params;

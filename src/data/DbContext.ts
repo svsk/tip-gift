@@ -1,4 +1,4 @@
-import { Wish, WishUser, WishUserGroup, WishUserGroupUser } from '.prisma/client';
+import { type Wish, type WishUser, type WishUserGroup, type WishUserGroupUser } from '@prisma-app/client';
 import { usePrisma } from './usePrisma';
 
 export class DbContext {

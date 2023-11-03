@@ -1,4 +1,4 @@
-import { WishUser } from '@prisma/client';
+import { type WishUser } from '@prisma-app/client';
 
 const storeKey = (id: string) => `user-${id}`;
 

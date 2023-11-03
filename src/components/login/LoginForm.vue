@@ -13,10 +13,12 @@ const handleLogin = async () => {
     localStorage.setItem('last-login-email', email.value);
 
     try {
+        const redirectTarget = window.location.origin + '/confirm';
+
         const { error } = await supabase.auth.signInWithOtp({
             email: email.value,
             options: {
-                emailRedirectTo: window.location.origin + '/auth',
+                emailRedirectTo: redirectTarget,
             },
         });
 
