@@ -1,0 +1,1 @@
+ALTER TABLE [WishPurchase] ADD [PurchasedDate] DATETIMEOFFSET(5) NULL;

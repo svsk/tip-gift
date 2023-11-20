@@ -27,6 +27,8 @@ RUN npm install --production=false
 RUN npm run build
 RUN npm prune
 
+RUN node "./sql/migrate.js"
+
 # Run
 FROM base
 
