@@ -33,7 +33,7 @@ const handleUserSelected = (user: WishUser) => {
             v-model="searchContent"
             @update:model-value="handleSearchInput"
             :debounce="600"
-            label="User"
+            :label="i18n('User')"
         >
             <template #suffix>
                 <User class="scale-75" v-if="selectedUser" without-username :user-id="selectedUser.Id" />

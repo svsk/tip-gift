@@ -61,7 +61,7 @@ const handleCopyClicked = async () => {
             <Input
                 :readonly="linkExists"
                 ref="nameInput"
-                label="List Name"
+                :label="i18n('ListName')"
                 v-model="listName"
                 class="flex-grow w-full"
             />
@@ -72,14 +72,15 @@ const handleCopyClicked = async () => {
                     @click="handleGenerateClicked"
                     :disable="linkExists || generating"
                     class="w-[160px]"
-                    >Create Link</Button
                 >
+                    <Localized tkey="CreateLink" />
+                </Button>
             </Transition>
         </div>
 
         <Transition name="slideDown">
             <div class="w-full flex gap-3" v-if="linkExists">
-                <Input label="Link" readonly :model-value="listUrl" class="flex-grow w-full" />
+                <Input :label="i18n('Link')" readonly :model-value="listUrl" class="flex-grow w-full" />
                 <Button
                     :disable="!linkExists"
                     @click="handleCopyClicked"

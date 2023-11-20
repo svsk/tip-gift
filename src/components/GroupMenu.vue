@@ -10,18 +10,33 @@
             <GroupsAddGroupButton />
         </div>
 
-        <NuxtLink to="/my/wishes" class="flex items-center gap-2">
-            <EmojiAvatar :color="'#2563eb'"> 📃 </EmojiAvatar>
+        <div class="flex flex-col gap-6">
+            <NuxtLink to="/my/wishes" class="flex items-center gap-2">
+                <EmojiAvatar :color="'#2563eb'"> 🎁 </EmojiAvatar>
 
-            <div>
                 <div>
-                    <Localized tkey="MyWishes" />
+                    <div>
+                        <Localized tkey="MyWishes" />
+                    </div>
+                    <div class="text-xs opacity-60">
+                        <Localized tkey="AddYourWishesHere" />
+                    </div>
                 </div>
-                <div class="text-xs opacity-60">
-                    <Localized tkey="OwnedByYou" />
+            </NuxtLink>
+
+            <!-- <NuxtLink to="/my/wishes" class="flex items-center gap-2">
+                <EmojiAvatar :color="'#2563eb'"> 📃 </EmojiAvatar>
+
+                <div>
+                    <div>
+                        <Localized tkey="ShoppingList" />
+                    </div>
+                    <div class="text-xs opacity-60">
+                        <Localized tkey="ItemsYouveReserved" />
+                    </div>
                 </div>
-            </div>
-        </NuxtLink>
+            </NuxtLink> -->
+        </div>
 
         <hr class="opacity-25" />
 

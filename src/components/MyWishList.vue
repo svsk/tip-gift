@@ -110,7 +110,9 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
                     </Button>
                 </NuxtLink>
 
-                <h1 class="font-medium text-lg">My Wishes</h1>
+                <h1 class="font-medium text-lg">
+                    <Localized tkey="MyWishes" />
+                </h1>
             </div>
 
             <Button round flat @click="handleShareClicked" class="flex items-center justify-center">
@@ -119,11 +121,16 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
         </div>
 
         <div class="flex justify-end pb-4 gap-2">
-            <Button @click="reorderMode = !reorderMode">{{ reorderMode ? 'Finish' : 'Reorder' }}</Button>
-            <Button @click="handleAddClicked">Add New</Button>
+            <Button @click="reorderMode = !reorderMode">
+                <Localized v-if="reorderMode" tkey="Finish" />
+                <Localized v-else="reorderMode" tkey="Reorder" />
+            </Button>
+            <Button @click="handleAddClicked">
+                <Localized tkey="AddNew" />
+            </Button>
         </div>
 
-        <EmptyState v-if="!wishes?.length"> Nothing here yet... </EmptyState>
+        <EmptyState v-if="!wishes?.length"> <Localized tkey="NothingHereYet" />... </EmptyState>
 
         <draggable
             :list="orderedWishes"
@@ -156,51 +163,68 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
     </div>
 
     <Dialog v-model="adding" persistent>
-        <template #title>Add New Wish</template>
+        <template #title>
+            <Localized tkey="AddNewWish" />
+        </template>
 
         <Form @submit="handleSaveNewEntry" class="flex flex-col gap-4">
             <WishInputFields v-if="newWish" v-model="newWish" />
             <div class="flex justify-end items-center gap-2">
-                <Button :disable="busyAdding" @click="() => (adding = false)" flat>Cancel</Button>
-                <Button :disable="busyAdding" type="submit">Confirm</Button>
+                <Button :disable="busyAdding" @click="() => (adding = false)" flat>
+                    <Localized tkey="Cancel" />
+                </Button>
+                <Button :disable="busyAdding" type="submit">
+                    <Localized tkey="Confirm" />
+                </Button>
             </div>
         </Form>
     </Dialog>
 
     <Dialog v-model="editing">
-        <template #title>Editing Wish</template>
+        <template #title>
+            <Localized tkey="EditWish" />
+        </template>
 
         <Form @submit="handleUpdateEntry" class="flex flex-col gap-4">
             <WishInputFields v-if="editWish" v-model="editWish" />
             <div class="flex justify-end items-center gap-2">
-                <Button :disable="busyAdding" @click="() => (editing = false)" flat>Cancel</Button>
-                <Button :disable="busyAdding" type="submit">Save</Button>
+                <Button :disable="busyAdding" @click="() => (editing = false)" flat>
+                    <Localized tkey="Cancel" />
+                </Button>
+                <Button :disable="busyAdding" type="submit">
+                    <Localized tkey="Confirm" />
+                </Button>
             </div>
         </Form>
     </Dialog>
 
     <Dialog v-model="sharing">
-        <template #title>Share Wish List</template>
+        <template #title><Localized tkey="ShareWishList" /></template>
 
         <div class="flex flex-col gap-4">
             <ShareDialog />
 
             <div class="flex justify-end items-center gap-2">
-                <Button @click="() => (sharing = false)" flat>Close</Button>
+                <Button @click="() => (sharing = false)" flat>
+                    <Localized tkey="Close" />
+                </Button>
             </div>
         </div>
     </Dialog>
 
     <Dialog v-model="showDeleteConfirmation">
-        <template #title>Delete Wish?</template>
+        <template #title> <Localized tkey="DeleteWish" />? </template>
 
         <div class="flex flex-col gap-4">
-            Are you sure you want to delete {{ wishForDeletion?.Name ? `"${wishForDeletion.Name}"` : 'this wish' }} from
-            the list?
+            {{ i18n('DeleteConfirmation', wishForDeletion?.Name ? `"${wishForDeletion.Name}"` : 'this wish') }}
 
             <div class="flex justify-end items-center gap-2">
-                <Button @click="() => (showDeleteConfirmation = false)" flat>Cancel</Button>
-                <Button color="bg-red-500" @click="handleDeleteConfirmed">Delete</Button>
+                <Button @click="() => (showDeleteConfirmation = false)" flat>
+                    <Localized tkey="Cancel" />
+                </Button>
+                <Button color="bg-red-500" @click="handleDeleteConfirmed">
+                    <Localized tkey="Delete" />
+                </Button>
             </div>
         </div>
     </Dialog>

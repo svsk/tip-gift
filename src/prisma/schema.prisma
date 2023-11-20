@@ -21,19 +21,21 @@ model Wish {
 }
 
 model WishUser {
-  Id           String  @id(map: "PK__WishUser__3214EC07F850D70D") @default(dbgenerated("newid()"), map: "DF__WishUser__Id__6BE40491") @db.UniqueIdentifier
-  Email        String  @db.VarChar(Max)
-  Name         String? @db.VarChar(Max)
-  AvatarColour String? @db.VarChar(24)
-  AvatarEmoji  String? @db.NVarChar(24)
+  Id                String  @id(map: "PK__WishUser__3214EC07F850D70D") @default(dbgenerated("newid()"), map: "DF__WishUser__Id__6BE40491") @db.UniqueIdentifier
+  Email             String  @db.VarChar(Max)
+  Name              String? @db.VarChar(Max)
+  AvatarColour      String? @db.VarChar(24)
+  AvatarEmoji       String? @db.NVarChar(24)
+  PreferredLanguage String? @db.VarChar(50)
 }
 
 model WishPurchase {
-  Id          String   @id(map: "PK__WishPurc__3214EC0755BFE815") @default(dbgenerated("newid()"), map: "DF__WishPurchase__Id__2EA5EC27") @db.UniqueIdentifier
-  UserId      String   @db.UniqueIdentifier
-  WishId      String   @db.UniqueIdentifier
-  GroupId     String   @db.UniqueIdentifier
-  CreatedDate DateTime @default(dbgenerated("getutcdate()"), map: "DF__WishPurch__Creat__2F9A1060") @db.DateTimeOffset
+  Id            String    @id(map: "PK__WishPurc__3214EC0755BFE815") @default(dbgenerated("newid()"), map: "DF__WishPurchase__Id__2EA5EC27") @db.UniqueIdentifier
+  UserId        String    @db.UniqueIdentifier
+  WishId        String    @db.UniqueIdentifier
+  GroupId       String    @db.UniqueIdentifier
+  CreatedDate   DateTime  @default(dbgenerated("getutcdate()"), map: "DF__WishPurch__Creat__2F9A1060") @db.DateTimeOffset
+  PurchasedDate DateTime? @db.DateTimeOffset
 }
 
 model WishUserGroup {
@@ -61,4 +63,14 @@ model WishGroupWish {
   Id      String @id(map: "PK__WishGrou__3214EC07B60DBF46") @default(dbgenerated("newid()"), map: "DF__WishGroupWis__Id__1B9317B3") @db.UniqueIdentifier
   GroupId String @db.UniqueIdentifier
   WishId  String @db.UniqueIdentifier
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model TipGiftMigrationHistory {
+  Id          Int      @default(autoincrement())
+  Version     String   @db.VarChar(50)
+  Description String   @db.VarChar(100)
+  AppliedOn   DateTime @default(now(), map: "DF__TipGiftMi__Appli__4865BE2A") @db.DateTime
+
+  @@ignore
 }

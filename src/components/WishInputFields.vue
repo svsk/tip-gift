@@ -76,12 +76,14 @@ const shouldBeUrl = (val: any) => {
                 ref="urlInput"
                 class="grow"
                 v-model="model.Link"
-                label="Link *"
+                :label="`${i18n('Link')} *`"
             />
 
             <Button :disable="!linkAvailable || busy" @click="getMetadata">
                 <Spinner v-if="busy" class="text-xs" />
-                <span v-else>Fetch Info</span>
+                <span v-else>
+                    <Localized tkey="FetchInfo" />
+                </span>
             </Button>
         </div>
 
@@ -100,14 +102,14 @@ const shouldBeUrl = (val: any) => {
             </div>
         </Transition>
 
-        <Input :readonly="busy" :rules="[required]" v-model="model.Name" label="Title *" class="w-full" />
-        <Input :readonly="busy" v-model="model.Description" label="Description" class="w-full" />
+        <Input :readonly="busy" :rules="[required]" v-model="model.Name" :label="`${i18n('Title')} *`" class="w-full" />
+        <Input :readonly="busy" v-model="model.Description" :label="i18n('Description')" class="w-full" />
         <Input
             :readonly="busy"
             :rules="[required]"
             type="number"
             v-model="model.Price"
-            label="Price *"
+            :label="`${i18n('Price')} *`"
             class="w-full"
         />
     </div>

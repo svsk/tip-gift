@@ -20,8 +20,14 @@ const memberCount = computed(() => {
             {{ group.GroupName }}
         </div>
         <div class="text-xs opacity-60">
-            <span v-if="memberCount">{{ memberCount }} member{{ memberCount !== 1 ? 's' : '' }} • </span>
-            <span v-if="group.CreatedByUserId">Owned by <User without-avatar :user-id="group.CreatedByUserId" /></span>
+            <span v-if="memberCount"
+                >{{ memberCount }}
+                <Localized lowercase v-if="memberCount === 1" tkey="Member" />
+                <Localized lowercase v-else tkey="Members" /> •
+            </span>
+            <span v-if="group.CreatedByUserId">
+                <Localized tkey="OwnedBy" /> <User without-avatar :user-id="group.CreatedByUserId"
+            /></span>
         </div>
     </div>
 </template>

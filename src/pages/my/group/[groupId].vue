@@ -36,8 +36,7 @@ const canEdit = isGroupAdmin(() => group.value);
         </div>
 
         <div class="text-sm opacity-60">
-            Click on members of the group to view their shared wishes. Click on yourself to manage what wishes to show
-            to other members of the group.
+            <Localized tkey="GroupWishesExplanation" />
         </div>
 
         <div class="h-[1px] bg-slate-600 w-full" />

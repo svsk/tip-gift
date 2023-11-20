@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "./transitions.scss";
+@import './transitions.scss';
 
 body {
     background-color: #202020;
@@ -10,7 +10,7 @@ body {
 }
 
 body.embedded {
-	background-color: transparent;
+    background-color: transparent;
 }
 
 [data-has-ripple] {
@@ -23,6 +23,7 @@ body.embedded {
         position: absolute;
         transform: scale(0);
         opacity: 0.2;
+        will-change: transform, opacity;
 
         &.ripple-start {
             transform: scale(0.2);

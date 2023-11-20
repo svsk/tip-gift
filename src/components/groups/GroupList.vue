@@ -15,7 +15,7 @@ const memberCount = async (group: WishUserGroup) => {
 <template>
     <div class="flex flex-col">
         <EmptyState v-if="!groups?.length" class="text-center text-base flex flex-col gap-2">
-            No groups created or joined yet...
+            <Localized tkey="NoGroupsYet" />...
         </EmptyState>
 
         <div

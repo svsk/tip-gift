@@ -38,6 +38,7 @@ export class DbContext {
                 Name: user.Name,
                 AvatarEmoji: user.AvatarEmoji,
                 AvatarColour: user.AvatarColour,
+                PreferredLanguage: user.PreferredLanguage,
             },
             where: {
                 Id: user.Id,

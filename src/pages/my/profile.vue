@@ -36,6 +36,14 @@ const handleNameChanged = (newName: string) => {
     }
 };
 
+const handleLanguageChanged = async (newLanguage: string) => {
+    if (user.value) {
+        user.value.PreferredLanguage = newLanguage;
+        await updateUser(user.value);
+        window.location.reload();
+    }
+};
+
 const handleChangeColor = () => {
     colorPicker.value?.click();
 };
@@ -82,7 +90,9 @@ const handleLogOut = async () => {
                 </Button>
             </NuxtLink>
 
-            <h1 class="font-medium text-lg">Profile</h1>
+            <h1 class="font-medium text-lg">
+                <Localized tkey="Profile" />
+            </h1>
         </div>
 
         <div class="h-[1px] bg-slate-600 w-full mb-3" />
@@ -94,11 +104,16 @@ const handleLogOut = async () => {
             <Input
                 :debounce="600"
                 class="flex-grow"
-                label="Display Name"
+                :label="i18n('DisplayName')"
                 :model-value="user?.Name"
                 @update:model-value="handleNameChanged"
             />
         </div>
+
+        <div>
+            <LanguagePicker :model-value="user.PreferredLanguage" @update:model-value="handleLanguageChanged" />
+        </div>
+
         <div class="flex gap-6 justify-between">
             <div class="flex gap-2">
                 <Button @click="handleChangeColor" round style="height: 45px; width: 45px">
@@ -125,7 +140,9 @@ const handleLogOut = async () => {
             </div>
 
             <div>
-                <Button flat @click="handleLogOut">Log out</Button>
+                <Button flat @click="handleLogOut">
+                    <Localized tkey="LogOut" />
+                </Button>
             </div>
         </div>
     </Card>

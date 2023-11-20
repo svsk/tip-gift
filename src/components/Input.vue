@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { random } from '~/composables/helpers';
+
 interface Props {
     id?: string;
     modelValue?: string | number | null;
@@ -13,11 +15,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    id:
-        'v-input-' +
-        Math.floor(Math.random() * 99999999)
-            .toString()
-            .padStart(8, '0'),
+    id: 'v-input-' + random(),
     type: 'text',
     readonly: false,
     debounce: 0,

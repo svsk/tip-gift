@@ -43,8 +43,12 @@ const mustNotAlreadyBeInGroup = () => {
         <UserLookup :rules="[mustHaveSelectedUser, mustNotAlreadyBeInGroup]" class="w-full" v-model="selectedUser" />
 
         <div class="flex justify-end gap-2">
-            <Button flat @click="() => handleSubmit(false)">Cancel</Button>
-            <Button type="submit">Confirm</Button>
+            <Button flat @click="() => handleSubmit(false)">
+                <Localized tkey="Cancel" />
+            </Button>
+            <Button type="submit">
+                <Localized tkey="Confirm" />
+            </Button>
         </div>
     </Form>
 </template>

@@ -38,14 +38,21 @@ const handleSubmit = (confirm: boolean) => {
 
 <template>
     <Dialog v-model="showDialog" @update:model-value="handleDialogChange">
-        <template #title> {{ !!group.Id ? 'Edit' : 'Add' }} Group </template>
+        <template #title>
+            <Localized v-if="!!group.Id" tkey="EditGroup" />
+            <Localized v-else tkey="AddGroup" />
+        </template>
 
         <form @submit.prevent="() => handleSubmit(true)" class="flex flex-col gap-6 flex-nowrap">
-            <Input ref="input" v-model="group.GroupName" label="Group Name" class="w-full" />
+            <Input ref="input" v-model="group.GroupName" :label="i18n('GroupName')" class="w-full" />
 
             <div class="flex justify-end gap-2">
-                <Button flat @click="() => handleSubmit(false)">Cancel</Button>
-                <Button type="submit">Confirm</Button>
+                <Button flat @click="() => handleSubmit(false)">
+                    <Localized tkey="Cancel" />
+                </Button>
+                <Button type="submit">
+                    <Localized tkey="Confirm" />
+                </Button>
             </div>
         </form>
     </Dialog>
