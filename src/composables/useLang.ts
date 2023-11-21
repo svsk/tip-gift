@@ -59,6 +59,7 @@ const langLib = (lang: SupportedLanguage) => {
             OwnedBy: 'Opprettet av',
             Members: 'Medlemmer',
             Member: 'Medlem',
+            WishAdded: 'Ønsket ble laget til! Husk å dele det med gruppene dine!',
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -105,6 +106,7 @@ const langLib = (lang: SupportedLanguage) => {
             OwnedBy: 'Owned by',
             Members: 'Members',
             Member: 'Member',
+            WishAdded: 'Wish added! Remember to share it with your groups!',
         },
     } as Record<SupportedLanguage, Record<string, string>>;
 

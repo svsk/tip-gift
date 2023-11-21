@@ -2,6 +2,7 @@
 import { type Wish } from '@prisma-app/client';
 import { ref } from 'vue';
 import draggable from 'vuedraggable';
+import Toast from '~/components/Toast.vue';
 
 const { data: wishes } = await useWishes();
 
@@ -16,6 +17,7 @@ const reordering = ref(false);
 const sharing = ref(false);
 const showDeleteConfirmation = ref(false);
 const wishForDeletion = ref<Wish | null>(null);
+const addToast = ref<InstanceType<typeof Toast>>();
 
 const handleAddClicked = async () => {
     newWish.value = {
@@ -44,6 +46,7 @@ const handleSaveNewEntry = async () => {
         busyAdding.value = true;
         try {
             await addWish(newWish.value);
+            addToast.value?.show(6000);
             newWish.value = null;
             adding.value = false;
         } finally {
@@ -161,6 +164,13 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
             </template>
         </draggable>
     </div>
+
+    <Toast ref="addToast">
+        <div class="flex flex-row items-center no-wrap gap-4">
+            <Icon name="check" font-size="32px" />
+            <Localized tkey="WishAdded" />
+        </div>
+    </Toast>
 
     <Dialog v-model="adding" persistent>
         <template #title>
