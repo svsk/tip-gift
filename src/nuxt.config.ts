@@ -2,6 +2,13 @@
 export default defineNuxtConfig({
     modules: ['@nuxtjs/supabase'],
     css: ['~/assets/css/main.scss'],
+    supabase: {
+        redirectOptions: {
+            login: '/login',
+            callback: '/confirm',
+            exclude: ['/wishes/**', '/embed/**'],
+        },
+    },
     postcss: {
         plugins: {
             tailwindcss: {},
