@@ -23,19 +23,38 @@ export const useUser = (id: string) => {
     return userRef;
 };
 
-export const updateUser = async (user: WishUser) => {
-    if (!user?.Id) {
+export const refreshUser = async (userId: string) => {
+    if (!userId) {
         return;
     }
 
-    const existing = userCache.get(user.Id);
+    const existing = userCache.get(userId);
 
     if (!existing) {
-        useUser(user.Id);
+        useUser(userId);
         return;
     }
 
-    existing.value = await loadUser(user.Id);
+    existing.value = await loadUser(userId);
+};
+
+export const updateUser = async (user: WishUser) => {
+    await $fetch('/api/users/update', {
+        body: user,
+        method: 'PATCH',
+        ...useAuthentication(),
+    });
+
+    refreshUser(user.Id);
+};
+
+export const useCurrentUser = () => {
+    const auth = useAuth();
+    if (!auth.value?.id) {
+        return null;
+    }
+
+    return useUser(auth.value?.id);
 };
 
 export const searchUsers = async (search: string) => {
