@@ -3,12 +3,17 @@ import { type WishUserGroup } from '@prisma-app/client';
 
 const { data: groups } = await useGroups();
 
+const deletingGroup = ref<WishUserGroup | null>(null);
+
 const handleDeleteGroup = async (group: WishUserGroup) => {
-    await deleteGroup(group);
+    deletingGroup.value = group;
 };
 
-const memberCount = async (group: WishUserGroup) => {
-    return await useGroupUsers(group.Id);
+const handleDeleteConfirmed = async () => {
+    if (!deletingGroup.value) return;
+
+    await deleteGroup(deletingGroup.value);
+    deletingGroup.value = null;
 };
 </script>
 
@@ -32,5 +37,22 @@ const memberCount = async (group: WishUserGroup) => {
                 <Icon font-size="20px" name="delete" />
             </Button>
         </div>
+
+        <Dialog :model-value="!!deletingGroup">
+            <template #title> <Localized tkey="DeleteGroup" />? </template>
+
+            <div class="flex flex-col gap-4">
+                {{ i18n('GroupDeleteConfirmation', deletingGroup!.GroupName) }}
+
+                <div class="flex justify-end items-center gap-2">
+                    <Button @click="() => (deletingGroup = null)" flat>
+                        <Localized tkey="Cancel" />
+                    </Button>
+                    <Button color="bg-red-500" @click="handleDeleteConfirmed">
+                        <Localized tkey="Delete" />
+                    </Button>
+                </div>
+            </div>
+        </Dialog>
     </div>
 </template>

@@ -60,6 +60,8 @@ const langLib = (lang: SupportedLanguage) => {
             Members: 'Medlemmer',
             Member: 'Medlem',
             WishAdded: 'Ønsket ble laget til! Husk å dele det med gruppene dine!',
+            DeleteGroup: 'Slett Gruppe',
+            GroupDeleteConfirmation: "Er du sikker på at du ønsker å slette '{0}'?",
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -107,6 +109,8 @@ const langLib = (lang: SupportedLanguage) => {
             Members: 'Members',
             Member: 'Member',
             WishAdded: 'Wish added! Remember to share it with your groups!',
+            DeleteGroup: 'Delete Group',
+            GroupDeleteConfirmation: "Are you sure you want to delete '{0}'?",
         },
     } as Record<SupportedLanguage, Record<string, string>>;
 
