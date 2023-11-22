@@ -2,6 +2,13 @@
 export default defineNuxtConfig({
     modules: ['@nuxtjs/supabase'],
     css: ['~/assets/css/main.scss'],
+    nitro: {
+        routeRules: {
+            '/confirm': {
+                ssr: false,
+            },
+        },
+    },
     supabase: {
         redirectOptions: {
             login: '/login',
