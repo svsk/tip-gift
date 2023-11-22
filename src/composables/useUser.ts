@@ -1,20 +1,41 @@
 import { type WishUser } from '@prisma-app/client';
 
-const storeKey = (id: string) => `user-${id}`;
+const loadPromises: { [key: string]: Promise<WishUser> } = {};
+const userCache = new Map<string, Ref<WishUser | null>>();
 
-export const useUser = (id: string) =>
-    useAsyncData(storeKey(id), () => $fetch<WishUser>(`/api/users/${id}`, useAuthentication()));
+const loadUser = async (id: string) => {
+    const user = await $fetch<WishUser>(`/api/users/${id}`, useAuthentication());
+    return user;
+};
 
-export const refreshUser = async (id: string) => await (await useUser(id)).refresh();
+export const useUser = (id: string) => {
+    const userRef = userCache.get(id) || ref(null);
 
-export const updateUser = async (user: WishUser) => {
-    await $fetch('/api/users/update', {
-        body: user,
-        method: 'PATCH',
-        ...useAuthentication(),
+    if (!userCache.has(id)) {
+        userCache.set(id, userRef);
+    }
+
+    const promise = loadPromises[id] || (loadPromises[id] = loadUser(id));
+    promise.then((u) => {
+        userRef.value = u;
     });
 
-    refreshUser(user.Id);
+    return userRef;
+};
+
+export const updateUser = async (user: WishUser) => {
+    if (!user?.Id) {
+        return;
+    }
+
+    const existing = userCache.get(user.Id);
+
+    if (!existing) {
+        useUser(user.Id);
+        return;
+    }
+
+    existing.value = await loadUser(user.Id);
 };
 
 export const searchUsers = async (search: string) => {

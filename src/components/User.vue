@@ -12,19 +12,9 @@ const props = withDefaults(defineProps<Props>(), {
     avatarClass: '',
 });
 
-const userResult = useUser(props.userId);
-const user = userResult.data;
-
-const updateUser = async () => {
-    try {
-        const userResponse = useUser(props.userId);
-        user.value = userResponse.data.value;
-    } catch (err: any) {
-        console.error(err);
-    }
-};
-
-watch(() => props.userId, updateUser);
+const user = computed(() => {
+    return useUser(props.userId).value;
+});
 </script>
 
 <template>

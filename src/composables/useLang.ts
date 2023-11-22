@@ -7,7 +7,7 @@ export const language = computed(() => {
     const defaultLanguage = SupportedLanguage.EnglishUK;
 
     const userId = useAuth().value?.id || '';
-    const { data: user } = useUser(userId);
+    const user = useUser(userId);
 
     return user.value?.PreferredLanguage || defaultLanguage;
 });
