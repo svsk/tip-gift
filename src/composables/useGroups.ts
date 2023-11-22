@@ -85,6 +85,15 @@ export const giveGift = async (groupId: string, wishId: string) => {
     });
 };
 
+export const deleteWishPurchase = async (wishPurchaseId: string, groupId: string) => {
+    await $fetch(`/api/wishpurchases/${wishPurchaseId}`, {
+        method: 'DELETE',
+        ...useAuthentication(),
+    });
+
+    refreshGivenGifts(groupId);
+};
+
 export const useGroupGivenGifts = (groupId: string) =>
     useAsyncData(`${givenGroupGiftKey}-${groupId}`, () => $fetch(`/api/groups/${groupId}/given`, useAuthentication()), {
         immediate: true,

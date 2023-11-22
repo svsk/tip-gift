@@ -102,6 +102,28 @@ export class DbContext {
         await this._db.wishPurchase.create({ data: { UserId: userId, WishId: wishId, GroupId: groupId } });
     }
 
+    async deleteWishPurchase(userId: string, wishPurchaseId: string) {
+        const wishPurchase = await this._db.wishPurchase.findFirst({
+            where: {
+                Id: wishPurchaseId,
+            },
+        });
+
+        if (!wishPurchase) {
+            throw new Error("Couldn't find wish");
+        }
+
+        if (wishPurchase.UserId !== userId) {
+            throw new Error('User does not own wish.');
+        }
+
+        return this._db.wishPurchase.delete({
+            where: {
+                Id: wishPurchaseId,
+            },
+        });
+    }
+
     async ungiveGroupGift(userId: string, wishId: string, groupId: string) {
         // todo: make this
     }

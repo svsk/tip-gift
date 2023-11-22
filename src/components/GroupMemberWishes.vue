@@ -81,12 +81,12 @@ const findGivers = (wish: Wish) => {
                         <WishListItem :class="{ grow: true }" :entry="wish"> </WishListItem>
 
                         <div class="flex no-wrap items-center">
-                            <div v-for="buyer in findGivers(wish)" :key="buyer.Id" class="relative select-none">
-                                <div class="scale-[0.5]">
-                                    <User without-username :user-id="buyer.UserId" />
-                                </div>
-                                <div class="absolute bottom-[4px] right-[4px] scale-75">🎁</div>
-                            </div>
+                            <BoughtIndicator
+                                v-for="buyer in findGivers(wish)"
+                                :key="buyer.Id"
+                                :wish-purchase="buyer"
+                                :wish-title="wish.Name"
+                            />
 
                             <Button round @click="() => handleBuyClicked(wish)">
                                 <Icon font-size="24px" name="shopping_cart" />
