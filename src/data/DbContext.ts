@@ -195,6 +195,8 @@ export class DbContext {
         return await this._db.wishUserGroup.update({
             data: {
                 GroupName: group.GroupName,
+                AvatarColour: group.AvatarColour,
+                AvatarEmoji: group.AvatarEmoji,
             },
             where: {
                 Id: group.Id,

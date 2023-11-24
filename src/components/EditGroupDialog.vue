@@ -44,7 +44,14 @@ const handleSubmit = (confirm: boolean) => {
         </template>
 
         <form @submit.prevent="() => handleSubmit(true)" class="flex flex-col gap-6 flex-nowrap">
-            <Input ref="input" v-model="group.GroupName" :label="i18n('GroupName')" class="w-full" />
+            <div class="flex flex-nowrap gap-2 items-center">
+                <GroupsGroupAvatar :group="group" />
+                <Input ref="input" v-model="group.GroupName" :label="i18n('GroupName')" class="w-full" />
+            </div>
+            <div class="flex flex-nowrap gap-2 items-center">
+                <ColorPicker v-model="group.AvatarColour" />
+                <EmojiPicker v-model="group.AvatarEmoji" />
+            </div>
 
             <div class="flex justify-end gap-2">
                 <Button flat @click="() => handleSubmit(false)">
