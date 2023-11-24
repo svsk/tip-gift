@@ -12,6 +12,7 @@ const emit = defineEmits<Emits>();
 
 const value = ref(props.modelValue);
 const colorPicker = ref<any>(null);
+const showColorPicker = ref(false);
 
 watch(
     () => value.value,
@@ -24,6 +25,7 @@ watch(
 );
 
 const handleButtonClicked = () => {
+    showColorPicker.value = !showColorPicker.value;
     colorPicker.value?.click();
 };
 
@@ -33,14 +35,17 @@ const handleColorChanged = (color: string) => {
 </script>
 
 <template>
-    <Button @click="handleButtonClicked" round style="height: 45px; width: 45px">
+    <Button @click="handleButtonClicked" round style="height: 45px; width: 45px" class="relative">
         <Icon font-size="24px" name="palette" />
         <input
             ref="colorPicker"
             type="color"
             :value="value"
             @input="(e: any) => handleColorChanged(e.target.value)"
-            class="fixed scale-0"
+            :class="{
+                absolute: true,
+                'scale-0': !showColorPicker,
+            }"
         />
     </Button>
 </template>
