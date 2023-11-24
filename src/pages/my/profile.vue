@@ -118,15 +118,15 @@ const handleLogOut = async () => {
             <div class="flex gap-2">
                 <Button @click="handleChangeColor" round style="height: 45px; width: 45px">
                     <Icon font-size="24px" name="palette" />
+                    <input
+                        v-if="user"
+                        ref="colorPicker"
+                        type="color"
+                        :value="user.AvatarColour"
+                        @input="(e: any) => handleColorChanged(e.target.value)"
+                        class="fixed scale-0"
+                    />
                 </Button>
-                <input
-                    v-if="user"
-                    ref="colorPicker"
-                    type="color"
-                    :value="user.AvatarColour"
-                    @input="(e: any) => handleColorChanged(e.target.value)"
-                    class="fixed h-0 w-0 border-none border-b-0 bg-none opacity-0 bg-transparent"
-                />
 
                 <Button @click="handleChangeEmoji" round style="height: 45px; width: 45px">
                     <Icon font-size="24px" name="mood" />

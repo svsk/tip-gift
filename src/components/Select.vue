@@ -44,7 +44,7 @@ watch(
             v-model="value"
             :readonly="readonly"
             :class="{
-                'border-b-2 border-blue-600 bg-black bg-opacity-20 rounded-t p-1 pb-2 pt-4 outline-none w-full text-base': true,
+                'border-b-2 border-blue-600 bg-black bg-opacity-20 rounded-t p-1 pb-2 pt-4 outline-none w-full text-base h-[50px]': true,
                 // 'read-only:border-gray-400 read-only:border-dashed read-only:border-b': true,
                 'border-red-500': !!errorMessage,
                 'transition-colors': true,
