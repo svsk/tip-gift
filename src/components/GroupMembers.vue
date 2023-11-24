@@ -32,7 +32,7 @@ const handleUserAdded = (user: WishUser) => {
 </script>
 
 <template>
-    <div class="flex gap-4 items-center">
+    <div class="flex gap-2 items-center">
         <button
             v-ripple
             v-for="member in members"
