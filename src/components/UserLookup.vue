@@ -40,7 +40,7 @@ const handleUserSelected = (user: WishUser) => {
             </template>
         </Input>
 
-        <Card v-if="result.length" class="flex flex-col gap-4 p-4 absolute w-full shadow-md">
+        <Card v-if="result.length" class="flex flex-col gap-4 p-4 absolute w-full shadow-md z-50">
             <User
                 v-for="user in result"
                 :key="user.Id"
