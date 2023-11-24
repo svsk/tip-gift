@@ -34,11 +34,11 @@ const handleDeleteConfirmed = () => {
 </script>
 
 <template>
-    <div :class="{ 'relative select-none': true }" @click="handleClick">
+    <div :class="{ 'relative select-none w-[36px]': true }" @click="handleClick">
         <div class="scale-[0.5]">
             <User without-username :user-id="wishPurchase.UserId" :class="{ 'cursor-pointer': isCurrentUserBuyer }" />
         </div>
-        <div class="absolute bottom-[4px] right-[4px] scale-75">🎁</div>
+        <div class="absolute bottom-[4px] right-[-6px] scale-75">🎁</div>
 
         <Dialog :model-value="showDeleteConfirmation">
             <template #title> <Localized tkey="RemoveBoughtWish" /> </template>

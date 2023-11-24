@@ -64,6 +64,9 @@ const langLib = (lang: SupportedLanguage) => {
             GroupDeleteConfirmation: "Er du sikker på at du ønsker å slette '{0}'?",
             RemoveBoughtWish: 'Fjern kjøpt produkt?',
             ConfirmRemoveBoughtWish: "Vil du fjerne kjøpsmarkerningen fra '{0}'?",
+            ShowGivers: 'Vis givere',
+            No: 'Nei',
+            Yes: 'Ja',
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -115,6 +118,9 @@ const langLib = (lang: SupportedLanguage) => {
             GroupDeleteConfirmation: "Are you sure you want to delete '{0}'?",
             RemoveBoughtWish: 'Remove bought product?',
             ConfirmRemoveBoughtWish: "Do you want to remove your bought-indication from '{0}'?",
+            ShowGivers: 'Show Givers',
+            No: 'No',
+            Yes: 'Yes',
         },
     } as Record<SupportedLanguage, Record<string, string>>;
 
