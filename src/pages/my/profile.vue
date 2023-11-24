@@ -1,33 +1,7 @@
 <script setup lang="ts">
-import data from '@emoji-mart/data';
-import { Picker as EmojiPicker } from 'emoji-mart';
-
 usePageTitle('My Profile');
 const userId = useAuth().value?.id || '';
 const user = useUser(userId);
-
-const colorPicker = ref<any>(null);
-const emojiPickerContainer = ref<any>(null);
-let appendTry: any = null;
-
-onMounted(() => {
-    const emojiPicker = new EmojiPicker({
-        data,
-        theme: 'dark',
-        onEmojiSelect: handleEmojiClicked,
-    });
-
-    appendTry = setInterval(() => {
-        if (emojiPickerContainer.value?.appendChild) {
-            emojiPickerContainer.value.appendChild(emojiPicker);
-            clearInterval(appendTry);
-        }
-    }, 500);
-});
-
-onBeforeUnmount(() => {
-    clearInterval(appendTry);
-});
 
 const handleNameChanged = (newName: string) => {
     if (user.value) {
@@ -44,16 +18,8 @@ const handleLanguageChanged = async (newLanguage: string) => {
     }
 };
 
-const handleChangeColor = () => {
-    colorPicker.value?.click();
-};
-
-const handleChangeEmoji = () => {
-    showEmojiPicker.value = !showEmojiPicker.value;
-};
-
 let debouncedUpdate: NodeJS.Timeout | undefined = undefined;
-const handleColorChanged = (newColour: string) => {
+const handleColorChanged = (newColour: string | null) => {
     if (user.value) {
         user.value.AvatarColour = newColour;
         clearTimeout(debouncedUpdate);
@@ -65,13 +31,10 @@ const handleColorChanged = (newColour: string) => {
     }
 };
 
-const showEmojiPicker = ref(false);
-
-const handleEmojiClicked = (e: any) => {
+const handleEmojiClicked = (emoji: string | null) => {
     if (user.value) {
-        user.value.AvatarEmoji = e.native;
+        user.value.AvatarEmoji = emoji;
         updateUser(user.value);
-        showEmojiPicker.value = false;
     }
 };
 
@@ -116,27 +79,8 @@ const handleLogOut = async () => {
 
         <div class="flex gap-6 justify-between">
             <div class="flex gap-2">
-                <Button @click="handleChangeColor" round style="height: 45px; width: 45px">
-                    <Icon font-size="24px" name="palette" />
-                    <input
-                        v-if="user"
-                        ref="colorPicker"
-                        type="color"
-                        :value="user.AvatarColour"
-                        @input="(e: any) => handleColorChanged(e.target.value)"
-                        class="fixed scale-0"
-                    />
-                </Button>
-
-                <Button @click="handleChangeEmoji" round style="height: 45px; width: 45px">
-                    <Icon font-size="24px" name="mood" />
-                </Button>
-
-                <Transition name="slideDown">
-                    <div v-show="showEmojiPicker" class="fixed z-10">
-                        <div ref="emojiPickerContainer"></div>
-                    </div>
-                </Transition>
+                <ColorPicker v-if="user" :model-value="user.AvatarColour" @update:modelValue="handleColorChanged" />
+                <EmojiPicker v-if="user" :model-value="user.AvatarEmoji" @update:modelValue="handleEmojiClicked" />
             </div>
 
             <div>
