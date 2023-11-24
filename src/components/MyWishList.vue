@@ -165,9 +165,9 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
         </draggable>
     </div>
 
-    <Toast ref="addToast">
+    <Toast ref="addToast" location="top">
         <div class="flex flex-row items-center no-wrap gap-4">
-            <Icon name="check" font-size="32px" />
+            <Icon name="check" font-size="32px" class-name="text-green-500" />
             <Localized tkey="WishAdded" />
         </div>
     </Toast>
