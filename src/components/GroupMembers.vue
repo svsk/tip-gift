@@ -39,7 +39,7 @@ const handleUserAdded = (user: WishUser) => {
             :key="member.Id"
             @click="() => handleMemberClicked(member.UserId)"
             :class="{
-                'relative flex items-center justify-center p-4 flex-col gap-2 rounded w-[90px]': true,
+                'relative flex items-center justify-center p-4 flex-col gap-2 rounded min-w-[90px] w-[90px]': true,
                 'bg-white bg-opacity-20': selectedMemberId === member.UserId,
             }"
         >
@@ -49,7 +49,7 @@ const handleUserAdded = (user: WishUser) => {
             />
         </button>
 
-        <Button @click="handleAddUserClicked" class="bg-white bg-opacity-20" round v-if="canAdd">
+        <Button @click="handleAddUserClicked" class="bg-white bg-opacity-20 min-w-[42px]" round v-if="canAdd">
             <Icon font-size="24px" name="add" />
         </Button>
     </div>
