@@ -44,7 +44,10 @@ const handleColorChanged = (color: string) => {
             @input="(e: any) => handleColorChanged(e.target.value)"
             :class="{
                 absolute: true,
-                'scale-0': !showColorPicker,
+                'h-[35px]': true,
+                'w-[35px]': true,
+                'rounded-full': true,
+                'opacity-0': true,
             }"
         />
     </Button>
