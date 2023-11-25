@@ -52,7 +52,7 @@ const langLib = (lang: SupportedLanguage) => {
             DeleteWish: 'Fjern Ønske',
             DeleteConfirmation: 'Er du sikker på at du ønsker å fjerne {0} fra listen?',
             Delete: 'Fjern',
-            Profile: 'Din Side',
+            Profile: 'Min Side',
             DisplayName: 'Visningsnavn',
             LogOut: 'Logg Ut',
             Language: 'Språk',
@@ -67,6 +67,9 @@ const langLib = (lang: SupportedLanguage) => {
             ShowGivers: 'Vis givere',
             No: 'Nei',
             Yes: 'Ja',
+            MainMenu: 'Hovedmeny',
+            MyGroups: 'Mine Grupper',
+            MyProfile: 'Min Side',
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -121,6 +124,9 @@ const langLib = (lang: SupportedLanguage) => {
             ShowGivers: 'Show Givers',
             No: 'No',
             Yes: 'Yes',
+            MainMenu: 'Main Menu',
+            MyGroups: 'My Groups',
+            MyProfile: 'My Profile',
         },
     } as Record<SupportedLanguage, Record<string, string>>;
 

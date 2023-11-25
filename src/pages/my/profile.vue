@@ -1,5 +1,8 @@
 <script setup lang="ts">
-usePageTitle('My Profile');
+const termKey = 'MyProfile';
+const title = computed(() => i18n(termKey));
+watch(title, (newTitle) => usePageTitle(newTitle), { immediate: true });
+
 const userId = useAuth().value?.id || '';
 const user = useUser(userId);
 

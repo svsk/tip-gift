@@ -1,5 +1,7 @@
 <script setup lang="ts">
-usePageTitle('My Groups');
+const termKey = 'MyGroups';
+const title = computed(() => i18n(termKey));
+watch(title, (newTitle) => usePageTitle(newTitle), { immediate: true });
 </script>
 
 <template>
