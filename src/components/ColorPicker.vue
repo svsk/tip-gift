@@ -46,8 +46,7 @@ const handleColorChanged = (color: string) => {
                 absolute: true,
                 'h-[35px]': true,
                 'w-[35px]': true,
-                'rounded-full': true,
-                'opacity-0': true,
+                'rounded-full opacity-0 cursor-pointer': true,
             }"
         />
     </Button>
