@@ -23,7 +23,7 @@ const handleSubmit = (confirm: boolean) => {
 
 const mustHaveSelectedUser = () => {
     if (!selectedUser.value) {
-        return 'Required';
+        return i18n('Required');
     }
 
     return true;

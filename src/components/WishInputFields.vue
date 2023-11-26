@@ -59,7 +59,7 @@ const required = (val: any) => {
         return true;
     }
 
-    return !!val ? true : 'Required';
+    return !!val ? true : i18n('Required');
 };
 
 const shouldBeUrl = (val: any) => {

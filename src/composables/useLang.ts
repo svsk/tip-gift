@@ -69,6 +69,7 @@ const langLib = (lang: SupportedLanguage) => {
             Yes: 'Ja',
             MyGroups: 'Mine Grupper',
             MyProfile: 'Min Side',
+            Required: 'Påkrevd',
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -125,6 +126,7 @@ const langLib = (lang: SupportedLanguage) => {
             Yes: 'Yes',
             MyGroups: 'My Groups',
             MyProfile: 'My Profile',
+            Required: 'Required',
         },
     } as Record<SupportedLanguage, Record<string, string>>;
 
