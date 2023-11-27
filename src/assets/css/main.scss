@@ -34,5 +34,9 @@ body.embedded {
             transition: transform 700ms, opacity 700ms;
             opacity: 0.2;
         }
+
+		&.ripple-ended {
+			opacity: 0;
+		}
     }
 }

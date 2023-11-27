@@ -19,6 +19,8 @@ export default defineNuxtPlugin((nuxtApp) => {
                     parent.appendChild(ripple);
                 }
 
+                ripple.classList.remove('ripple-ended');
+
                 //const ripple = e.target.querySelector('.ripple');
                 const size = parent.offsetWidth;
                 const pos = parent.getBoundingClientRect();
@@ -40,14 +42,13 @@ export default defineNuxtPlugin((nuxtApp) => {
                 }, 0);
             });
 
-            parent.addEventListener('mouseup', (e: MouseEvent) => {
-                const ripple = (e.target as HTMLElement)?.querySelector('.ripple');
+            parent.addEventListener('mouseup', (_: MouseEvent) => {
+                const ripples = Array.from(document.querySelectorAll('.ripple'));
                 clearTimeout(timerId);
 
                 timerId = setTimeout(() => {
-                    ripple?.classList.remove('ripple-active');
-                    ripple?.classList.remove('ripple-start');
-                }, 500);
+                    ripples.forEach((rip) => rip.classList.add('ripple-ended'));
+                }, 200);
             });
         },
         getSSRProps: () => ({}),
