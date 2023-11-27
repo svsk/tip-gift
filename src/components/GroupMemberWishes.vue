@@ -10,7 +10,7 @@ const props = defineProps<Props>();
 
 const { data: groupWishes } = await useGroupWishes(props.groupId);
 const { data: currentUserWishes } = await useWishes();
-const { data: givenGifts } = await useGroupGivenGifts(props.groupId);
+const { data: givenGifts } = await useGroupWishPurchases(props.groupId);
 
 const currentUserId = useAuth()?.value?.id;
 
@@ -42,7 +42,7 @@ const handleBuyClicked = (wish: Wish) => {
 };
 
 const findGivers = (wish: Wish) => {
-    if (!showGivers.value) {
+    if (!showGivers.value || !givenGifts.value) {
         return [];
     }
 

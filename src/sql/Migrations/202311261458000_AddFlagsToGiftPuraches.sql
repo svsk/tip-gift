@@ -1,0 +1,2 @@
+ALTER TABLE [WishPurchase] ADD [WrappedDate] DATETIMEOFFSET(5) NULL;
+ALTER TABLE [WishPurchase] ADD [GivenDate] DATETIMEOFFSET(5) NULL;

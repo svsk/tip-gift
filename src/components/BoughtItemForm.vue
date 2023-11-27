@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { type Wish } from '@prisma-app/client';
-import { giveGift } from '~~/composables/useGroups';
 
 interface Props {
     item: Wish;

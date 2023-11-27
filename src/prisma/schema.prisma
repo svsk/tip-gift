@@ -30,12 +30,15 @@ model WishUser {
 }
 
 model WishPurchase {
-  Id            String    @id(map: "PK__WishPurc__3214EC0755BFE815") @default(dbgenerated("newid()"), map: "DF__WishPurchase__Id__2EA5EC27") @db.UniqueIdentifier
-  UserId        String    @db.UniqueIdentifier
-  WishId        String    @db.UniqueIdentifier
-  GroupId       String    @db.UniqueIdentifier
-  CreatedDate   DateTime  @default(dbgenerated("getutcdate()"), map: "DF__WishPurch__Creat__2F9A1060") @db.DateTimeOffset
-  PurchasedDate DateTime? @db.DateTimeOffset
+  Id                   String    @id(map: "PK__WishPurc__3214EC0755BFE815") @default(dbgenerated("newid()"), map: "DF__WishPurchase__Id__2EA5EC27") @db.UniqueIdentifier
+  UserId               String    @db.UniqueIdentifier
+  WishId               String    @db.UniqueIdentifier
+  GroupId              String    @db.UniqueIdentifier
+  CreatedDate          DateTime  @default(dbgenerated("getutcdate()"), map: "DF__WishPurch__Creat__2F9A1060") @db.DateTimeOffset
+  PurchasedDate        DateTime? @db.DateTimeOffset
+  WrappedDate          DateTime? @db.DateTimeOffset
+  GivenDate            DateTime? @db.DateTimeOffset
+  ShipmentReceivedDate DateTime? @db.DateTimeOffset
 }
 
 model WishUserGroup {

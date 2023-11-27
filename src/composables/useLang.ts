@@ -70,6 +70,13 @@ const langLib = (lang: SupportedLanguage) => {
             MyGroups: 'Mine Grupper',
             MyProfile: 'Min Side',
             Required: 'Påkrevd',
+            MyChecklist: 'Min Sjekkliste',
+            ChecklistExplanation: 'Dette er en sjekkliste for å holde styr på dine gavekjøp, og deres status.',
+            MarkAsPurchased: 'Marker som kjøpt',
+            MarkAsWrapped: 'Marker som innpakket',
+            MarkAsGiven: 'Marker som gitt',
+            MarkAsShipmentReceived: 'Marker som Mottatt',
+            GiftFor: 'Til',
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -127,6 +134,13 @@ const langLib = (lang: SupportedLanguage) => {
             MyGroups: 'My Groups',
             MyProfile: 'My Profile',
             Required: 'Required',
+            MyChecklist: 'My Checklist',
+            ChecklistExplanation: 'This is a checklist for you to keep track of your gift purchases, and their status.',
+            MarkAsPurchased: 'Mark as Purchased',
+            MarkAsWrapped: 'Mark as Wrapped',
+            MarkAsGiven: 'Mark as Given',
+            MarkAsShipmentReceived: 'Mark Shipment as Received',
+            GiftFor: 'For',
         },
     } as Record<SupportedLanguage, Record<string, string>>;
 

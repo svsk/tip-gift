@@ -24,18 +24,18 @@
                 </div>
             </NuxtLink>
 
-            <!-- <NuxtLink to="/my/wishes" class="flex items-center gap-2">
+            <NuxtLink to="/my/checklist" class="flex items-center gap-2">
                 <EmojiAvatar :color="'#2563eb'"> 📃 </EmojiAvatar>
 
                 <div>
                     <div>
-                        <Localized tkey="ShoppingList" />
+                        <Localized tkey="MyChecklist" />
                     </div>
                     <div class="text-xs opacity-60">
                         <Localized tkey="ItemsYouveReserved" />
                     </div>
                 </div>
-            </NuxtLink> -->
+            </NuxtLink>
         </div>
 
         <hr class="opacity-25" />

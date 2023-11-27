@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { deleteWishPurchase } from '~/composables/useGroups';
 import { useCurrentUser } from '~/composables/useUser';
 
 interface Props {

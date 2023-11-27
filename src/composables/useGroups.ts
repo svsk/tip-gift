@@ -3,7 +3,6 @@ import { type WishUserGroup } from '@prisma-app/client';
 const storeKey = 'userGroups';
 const groupWishKey = 'userGroupWishes';
 const groupUserKey = 'userGroupUsers';
-const givenGroupGiftKey = 'givenGroupGifts';
 
 export const useGroups = () =>
     useAsyncData(storeKey, () => $fetch('/api/groups/getall', useAuthentication()), { immediate: true });
@@ -78,28 +77,6 @@ export const addUserToGroup = async (groupId: string, userId: string) => {
     return result;
 };
 
-export const giveGift = async (groupId: string, wishId: string) => {
-    await $fetch(`/api/groups/${groupId}/${wishId}/give`, {
-        method: 'POST',
-        ...useAuthentication(),
-    });
-};
-
-export const deleteWishPurchase = async (wishPurchaseId: string, groupId: string) => {
-    await $fetch(`/api/wishpurchases/${wishPurchaseId}`, {
-        method: 'DELETE',
-        ...useAuthentication(),
-    });
-
-    refreshGivenGifts(groupId);
-};
-
-export const useGroupGivenGifts = (groupId: string) =>
-    useAsyncData(`${givenGroupGiftKey}-${groupId}`, () => $fetch(`/api/groups/${groupId}/given`, useAuthentication()), {
-        immediate: true,
-    });
-
 export const refreshGroups = async () => await (await useGroups()).refresh();
 export const refreshGroupWishes = async (groupId: string) => await (await useGroupWishes(groupId)).refresh();
 export const refreshGroupUsers = async (groupId: string) => await (await useGroupUsers(groupId)).refresh();
-export const refreshGivenGifts = async (groupId: string) => await (await useGroupGivenGifts(groupId)).refresh();

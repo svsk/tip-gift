@@ -1,7 +1,16 @@
-import { type Wish, type WishUser, type WishUserGroup, type WishUserGroupUser } from '@prisma-app/client';
+import {
+    type Wish,
+    type WishUser,
+    type WishUserGroup,
+    type WishUserGroupUser,
+    type WishPurchase,
+} from '@prisma-app/client';
 import { usePrisma } from './usePrisma';
+import type { WishPurchaseWish } from '~/prisma/customTypes';
 
 export class DbContext {
+    private _db = usePrisma();
+
     async getGivenGifts(groupId: any, userId: string) {
         const myWishes = await this.getWishes(userId);
         const givenGifts = await this._db.wishPurchase.findMany({ where: { GroupId: groupId } });
@@ -10,7 +19,37 @@ export class DbContext {
         return givenGifts.filter((gg) => !myWishIds.includes(gg.WishId));
     }
 
-    private _db = usePrisma();
+    async getWishPurchases(userId: string) {
+        const result = await this._db.$queryRaw<WishPurchaseWish[]>`
+			SELECT
+				wp.*,
+				w.[Name],
+				w.UserId,
+				w.ImageUrl,
+				w.UserId AS WishOwnerId
+			FROM [WishPurchase] wp
+			JOIN [Wish] w
+				ON w.Id = wp.WishId
+			WHERE wp.UserId = ${userId}
+		`;
+
+        return result;
+    }
+
+    async updatePurchase(userId: string, purchase: Partial<WishPurchase>) {
+        return await this._db.wishPurchase.update({
+            data: {
+                PurchasedDate: purchase.PurchasedDate,
+                ShipmentReceivedDate: purchase.ShipmentReceivedDate,
+                WrappedDate: purchase.WrappedDate,
+                GivenDate: purchase.GivenDate,
+            },
+            where: {
+                Id: purchase.Id,
+                UserId: userId,
+            },
+        });
+    }
 
     getWishes(userId: string) {
         return this._db.wish.findMany({ where: { UserId: { equals: userId } }, orderBy: [{ Order: 'asc' }] });
