@@ -5,6 +5,7 @@ interface Props {
     flat?: boolean;
     disable?: boolean;
     color?: string;
+    noRipple?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -13,6 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
     type: 'button',
     disable: false,
     color: 'bg-blue-600',
+    noRipple: false,
 });
 
 const emit = defineEmits(['click']);
@@ -32,7 +34,7 @@ const classes = computed(() => {
 
 <template>
     <button
-        v-ripple
+        v-ripple="!props.noRipple"
         :type="type"
         :disabled="disable"
         :class="{

@@ -21,7 +21,7 @@ const { data: purchases } = await useMyWishPurchases();
                         {{ purchase.Name }}
                     </div>
 
-                    <ChecklistProgress :wish-purchase="purchase" />
+                    <WishPurchaseProgress :wish-purchase="purchase" />
                 </div>
 
                 <div>

@@ -22,6 +22,6 @@ definePageMeta({
 
         <div class="overflow-x-auto"></div>
 
-        <ChecklistGiftPurchaseList />
+        <WishPurchaseList />
     </Card>
 </template>

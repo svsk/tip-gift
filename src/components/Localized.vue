@@ -8,5 +8,5 @@ defineProps<Props>();
 </script>
 
 <template>
-    {{ lowercase ? i18n(tkey).toLowerCase() : i18n(tkey) }}
+    <span>{{ lowercase ? i18n(tkey).toLowerCase() : i18n(tkey) }}</span>
 </template>
