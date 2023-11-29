@@ -1,6 +1,8 @@
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.directive('ripple', {
-        mounted: (parent: HTMLElement) => {
+        mounted: (parent: HTMLElement, directiveData: { value: boolean }) => {
+            if (directiveData.value === false) return;
+
             parent.dataset.hasRipple = 'true';
             let timerId: any = 0;
 
