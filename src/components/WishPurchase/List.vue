@@ -1,14 +1,32 @@
 <script setup lang="ts">
-import type { WishPurchaseWish } from '~/prisma/customTypes';
-
 const { data: purchases } = await useMyWishPurchases();
+
+const filterGiven = cachedRef('filter-completed-wish-purchases', true);
+
+const sortedPurchases = computed(() => {
+    return Array.from(purchases.value || [])
+        .filter((p) => {
+            if (filterGiven.value && !!p.GivenDate) {
+                return false;
+            }
+
+            return true;
+        })
+        .sort((a, b) => {
+            return a.WishOwnerId.localeCompare(b.WishOwnerId);
+        });
+});
 </script>
 
 <template>
     <div class="flex flex-col w-full">
-        <TransitionGroup name="growSlow">
+        <div class="w-full flex items-center justify-end pb-4">
+            <WishPurchaseListFilter v-model:filter-given="filterGiven" />
+        </div>
+
+        <TransitionGroup name="growDownSlow">
             <NuxtLink
-                v-for="purchase in purchases"
+                v-for="purchase in sortedPurchases"
                 v-ripple
                 :key="purchase.Id"
                 class="border-t first:border-t-0 py-2 flex flex-row items-center flex-nowrap gap-3 w-full justify-between relative rounded border-slate-600"

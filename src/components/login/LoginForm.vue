@@ -2,15 +2,13 @@
 import Input from '../Input.vue';
 
 const supabase = useSupabaseClient();
-const email = ref('');
+const email = cachedRef('last-login-email', '');
 const loading = ref(false);
 const successfulSignin = ref(false);
 const login = ref<InstanceType<typeof Input>>();
 
 const handleLogin = async () => {
     loading.value = true;
-
-    localStorage.setItem('last-login-email', email.value);
 
     try {
         const redirectTarget = window.location.origin + '/confirm';
@@ -33,7 +31,6 @@ const handleLogin = async () => {
 
 onMounted(() => {
     login.value?.focus();
-    email.value = localStorage.getItem('last-login-email') || '';
 });
 
 const required = (val: any) => {
@@ -50,6 +47,8 @@ const mustBeEmail = (val: string) => {
 <template>
     <Card>
         <h1 class="self-start mb-2 text-2xl">Log In</h1>
+
+        {{ email }}
 
         <div class="py-8 w-full flex justify-center items-center">
             <Transition name="growDown">

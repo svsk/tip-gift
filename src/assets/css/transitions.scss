@@ -134,3 +134,17 @@
 .growSlow-leave-to {
     transform: scale(0);
 }
+
+/** growDownSlow **/
+.growDownSlow-enter-active,
+.growDownSlow-leave-active {
+    transition: all 0.2s linear;
+	transform-origin: top;
+	will-change: transform, opacity;
+}
+
+.growDownSlow-enter-from,
+.growDownSlow-leave-to {
+	opacity: 0;
+    transform: scaleY(0);
+}

@@ -79,6 +79,7 @@ const langLib = (lang: SupportedLanguage) => {
             GiftFor: 'Til',
             JoinGroup: 'Bli med i gruppe',
             AlreadyAMember: 'Allerede medlem',
+            FilterGiven: 'Skjul gitte gaver',
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -145,6 +146,7 @@ const langLib = (lang: SupportedLanguage) => {
             GiftFor: 'For',
             JoinGroup: 'Join Group',
             AlreadyAMember: 'Already a member',
+            FilterGiven: 'Hide given gifts',
         },
     } as Record<SupportedLanguage, Record<string, string>>;
 
