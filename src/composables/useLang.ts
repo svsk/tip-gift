@@ -77,6 +77,8 @@ const langLib = (lang: SupportedLanguage) => {
             MarkAsGiven: 'Marker som gitt',
             MarkAsShipmentReceived: 'Marker som Mottatt',
             GiftFor: 'Til',
+            JoinGroup: 'Bli med i gruppe',
+            AlreadyAMember: 'Allerede medlem',
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -141,6 +143,8 @@ const langLib = (lang: SupportedLanguage) => {
             MarkAsGiven: 'Mark as Given',
             MarkAsShipmentReceived: 'Mark Shipment as Received',
             GiftFor: 'For',
+            JoinGroup: 'Join Group',
+            AlreadyAMember: 'Already a member',
         },
     } as Record<SupportedLanguage, Record<string, string>>;
 

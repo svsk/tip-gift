@@ -31,7 +31,7 @@ const mustHaveSelectedUser = () => {
 
 const mustNotAlreadyBeInGroup = () => {
     if (groupUsers.value?.some((gu) => gu.UserId === selectedUser.value?.Id)) {
-        return 'Already a member';
+        return i18n('AlreadyAMember');
     }
 
     return true;
