@@ -29,8 +29,8 @@ const handleDeleteConfirmed = async () => {
             class="py-2 flex justify-between items-center border-slate-600 border-b last:border-b-0"
         >
             <NuxtLink :to="`/my/group/${group.Id}`" class="flex items-center gap-2 flex-nowrap">
-                <GroupsGroupAvatar :group="group" />
-                <GroupsGroupListItem :group="group" />
+                <GroupAvatar :group="group" />
+                <GroupListItem :group="group" />
             </NuxtLink>
 
             <Button v-if="isGroupAdmin(() => group)" round @click="handleDeleteGroup(group)">

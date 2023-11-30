@@ -7,7 +7,7 @@
                 </h1>
             </div>
 
-            <GroupsAddGroupButton />
+            <GroupAddButton />
         </div>
 
         <div class="flex flex-col gap-6">
@@ -46,6 +46,6 @@
             </div>
         </div>
 
-        <GroupsGroupList />
+        <GroupList />
     </Card>
 </template>

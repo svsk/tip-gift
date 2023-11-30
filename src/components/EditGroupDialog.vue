@@ -45,7 +45,7 @@ const handleSubmit = (confirm: boolean) => {
 
         <form @submit.prevent="() => handleSubmit(true)" class="flex flex-col gap-6 flex-nowrap">
             <div class="flex flex-nowrap gap-2 items-center">
-                <GroupsGroupAvatar :group="group" />
+                <GroupAvatar :group="group" />
                 <Input ref="input" v-model="group.GroupName" :label="i18n('GroupName')" class="w-full" />
             </div>
             <div class="flex flex-nowrap gap-2 items-center">
