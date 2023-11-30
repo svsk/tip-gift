@@ -48,8 +48,6 @@ const mustBeEmail = (val: string) => {
     <Card>
         <h1 class="self-start mb-2 text-2xl">Log In</h1>
 
-        {{ email }}
-
         <div class="py-8 w-full flex justify-center items-center">
             <Transition name="growDown">
                 <Form
