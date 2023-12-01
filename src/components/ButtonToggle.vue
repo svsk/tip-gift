@@ -64,7 +64,7 @@ const active = computed(() => 'bg-blue-600');
             v-for="(option, index) in options"
             :key="option.value"
             :class="{
-                'relative focus-visible:outline-none transition-all uppercase tracking-wide font-medium text-sm': true,
+                'relative focus-visible:outline-none transition-all uppercase tracking-wide font-medium text-sm flex-grow': true,
                 [classes]: true,
                 [buildBorderClass(index)]: true,
                 [active]: option.value === value,

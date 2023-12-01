@@ -80,11 +80,13 @@
 }
 
 .slidePast-enter-from {
+	position: absolute;
 	transform: translateX(20px);
     opacity: 0;
 }
 
 .slidePast-leave-to {
+	position: absolute;
     transform: translateX(-20px);
     opacity: 0;
 }
