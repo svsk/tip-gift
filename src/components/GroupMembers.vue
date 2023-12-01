@@ -19,7 +19,10 @@ const handleMemberClicked = (userId: string) => {
     emit('update:selectedMemberId', userId);
 };
 
-const canAdd = isGroupAdmin(() => groups.value?.find((g) => g.Id === props.groupId));
+const canAdd = computed(() => {
+    const group = groups.value?.find((g) => g.Id === props.groupId);
+    return !!group && isGroupAdmin(group);
+});
 
 const handleAddUserClicked = () => {
     showAddUserDialog.value = true;

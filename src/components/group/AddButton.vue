@@ -19,8 +19,11 @@ const handleConfirm = async (grp: WishUserGroup) => {
 </script>
 
 <template>
-    <Button @click="handleAddGroupClicked" class="whitespace-nowrap">
-        <Localized tkey="AddGroup" />
-    </Button>
+    <slot :handleAddClicked="handleAddGroupClicked">
+        <Button @click="handleAddGroupClicked" class="whitespace-nowrap">
+            <Localized tkey="AddGroup" />
+        </Button>
+    </slot>
+
     <EditGroupDialog v-model="showDialog" @confirm="handleConfirm" />
 </template>

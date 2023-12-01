@@ -6,8 +6,6 @@
                     <Localized tkey="MyWishLists" />
                 </h1>
             </div>
-
-            <GroupAddButton />
         </div>
 
         <div class="flex flex-col gap-6">

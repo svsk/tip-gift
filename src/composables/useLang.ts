@@ -80,6 +80,8 @@ const langLib = (lang: SupportedLanguage) => {
             JoinGroup: 'Bli med i gruppe',
             AlreadyAMember: 'Allerede medlem',
             FilterGiven: 'Skjul gitte gaver',
+            NewGroup: 'Ny Gruppe',
+            JoinOrAddNewGroup: 'Bli med i en gruppe eller opprett en helt ny!',
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -147,6 +149,8 @@ const langLib = (lang: SupportedLanguage) => {
             JoinGroup: 'Join Group',
             AlreadyAMember: 'Already a member',
             FilterGiven: 'Hide given gifts',
+            NewGroup: 'New Group',
+            JoinOrAddNewGroup: 'Join a group or add a brand new one!',
         },
     } as Record<SupportedLanguage, Record<string, string>>;
 

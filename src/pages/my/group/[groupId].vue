@@ -14,7 +14,9 @@ const handleGroupEdited = (updatedGroup: WishUserGroup) => {
     updateGroup(updatedGroup);
 };
 
-const canEdit = isGroupAdmin(() => group.value);
+const canEdit = computed(() => {
+    return !!group.value && isGroupAdmin(group.value);
+});
 </script>
 
 <template>
