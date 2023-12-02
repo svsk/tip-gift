@@ -43,15 +43,8 @@ const handleSubmit = (confirm: boolean) => {
             <Localized v-else tkey="AddGroup" />
         </template>
 
-        <form @submit.prevent="() => handleSubmit(true)" class="flex flex-col gap-6 flex-nowrap">
-            <div class="flex flex-nowrap gap-2 items-center">
-                <GroupAvatar :group="group" />
-                <Input ref="input" v-model="group.GroupName" :label="i18n('GroupName')" class="w-full" />
-            </div>
-            <div class="flex flex-nowrap gap-2 items-center">
-                <ColorPicker v-model="group.AvatarColour" />
-                <EmojiPicker v-model="group.AvatarEmoji" />
-            </div>
+        <Form @submit="() => handleSubmit(true)">
+            <GroupEditForm :group="group" />
 
             <div class="flex justify-end gap-2">
                 <Button flat @click="() => handleSubmit(false)">
@@ -61,6 +54,6 @@ const handleSubmit = (confirm: boolean) => {
                     <Localized tkey="Confirm" />
                 </Button>
             </div>
-        </form>
+        </Form>
     </Dialog>
 </template>

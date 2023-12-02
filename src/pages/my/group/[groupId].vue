@@ -49,5 +49,5 @@ const canEdit = computed(() => {
         <GroupMemberWishes :group-id="groupId.toString()" :group-member-id="groupMemberId" />
     </Card>
 
-    <EditGroupDialog v-model="showEditDialog" :group="group" @confirm="handleGroupEdited" />
+    <GroupEditDialog v-model="showEditDialog" :group="group" @confirm="handleGroupEdited" />
 </template>
