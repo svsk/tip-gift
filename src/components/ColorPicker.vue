@@ -1,10 +1,10 @@
 <script setup lang="ts">
 interface Props {
-    modelValue: string | null;
+    modelValue: string | null | undefined;
 }
 
 interface Emits {
-    (event: 'update:modelValue', value: string | null): void;
+    (event: 'update:modelValue', value: string | null | undefined): void;
 }
 
 const props = defineProps<Props>();

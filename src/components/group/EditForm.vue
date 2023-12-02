@@ -2,7 +2,7 @@
 import type { WishUserGroup } from '@prisma-app/client';
 
 interface Props {
-    group: WishUserGroup;
+    group: Partial<WishUserGroup>;
 }
 
 defineProps<Props>();

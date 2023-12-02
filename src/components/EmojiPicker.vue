@@ -3,7 +3,7 @@ import data from '@emoji-mart/data';
 import { Picker as JsEmojiPicker } from 'emoji-mart';
 
 interface Props {
-    modelValue: string | null;
+    modelValue: string | null | undefined;
 }
 
 interface Emits {
@@ -22,7 +22,6 @@ onMounted(() => {
         data,
         theme: 'dark',
         onEmojiSelect: (e: { native: string }) => {
-            console.log(e);
             emit('update:modelValue', e.native);
             showEmojiPicker.value = false;
         },

@@ -25,5 +25,5 @@ const handleConfirm = async (grp: WishUserGroup) => {
         </Button>
     </slot>
 
-    <GroupEditDialog v-model="showDialog" @confirm="handleConfirm" />
+    <GroupJoinOrCreateDialog v-model="showDialog" @confirm="handleConfirm" />
 </template>
