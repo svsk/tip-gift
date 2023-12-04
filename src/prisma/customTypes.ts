@@ -11,4 +11,5 @@ export type WishPurchaseWish = {
     GivenDate: Date | null;
     Name: string;
     ImageUrl: string | null;
+    Link: string;
 };

@@ -15,7 +15,7 @@ const className = computed(
 </script>
 
 <template>
-    <div class="mt-12 w-full relative h-[210px] flex flex-col justify-between items-center">
+    <div class="w-full relative h-[170px] flex flex-col justify-end items-center">
         <div class="absolute z-10 w-full flex items-center justify-center top-[60px]">
             <TransitionGroup name="slidePast">
                 <div key="5" v-if="item.GivenDate" :class="className">❣️</div>
@@ -34,12 +34,12 @@ const className = computed(
             </TransitionGroup>
         </div>
 
-        <div></div>
-
         <!-- make sure the svg doesn't go outside the page -->
-        <svg style="width: 100%; opacity: 0.4; max-width: 400px">
-            <!-- create oval ellipse that doesn't stretch beyond the size of the parent svg -->
-            <ellipse cx="50%" cy="50%" rx="50%" ry="25%" fill="gray" />
-        </svg>
+        <div class="w-full flex items-center justify-center">
+            <svg style="width: 100%; opacity: 0.4; max-width: 400px; height: 75px">
+                <!-- create oval ellipse that doesn't stretch beyond the size of the parent svg -->
+                <ellipse cx="50%" cy="50%" rx="50%" ry="50%" fill="gray" />
+            </svg>
+        </div>
     </div>
 </template>

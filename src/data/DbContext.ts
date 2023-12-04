@@ -26,7 +26,8 @@ export class DbContext {
 				w.[Name],
 				w.UserId,
 				w.ImageUrl,
-				w.UserId AS WishOwnerId
+				w.UserId AS WishOwnerId,
+				w.Link
 			FROM [WishPurchase] wp
 			JOIN [Wish] w
 				ON w.Id = wp.WishId

@@ -25,9 +25,13 @@ const item = computed(() => purchases.value?.find((p) => p.Id === wishPurchaseId
             <User :user-id="item?.WishOwnerId" without-avatar class="text-xl" />
         </div>
 
-        <WishPurchaseSpotlight :wish-purchase="item" />
+        <WishPurchaseSpotlight :wish-purchase="item" class="mb-6 mt-12" />
 
-        <div class="w-full flex items-center justify-center min-h-[50px]">
+        <div class="w-full flex items-center justify-center">
+            <WishPurchaseStateActions :wish-purchase="item" />
+        </div>
+
+        <div class="w-full flex items-center justify-center min-h-[50px] mt-6">
             <WishPurchaseStateButtons :wish-purchase="item" />
         </div>
     </Card>

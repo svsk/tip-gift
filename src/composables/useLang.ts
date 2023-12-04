@@ -84,6 +84,7 @@ const langLib = (lang: SupportedLanguage) => {
             JoinOrAddNewGroup: 'Bli med i en gruppe eller opprett en helt ny!',
             InviteCode: 'Invitasjonskode',
             JoinGroupExplanation: 'Skriv inn invitasjonskoden fra gruppeeieren for å bli med i gruppen.',
+            VisitStore: 'Gå til Butikk',
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -155,6 +156,7 @@ const langLib = (lang: SupportedLanguage) => {
             JoinOrAddNewGroup: 'Join a group or add a brand new one!',
             InviteCode: 'Invite Code',
             JoinGroupExplanation: 'Enter the invite code you received from the group creator to join the group.',
+            VisitStore: 'Visit Store',
         },
     } as Record<SupportedLanguage, Record<string, string>>;
 
