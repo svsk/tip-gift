@@ -52,9 +52,14 @@ const handleUserAdded = (user: WishUser) => {
             />
         </button>
 
-        <Button @click="handleAddUserClicked" class="bg-white bg-opacity-20 min-w-[42px]" round v-if="canAdd">
+        <button
+            v-if="canAdd"
+            v-ripple
+            @click="handleAddUserClicked"
+            class="ml-3 relative rounded-full min-h-[42px] min-w-[42px] bg-slate-700 text-white flex items-center justify-center"
+        >
             <Icon font-size="24px" name="add" />
-        </Button>
+        </button>
     </div>
 
     <Dialog v-model="showAddUserDialog">
