@@ -12,7 +12,7 @@ const handleAddGroupClicked = async () => {
     input.value?.focus();
 };
 
-const handleConfirm = async (grp: WishUserGroup) => {
+const handleAdd = async (grp: Partial<WishUserGroup>) => {
     showDialog.value = false;
     await addGroup(grp);
 };
@@ -25,5 +25,5 @@ const handleConfirm = async (grp: WishUserGroup) => {
         </Button>
     </slot>
 
-    <GroupJoinOrCreateDialog v-model="showDialog" @confirm="handleConfirm" />
+    <GroupJoinOrCreateDialog v-model="showDialog" @add="handleAdd" />
 </template>

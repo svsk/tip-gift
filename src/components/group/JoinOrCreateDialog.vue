@@ -7,6 +7,7 @@ interface Props {
 
 interface Emits {
     (event: 'update:modelValue', value: boolean): void;
+    (event: 'add', group: Partial<WishUserGroup>): void;
 }
 
 const props = defineProps<Props>();
@@ -23,12 +24,15 @@ watch(
 
 const handleCancel = () => {
     emit('update:modelValue', false);
-    joinOrAdd.value = 'undecided';
+    joinOrAdd.value = 'add';
 };
 
 const handleJoin = () => {};
 
-const handleAdd = () => {};
+const handleAdd = () => {
+    emit('add', group.value);
+    handleCancel();
+};
 </script>
 
 <template>
