@@ -31,8 +31,6 @@ const handleAddCustomPurchase = () => {
 const handleAddCustomPurchaseConfirmed = async () => {
     const isValid = customForm.value?.validate();
 
-    console.log('isvalid', isValid);
-
     if (!isValid) {
         return;
     }
