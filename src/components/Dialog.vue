@@ -2,11 +2,18 @@
 interface Props {
     modelValue: boolean;
     persistent?: boolean;
+    withConfirm?: boolean;
 }
 
-const props = defineProps<Props>();
+interface Emits {
+    (event: 'update:modelValue', value: boolean): void;
+    (event: 'cancel'): void;
+    (event: 'confirm'): void;
+}
 
-const emit = defineEmits(['update:modelValue']);
+const props = withDefaults(defineProps<Props>(), { withConfirm: false });
+
+const emit = defineEmits<Emits>();
 
 const handleClickOutside = () => {
     if (props.persistent) {
@@ -36,6 +43,15 @@ const handleClickOutside = () => {
 
                     <div class="p-4 py-6">
                         <slot />
+                    </div>
+
+                    <div v-if="withConfirm" class="w-full flex justify-end pb-4 px-4 gap-2">
+                        <Button flat @click="emit('cancel')">
+                            <Localized tkey="Cancel" />
+                        </Button>
+                        <Button @click="emit('confirm')">
+                            <Localized tkey="Confirm" />
+                        </Button>
                     </div>
                 </Card>
             </div>

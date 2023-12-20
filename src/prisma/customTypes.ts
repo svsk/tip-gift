@@ -1,9 +1,10 @@
 export type WishPurchaseWish = {
     Id: string;
     UserId: string;
-    WishOwnerId: string;
-    WishId: string;
-    GroupId: string;
+    ReceiverName: string;
+    WishOwnerId: string | null;
+    WishId: string | null;
+    GroupId: string | null;
     CreatedDate: Date;
     PurchasedDate: Date | null;
     ShipmentReceivedDate: Date | null;
@@ -12,6 +13,7 @@ export type WishPurchaseWish = {
     Name: string;
     ImageUrl: string | null;
     Link: string;
+    IsCustom: boolean;
 };
 
 export type WishTag = {

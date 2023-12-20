@@ -20,9 +20,10 @@ const item = computed(() => purchases.value?.find((p) => p.Id === wishPurchaseId
             {{ item?.Name }}
         </PageHeader>
 
-        <div v-if="item?.WishOwnerId" class="w-full text-center pt-4 text-sm">
+        <div class="w-full text-center pt-4 text-sm">
             <Localized tkey="GiftFor" /><br />
-            <User :user-id="item?.WishOwnerId" without-avatar class="text-xl" />
+            <User v-if="item?.WishOwnerId" :user-id="item?.WishOwnerId" without-avatar class="text-xl" />
+            <div v-else class="text-xl">{{ item?.ReceiverName }}</div>
         </div>
 
         <WishPurchaseSpotlight :wish-purchase="item" class="mb-6 mt-12" />

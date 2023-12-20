@@ -29,6 +29,7 @@ watch(
 
 <template>
     <div>
+        {{ url }}
         <img v-if="tagData" :src="tagData" />
     </div>
 </template>

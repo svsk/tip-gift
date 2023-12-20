@@ -37,6 +37,14 @@ export const deleteWishPurchase = async (wishPurchaseId: string, groupId: string
     refreshGivenGifts(groupId);
 };
 
+export const addCustomWishPurchase = async (customName: string, receiverName: string) => {
+    await $fetch('/api/wishpurchases/custom', {
+        body: { customName, receiverName },
+        method: 'POST',
+        ...useAuthentication(),
+    });
+};
+
 export const useWishTag = async (wishPurchaseId: string) => {
     return await useFetch<WishTag>(`/api/wishtag/${wishPurchaseId}`);
 };

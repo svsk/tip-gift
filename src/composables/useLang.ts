@@ -87,6 +87,9 @@ const langLib = (lang: SupportedLanguage) => {
             VisitStore: 'Gå til Butikk',
             ShowQRCode: 'Vis Til/Fra-lapp',
             GiftTag: 'Til/Fra-lapp',
+            AddCustomWishPurchase: 'Legg til Egendefinert Kjøp',
+            ReceiverName: 'Mottaker',
+            ProductName: 'Produktnavn',
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -161,6 +164,9 @@ const langLib = (lang: SupportedLanguage) => {
             VisitStore: 'Visit Store',
             ShowQRCode: 'Show Gift Tag',
             GiftTag: 'Gift Tag',
+            AddCustomWishPurchase: 'Add Custom Purchase',
+            ReceiverName: 'Receiver',
+            ProductName: 'Product Name',
         },
     } as Record<SupportedLanguage, Record<string, string>>;
 

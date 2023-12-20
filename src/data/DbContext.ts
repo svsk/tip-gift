@@ -13,28 +13,37 @@ export class DbContext {
 
     async getGivenGifts(groupId: any, userId: string) {
         const myWishes = await this.getWishes(userId);
-        const givenGifts = await this._db.wishPurchase.findMany({ where: { GroupId: groupId } });
+        const givenGifts = await this._db.wishPurchase.findMany({ where: { GroupId: groupId, WishId: { not: null } } });
 
         const myWishIds = myWishes.map((w) => w.Id);
-        return givenGifts.filter((gg) => !myWishIds.includes(gg.WishId));
+        return givenGifts.filter((gg) => !!gg.WishId && !myWishIds.includes(gg.WishId));
     }
 
     async getWishPurchases(userId: string) {
         const result = await this._db.$queryRaw<WishPurchaseWish[]>`
 			SELECT
 				wp.*,
-				w.[Name],
+				COALESCE(w.[Name], wp.CustomName) AS Name,
 				w.UserId,
 				w.ImageUrl,
 				w.UserId AS WishOwnerId,
-				w.Link
+				w.Link,
+				COALESCE(u.Name, wp.ReceiverName) AS ReceiverName
 			FROM [WishPurchase] wp
-			JOIN [Wish] w
+			LEFT JOIN [Wish] w
 				ON w.Id = wp.WishId
+			LEFT JOIN [WishUser] u
+				 ON u.Id = w.UserId
 			WHERE wp.UserId = ${userId}
 		`;
 
         return result;
+    }
+
+    async addCustomWishPurchase(userId: string, customName: string, receiverName: string) {
+        await this._db.wishPurchase.create({
+            data: { UserId: userId, ReceiverName: receiverName, CustomName: customName, IsCustom: true },
+        });
     }
 
     async updatePurchase(userId: string, purchase: Partial<WishPurchase>) {
@@ -272,14 +281,14 @@ export class DbContext {
     async getWishTag(wishPurchaseId: string) {
         const result = await this._db.$queryRaw<WishTag[]>`
 			SELECT
-				receiver.Name AS toName,
+				COALESCE(receiver.Name, wp.ReceiverName) AS toName,
 				giver.Name AS fromName,
 				receiver.Id AS toUserId,
 				giver.Id AS fromUserId,
 				CASE WHEN wp.GivenDate IS NULL THEN 1 ELSE 0 END AS locked
 			FROM WishPurchase wp
-			JOIN Wish w ON w.Id = wp.WishId
-			JOIN WishUser receiver ON receiver.Id = w.UserId
+			LEFT JOIN Wish w ON w.Id = wp.WishId
+			LEFT JOIN WishUser receiver ON receiver.Id = w.UserId
 			JOIN WishUser giver ON giver.Id = wp.UserId
 			WHERE wp.Id = ${wishPurchaseId};
 		`;
