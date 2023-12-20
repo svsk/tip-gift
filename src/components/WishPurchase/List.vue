@@ -19,7 +19,7 @@ const sortedPurchases = computed(() => {
             return true;
         })
         .sort((a, b) => {
-            return (a.ReceiverName + a.WishOwnerId).localeCompare(b.ReceiverName + b.WishOwnerId);
+            return `${a.ReceiverName}${a.WishOwnerId}`.localeCompare(`${b.ReceiverName}${b.WishOwnerId}`);
         });
 });
 
