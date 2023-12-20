@@ -6,7 +6,7 @@ import {
     type WishPurchase,
 } from '@prisma-app/client';
 import { usePrisma } from './usePrisma';
-import type { WishPurchaseWish } from '~/prisma/customTypes';
+import type { WishPurchaseWish, WishTag } from '~/prisma/customTypes';
 
 export class DbContext {
     private _db = usePrisma();
@@ -267,5 +267,23 @@ export class DbContext {
 
     deleteUserGroup(groupId: string) {
         return this._db.wishUserGroup.delete({ where: { Id: groupId } });
+    }
+
+    async getWishTag(wishPurchaseId: string) {
+        const result = await this._db.$queryRaw<WishTag[]>`
+			SELECT
+				receiver.Name AS toName,
+				giver.Name AS fromName,
+				receiver.Id AS toUserId,
+				giver.Id AS fromUserId,
+				CASE WHEN wp.GivenDate IS NULL THEN 1 ELSE 0 END AS locked
+			FROM WishPurchase wp
+			JOIN Wish w ON w.Id = wp.WishId
+			JOIN WishUser receiver ON receiver.Id = w.UserId
+			JOIN WishUser giver ON giver.Id = wp.UserId
+			WHERE wp.Id = ${wishPurchaseId};
+		`;
+
+        return result.at(0);
     }
 }

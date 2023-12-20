@@ -19,15 +19,15 @@ const allowGoToStore = computed(() => {
     return false;
 });
 
-// const allowShowQRCode = computed(() => {
-//     const { wishPurchase } = props;
+const allowShowQRCode = computed(() => {
+    const { wishPurchase } = props;
 
-//     if (!wishPurchase.GivenDate && !!wishPurchase.WrappedDate) {
-//         return true;
-//     }
+    if (!wishPurchase.GivenDate && !!wishPurchase.WrappedDate) {
+        return true;
+    }
 
-//     return false;
-// });
+    return false;
+});
 </script>
 
 <template>
@@ -42,20 +42,22 @@ const allowGoToStore = computed(() => {
                 </a>
             </div>
 
-            <!-- <div key="showQRCode" v-if="allowShowQRCode">
+            <div key="showQRCode" v-if="allowShowQRCode">
                 <Button class="flex items-center flex-nowrap gap-2" @click="showGiftTagDialog = true">
                     <Localized tkey="ShowQRCode" />
                     <Icon font-size="18px" name="qr_code_2" />
                 </Button>
-            </div> -->
+            </div>
         </TransitionGroup>
 
-        <!-- <Dialog v-model="showGiftTagDialog">
+        <Dialog v-model="showGiftTagDialog">
             <template #title>
                 <Localized tkey="GiftTag" />
             </template>
 
-            <WishTag :wish-purchase="wishPurchase" />
-        </Dialog> -->
+            <div class="w-full flex items-center justify-center">
+                <WishPurchaseTag :wish-purchase="wishPurchase" />
+            </div>
+        </Dialog>
     </div>
 </template>

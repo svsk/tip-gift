@@ -3,9 +3,18 @@
 @tailwind utilities;
 
 @import './transitions.scss';
+@import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');
+
+:root {
+	--background: #202020;
+}
+
+.handwritten {
+	font-family: 'Shadows Into Light', cursive;
+}
 
 body {
-    background-color: #202020;
+    background-color: var(--background);
     color: white;
 }
 

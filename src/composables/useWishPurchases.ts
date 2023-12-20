@@ -1,5 +1,5 @@
 import { type WishPurchase } from '@prisma-app/client';
-import type { WishPurchaseWish } from '~/prisma/customTypes';
+import type { WishPurchaseWish, WishTag } from '~/prisma/customTypes';
 
 export const useMyWishPurchases = async () => {
     return await useFetch<WishPurchaseWish[]>('/api/wishpurchases', useAuthentication());
@@ -35,6 +35,10 @@ export const deleteWishPurchase = async (wishPurchaseId: string, groupId: string
     });
 
     refreshGivenGifts(groupId);
+};
+
+export const useWishTag = async (wishPurchaseId: string) => {
+    return await useFetch<WishTag>(`/api/wishtag/${wishPurchaseId}`);
 };
 
 export const refreshGivenGifts = async (groupId: string) => await useGroupWishPurchases(groupId);

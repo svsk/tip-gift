@@ -13,7 +13,7 @@ export default defineNuxtConfig({
         redirectOptions: {
             login: '/login',
             callback: '/confirm',
-            exclude: ['/wishes/**', '/embed/**'],
+            exclude: ['/wishes/**', '/embed/**', '/gift-tag/**'],
         },
     },
     postcss: {

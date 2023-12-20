@@ -13,3 +13,11 @@ export type WishPurchaseWish = {
     ImageUrl: string | null;
     Link: string;
 };
+
+export type WishTag = {
+    toName: string | null;
+    fromName: string | null;
+    toUserId: string | null;
+    fromUserId: string | null;
+    locked: boolean;
+};
