@@ -18,7 +18,7 @@ onMounted(() => {
             <div v-if="tag && showTag" class="relative">
                 <div class="flex rotate-45 relative">
                     <div
-                        class="rounded-full bg-transparent border-4 border-orange-800 h-[1000px] w-[1000px] absolute z-10"
+                        class="rounded-full bg-transparent border-4 border-orange-800 h-[1000px] w-[1000px] absolute z-10 pointer-events-none"
                         style="top: -480px; left: -976px"
                     />
 
