@@ -35,7 +35,7 @@ export class DbContext {
 			LEFT JOIN [WishUser] u
 				 ON u.Id = w.UserId
 			WHERE wp.UserId = ${userId}
-			AND (wp.WishId IS NOT NULL OR wp.IsCustom = 1)
+			AND (w.Id IS NOT NULL OR wp.IsCustom = 1)
 		`;
 
         return result;
