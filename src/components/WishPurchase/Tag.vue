@@ -23,7 +23,7 @@ const tagData = reactive<Partial<WishTag>>({
 });
 
 const baseUrl = computed(() => {
-    return window.location.origin;
+    return process.client ? window.location.origin : '';
 });
 
 const url = computed(() => {
