@@ -91,6 +91,8 @@ const langLib = (lang: SupportedLanguage) => {
             ReceiverName: 'Mottaker',
             ProductName: 'Produktnavn',
             Preview: 'Forhåndsvis',
+            To: 'Til',
+            From: 'Fra',
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -169,6 +171,8 @@ const langLib = (lang: SupportedLanguage) => {
             ReceiverName: 'Receiver',
             ProductName: 'Product Name',
             Preview: 'Preview',
+            To: 'To',
+            From: 'From',
         },
     } as Record<SupportedLanguage, Record<string, string>>;
 

@@ -4,9 +4,14 @@ import type { WishPurchaseWish, WishTag } from '~/prisma/customTypes';
 
 interface Props {
     wishPurchase: WishPurchaseWish;
+    disallowEditing?: boolean;
+    hidePreview?: boolean;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+    disallowEditing: false,
+    hidePreview: false,
+});
 
 const tagDataUrl = ref<string | null>(null);
 const { data: tag, refresh: refreshTag } = await useWishTag(props.wishPurchase.Id);
@@ -55,16 +60,20 @@ const handleSaveTag = async () => {
 
 <template>
     <div class="flex flex-col gap-3">
+        <div class="text-xl line-clamp-2">
+            {{ wishPurchase.Name }} <span v-if="tag"><Localized tkey="To" lowercase /> {{ tag.toText }}</span>
+        </div>
+
         <img v-if="tagDataUrl" :src="tagDataUrl" />
 
-        <a :href="url" target="_blank">
+        <a v-if="!hidePreview" :href="url" target="_blank">
             <Button class="flex items-center gap-2">
                 <Icon name="open_in_new" />
                 <Localized tkey="Preview" />
             </Button>
         </a>
 
-        <div class="flex flex-col gap-3 w-full">
+        <div v-if="!disallowEditing" class="flex flex-col gap-3 w-full">
             <Input v-model="tagData.toText" :label="i18n('To')" />
             <Input v-model="tagData.fromText" :label="i18n('From')" />
 

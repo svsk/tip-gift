@@ -3,6 +3,7 @@ interface Props {
     modelValue: boolean;
     persistent?: boolean;
     withConfirm?: boolean;
+    preload?: boolean;
 }
 
 interface Emits {
@@ -11,7 +12,7 @@ interface Emits {
     (event: 'confirm'): void;
 }
 
-const props = withDefaults(defineProps<Props>(), { withConfirm: false });
+const props = withDefaults(defineProps<Props>(), { withConfirm: false, preload: false });
 
 const emit = defineEmits<Emits>();
 
@@ -29,7 +30,8 @@ const handleClickOutside = () => {
         <Transition name="fade">
             <div
                 @click="handleClickOutside"
-                v-if="modelValue"
+                v-if="modelValue || preload"
+                v-show="modelValue"
                 class="fixed w-full h-full bg-opacity-30 bg-black top-0 left-0 flex flex-col items-center justify-center p-6 z-50"
             >
                 <Card @click.stop class="w-full max-w-[450px] py-0 px-0">
