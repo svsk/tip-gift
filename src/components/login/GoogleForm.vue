@@ -28,16 +28,6 @@ const handleLogin = async () => {
         loggingInWithGoogle.value = false;
     }
 };
-
-const required = (val: any) => {
-    return !!val ? true : 'Required';
-};
-
-const mustBeEmail = (val: string) => {
-    return val.includes('@') && val.length > 2 && val.at(0) !== '@' && val.at(-1) !== '@'
-        ? true
-        : 'Must be an e-mail address';
-};
 </script>
 
 <template>
