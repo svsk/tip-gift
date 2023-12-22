@@ -82,3 +82,11 @@ model TipGiftMigrationHistory {
 
   @@ignore
 }
+
+model WishGiftTag {
+  Id             String  @id(map: "PK__WishGift__3214EC078C441A85") @default(dbgenerated("newid()"), map: "DF__WishGiftTag__Id__5B78929E") @db.UniqueIdentifier
+  UserId         String  @db.UniqueIdentifier
+  WishPurchaseId String  @db.UniqueIdentifier
+  FromText       String? @db.NVarChar(500)
+  ToText         String? @db.NVarChar(500)
+}

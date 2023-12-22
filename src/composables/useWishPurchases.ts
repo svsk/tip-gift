@@ -46,7 +46,15 @@ export const addCustomWishPurchase = async (customName: string, receiverName: st
 };
 
 export const useWishTag = async (wishPurchaseId: string) => {
-    return await useFetch<WishTag>(`/api/wishtag/${wishPurchaseId}`);
+    return await useFetch<WishTag>(`/api/wishtag/${wishPurchaseId}`, { method: 'GET', ...useAuthentication() });
+};
+
+export const updateWishTag = async (wishPurchaseId: string, tag: Partial<WishTag>) => {
+    await $fetch(`/api/wishtag/${wishPurchaseId}`, {
+        body: tag,
+        method: 'PATCH',
+        ...useAuthentication(),
+    });
 };
 
 export const refreshGivenGifts = async (groupId: string) => await useGroupWishPurchases(groupId);

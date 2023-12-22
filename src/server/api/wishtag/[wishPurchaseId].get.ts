@@ -22,11 +22,15 @@ export default defineEventHandler(async (event) => {
         return null;
     }
 
-    if (tag.locked) {
-        tag.fromName = null;
-        tag.toName = null;
+    const userId = event.context.auth?.data?.user?.id;
+
+    if (tag.locked && userId !== tag.fromUserId) {
+        tag.fromText = null;
+        tag.toText = null;
         tag.toUserId = null;
         tag.fromUserId = null;
+    } else {
+        tag.locked = false;
     }
 
     return tag;

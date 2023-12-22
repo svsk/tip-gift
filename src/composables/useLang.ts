@@ -90,6 +90,7 @@ const langLib = (lang: SupportedLanguage) => {
             AddCustomWishPurchase: 'Legg til Egendefinert Kjøp',
             ReceiverName: 'Mottaker',
             ProductName: 'Produktnavn',
+            Preview: 'Forhåndsvis',
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -167,6 +168,7 @@ const langLib = (lang: SupportedLanguage) => {
             AddCustomWishPurchase: 'Add Custom Purchase',
             ReceiverName: 'Receiver',
             ProductName: 'Product Name',
+            Preview: 'Preview',
         },
     } as Record<SupportedLanguage, Record<string, string>>;
 

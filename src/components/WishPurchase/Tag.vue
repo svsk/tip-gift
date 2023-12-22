@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import * as QRCode from 'qrcode';
-import type { WishPurchaseWish } from '~/prisma/customTypes';
+import type { WishPurchaseWish, WishTag } from '~/prisma/customTypes';
 
 interface Props {
     wishPurchase: WishPurchaseWish;
@@ -8,7 +8,14 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const tagData = ref<string | null>(null);
+const tagDataUrl = ref<string | null>(null);
+const { data: tag, refresh: refreshTag } = await useWishTag(props.wishPurchase.Id);
+const saving = ref(false);
+
+const tagData = reactive<Partial<WishTag>>({
+    toText: null,
+    fromText: null,
+});
 
 const baseUrl = computed(() => {
     return window.location.origin;
@@ -21,14 +28,51 @@ const url = computed(() => {
 watch(
     () => props.wishPurchase?.Id,
     async () => {
-        tagData.value = await QRCode.toDataURL(url.value, { width: 200, color: { dark: '#fff', light: '#1e2a36' } });
+        tagDataUrl.value = await QRCode.toDataURL(url.value, { width: 200, color: { dark: '#fff', light: '#1e2a36' } });
     },
     { immediate: true }
 );
+
+watch(
+    () => tag.value,
+    () => {
+        tagData.toText = tag.value?.toText || null;
+        tagData.fromText = tag.value?.fromText || null;
+    },
+    { deep: true, immediate: true }
+);
+
+const handleSaveTag = async () => {
+    saving.value = true;
+    try {
+        await updateWishTag(props.wishPurchase.Id, tagData);
+        refreshTag();
+    } finally {
+        saving.value = false;
+    }
+};
 </script>
 
 <template>
-    <div>
-        <img v-if="tagData" :src="tagData" />
+    <div class="flex flex-col gap-3">
+        <img v-if="tagDataUrl" :src="tagDataUrl" />
+
+        <a :href="url" target="_blank">
+            <Button class="flex items-center gap-2">
+                <Icon name="open_in_new" />
+                <Localized tkey="Preview" />
+            </Button>
+        </a>
+
+        <div class="flex flex-col gap-3 w-full">
+            <Input v-model="tagData.toText" :label="i18n('To')" />
+            <Input v-model="tagData.fromText" :label="i18n('From')" />
+
+            <div class="flex items-end justify-end">
+                <Button :disable="saving" @click="handleSaveTag">
+                    <Localized tkey="Confirm" />
+                </Button>
+            </div>
+        </div>
     </div>
 </template>

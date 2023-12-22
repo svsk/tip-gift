@@ -56,7 +56,7 @@ const allowShowQRCode = computed(() => {
             </template>
 
             <div class="w-full flex items-center justify-center">
-                <WishPurchaseTag :wish-purchase="wishPurchase" />
+                <WishPurchaseTag class="w-full flex flex-col items-center" :wish-purchase="wishPurchase" />
             </div>
         </Dialog>
     </div>

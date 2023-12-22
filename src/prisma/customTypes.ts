@@ -17,8 +17,8 @@ export type WishPurchaseWish = {
 };
 
 export type WishTag = {
-    toName: string | null;
-    fromName: string | null;
+    toText: string | null;
+    fromText: string | null;
     toUserId: string | null;
     fromUserId: string | null;
     locked: boolean;

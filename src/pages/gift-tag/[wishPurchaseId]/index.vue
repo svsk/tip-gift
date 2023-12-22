@@ -34,10 +34,10 @@ onMounted(() => {
                         class="px-6 py-3 bg-orange-200 text-black flex flex-col justify-center rounded-r-md shadow-lg shadow-black min-w-[250px]"
                     >
                         <div :class="{ 'handwritten font-semibold text-2xl': true, 'blur-sm': tag.locked }">
-                            To {{ tag.toName || 'Giftreceiver' }}
+                            To {{ tag.toText || 'Giftreceiver' }}
                         </div>
                         <div :class="{ 'handwritten font-semibold text-2xl': true, 'blur-sm': tag.locked }">
-                            From {{ tag.fromName || 'Giftgiver' }}
+                            From {{ tag.fromText || 'Giftgiver' }}
                         </div>
 
                         <div class="absolute right-2 bottom-1">
