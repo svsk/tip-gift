@@ -60,8 +60,9 @@ const handleSaveTag = async () => {
 
 <template>
     <div class="flex flex-col gap-3">
-        <div class="text-xl line-clamp-2">
-            {{ wishPurchase.Name }} <span v-if="tag"><Localized tkey="To" lowercase /> {{ tag.toText }}</span>
+        <div class="text-xl flex flex-col items-center justify-center text-center">
+            <div class="line-clamp-1">{{ wishPurchase.Name }}</div>
+            <div v-if="tag"><Localized tkey="To" lowercase /> {{ tag.toText }}</div>
         </div>
 
         <img v-if="tagDataUrl" :src="tagDataUrl" />

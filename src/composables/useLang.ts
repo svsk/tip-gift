@@ -93,6 +93,7 @@ const langLib = (lang: SupportedLanguage) => {
             Preview: 'Forhåndsvis',
             To: 'Til',
             From: 'Fra',
+            Checklist: 'Sjekkliste',
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -173,6 +174,7 @@ const langLib = (lang: SupportedLanguage) => {
             Preview: 'Preview',
             To: 'To',
             From: 'From',
+            Checklist: 'Checklist',
         },
     } as Record<SupportedLanguage, Record<string, string>>;
 
