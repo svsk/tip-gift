@@ -101,7 +101,10 @@ export class DbContext {
     }
 
     getWishes(userId: string) {
-        return this._db.wish.findMany({ where: { UserId: { equals: userId } }, orderBy: [{ Order: 'asc' }] });
+        return this._db.wish.findMany({
+            where: { UserId: { equals: userId }, DeletedDate: { equals: null } },
+            orderBy: [{ Order: 'asc' }],
+        });
     }
 
     getSharesForUser(userId: string) {
@@ -169,7 +172,7 @@ export class DbContext {
     async getGroupWishes(groupId: string) {
         const wishRefs = await this._db.wishGroupWish.findMany({ where: { GroupId: groupId } });
         const wishIds = wishRefs.map((wr) => wr.WishId);
-        return this._db.wish.findMany({ where: { Id: { in: wishIds } } });
+        return this._db.wish.findMany({ where: { Id: { in: wishIds }, DeletedDate: { equals: null } } });
     }
 
     async getGroupUsers(groupId: string) {
@@ -271,8 +274,15 @@ export class DbContext {
         });
     }
 
-    deleteWish(wishId: string) {
-        return this._db.wish.delete({ where: { Id: wishId } });
+    async deleteWish(wishId: string) {
+        return await this._db.wish.update({
+            data: {
+                DeletedDate: new Date(),
+            },
+            where: {
+                Id: wishId,
+            },
+        });
     }
 
     saveGroup(group: WishUserGroup, createdById: string) {
