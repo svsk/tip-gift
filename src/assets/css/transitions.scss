@@ -73,6 +73,18 @@
     opacity: 0;
 }
 
+/** slideInLong **/
+.slideInLong-enter-active,
+.slideInLong-leave-active {
+    transition: all 0.1s linear;
+}
+
+.slideInLong-enter-from,
+.slideInLong-leave-to {
+    transform: translateX(100px);
+    opacity: 0;
+}
+
 /** slidePast **/
 .slidePast-enter-active,
 .slidePast-leave-active {

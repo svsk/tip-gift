@@ -22,16 +22,16 @@ defineExpose({
 
 <template>
     <Teleport to="body">
-        <Transition :name="location === 'bottom' ? 'slideDown' : 'slideUp'">
+        <Transition :name="location === 'bottom' ? 'slideDown' : 'slideInLong'">
             <div
                 v-if="showToast"
                 :class="{
-                    'bottom-3': location === 'bottom',
-                    'top-3': location === 'top',
-                    'left-0 z-50 fixed w-full p-1 flex justify-center shadow-md': true,
+                    'bottom-3 justify-center': location === 'bottom',
+                    'bottom-3 justify-end md:pr-6': location === 'top',
+                    'left-0 z-50 fixed w-full p-1 flex shadow-md': true,
                 }"
             >
-                <Card class="border border-gray-700 w-full max-w-[920px]">
+                <Card class="border border-gray-700">
                     <slot />
                 </Card>
             </div>

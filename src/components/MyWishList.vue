@@ -18,6 +18,7 @@ const sharing = ref(false);
 const showDeleteConfirmation = ref(false);
 const wishForDeletion = ref<Wish | null>(null);
 const addToast = ref<InstanceType<typeof Toast>>();
+const deleteToast = ref<InstanceType<typeof Toast>>();
 
 const handleAddClicked = async () => {
     newWish.value = {
@@ -39,6 +40,7 @@ const handleDeleteConfirmed = async () => {
     }
 
     showDeleteConfirmation.value = false;
+    deleteToast.value?.show(6000);
 };
 
 const handleSaveNewEntry = async () => {
@@ -88,7 +90,7 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
                 const newOrder = (idx + 1) * 100;
                 if (newOrder != w.Order) {
                     w.Order = newOrder;
-                    reorderedItems.push(w);
+                    reorderedItems.push(w as Wish);
                 }
             });
 
@@ -169,6 +171,13 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
         <div class="flex flex-row items-center no-wrap gap-4">
             <Icon name="check" font-size="32px" class-name="text-green-500" />
             <Localized tkey="WishAdded" />
+        </div>
+    </Toast>
+
+    <Toast ref="deleteToast" location="top">
+        <div class="flex flex-row items-center no-wrap gap-4">
+            <Icon name="check" font-size="32px" class-name="text-green-500" />
+            <Localized tkey="WishDeleted" />
         </div>
     </Toast>
 
