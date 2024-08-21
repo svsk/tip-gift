@@ -6,12 +6,14 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+const notYetGivenWishPurchases = computed(() => props.wishPurchases.filter((wp) => !wp.GivenDate));
 </script>
 
 <template>
     <div class="flex items-center gap-6 flex-wrap">
-        <div v-for="item in props.wishPurchases" :key="item.Id" class="w-[200px] min-w-[200px]">
-            <WishPurchaseTag :wish-purchase="item" disallow-editing hide-preview />
+        <div v-for="wishPurchase in notYetGivenWishPurchases" :key="wishPurchase.Id" class="w-[200px] min-w-[200px]">
+            <WishPurchaseTag :wish-purchase="wishPurchase" disallow-editing hide-preview />
         </div>
     </div>
 </template>
