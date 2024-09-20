@@ -1,16 +1,15 @@
 import { URL } from 'url';
 import { requireAuth } from '~~/lib/requireAuth';
-import { JSDOM } from 'jsdom';
 import puppeteer from 'puppeteer';
 import fs from 'fs';
+import * as cheerio from 'cheerio';
 
 const decodeEntities = (encodedString: string | undefined | null) => {
     if (!encodedString) return null;
 
-    const result =
-        new JSDOM(`<html><body><div id="result">${encodedString}</div></body></html>`).window.document.getElementById(
-            'result'
-        )?.innerHTML || null;
+    const $ = cheerio.load(`<html><body><div id="result">${encodedString}</div></body></html>`);
+
+    const result = $('#result').html() || null;
 
     return result;
 };
@@ -22,7 +21,6 @@ const getWithPuppeteer = async (url: string) => {
 
     const chromePath = fs.existsSync('/usr/bin/google-chrome-stable') ? '/usr/bin/google-chrome-stable' : undefined;
     const browser = await puppeteer.launch({
-        headless: 'new',
         executablePath: chromePath,
         args: ['--no-sandbox'],
     });
