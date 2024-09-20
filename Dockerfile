@@ -13,7 +13,6 @@ ENV NODE_ENV=production
 ENV DATABASE_URL=$DATABASE_URL
 ENV SUPABASE_URL=$SUPABASE_URL
 ENV SUPABASE_KEY=$SUPABASE_KEY
-ENV PRISMA_BINARY_TARGET=["debian-openssl-3.0.x"]
 
 #COPY --link . .
 COPY . .
@@ -23,6 +22,8 @@ RUN echo "DATABASE_URL=\"$DATABASE_URL\"" >> .env
 
 # Build
 FROM base as build
+
+RUN apt-get update -y && apt-get install -y openssl
 
 RUN npm install --production=false
 RUN npm run build
@@ -37,7 +38,6 @@ ENV PORT=$PORT
 ENV DATABASE_URL=$DATABASE_URL
 ENV SUPABASE_URL=$SUPABASE_URL
 ENV SUPABASE_KEY=$SUPABASE_KEY
-ENV PRISMA_BINARY_TARGET=["debian-openssl-3.0.x"]
 
 COPY --from=build /src/.output /src/.output
 
