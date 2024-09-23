@@ -52,6 +52,16 @@ export const addWishToGroup = async (wishId: string, groupId: string) => {
     return result;
 };
 
+export const addWishToAllGroups = async (wishId: string, excludedGroupIds: string[]) => {
+    const result = await $fetch(`/api/groups/all/share/${wishId}`, {
+        body: { except: excludedGroupIds },
+        method: 'POST',
+        ...useAuthentication(),
+    });
+
+    return result;
+};
+
 export const removeWishFromGroup = async (wishGroupWishId: string, groupId: string) => {
     const result = await $fetch(`/api/groups/${groupId}/${wishGroupWishId}`, {
         method: 'DELETE',

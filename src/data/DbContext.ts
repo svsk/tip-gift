@@ -189,6 +189,22 @@ export class DbContext {
         });
     }
 
+    async saveWishInAllGroups(userId: string, wishId: string, exceptedGroupIds: string[]) {
+        // Validate that the wish belongs to the user
+        const wish = await this._db.wish.findFirst({ where: { Id: wishId, UserId: userId } });
+        if (!wish) {
+            throw new Error("Couldn't find wish");
+        }
+
+        // Find all groups the user is a member of (except for those in exceptedGroupIds)
+        const groups = await this.getUserGroups(userId);
+
+        // Create a wishGroupWish for each group
+        await Promise.all(
+            groups.filter((g) => !exceptedGroupIds.includes(g.Id)).map((g) => this.saveWishGroupWish(g.Id, wishId))
+        );
+    }
+
     async giveGroupGift(userId: string, wishId: string, groupId: string) {
         await this._db.wishPurchase.create({ data: { UserId: userId, WishId: wishId, GroupId: groupId } });
     }
