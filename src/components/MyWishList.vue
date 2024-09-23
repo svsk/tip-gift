@@ -7,26 +7,16 @@ import Toast from '~/components/Toast.vue';
 const { data: wishes } = await useWishes();
 
 const adding = ref(false);
-const newWish = ref<Wish | null>(null);
 const editing = ref(false);
 const editWish = ref<Wish | null>(null);
-const busyAdding = ref(false);
+const busyUpdating = ref(false);
 const orderedWishes = computed(() => (wishes.value || []).sort((a, b) => a.Order - b.Order));
 const reorderMode = ref(false);
 const reordering = ref(false);
 const sharing = ref(false);
 const showDeleteConfirmation = ref(false);
 const wishForDeletion = ref<Wish | null>(null);
-const addToast = ref<InstanceType<typeof Toast>>();
 const deleteToast = ref<InstanceType<typeof Toast>>();
-
-const handleAddClicked = async () => {
-    newWish.value = {
-        GroupId: crypto.randomUUID(),
-        Order: -1,
-    } as Wish;
-    adding.value = true;
-};
 
 const handleDeleteEntryClicked = (entry: Wish) => {
     wishForDeletion.value = entry;
@@ -43,33 +33,23 @@ const handleDeleteConfirmed = async () => {
     deleteToast.value?.show(6000);
 };
 
-const handleSaveNewEntry = async () => {
-    if (newWish.value) {
-        busyAdding.value = true;
-        try {
-            await addWish(newWish.value);
-            addToast.value?.show(6000);
-            newWish.value = null;
-            adding.value = false;
-        } finally {
-            busyAdding.value = false;
-        }
-    }
-};
-
 const handleEditClicked = async (wish: Wish) => {
     editWish.value = { ...wish };
     editing.value = true;
 };
 
+const handleAddClicked = async () => {
+    adding.value = true;
+};
+
 const handleUpdateEntry = async () => {
     if (editWish.value) {
-        busyAdding.value = true;
+        busyUpdating.value = true;
         try {
             await updateWishes([editWish.value]);
             editing.value = false;
         } finally {
-            busyAdding.value = false;
+            busyUpdating.value = false;
         }
     }
 };
@@ -167,13 +147,6 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
         </draggable>
     </div>
 
-    <Toast ref="addToast" location="top">
-        <div class="flex flex-row items-center no-wrap gap-4">
-            <Icon name="check" font-size="32px" class-name="text-green-500" />
-            <Localized tkey="WishAdded" />
-        </div>
-    </Toast>
-
     <Toast ref="deleteToast" location="top">
         <div class="flex flex-row items-center no-wrap gap-4">
             <Icon name="check" font-size="32px" class-name="text-green-500" />
@@ -181,23 +154,7 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
         </div>
     </Toast>
 
-    <Dialog v-model="adding" persistent>
-        <template #title>
-            <Localized tkey="AddNewWish" />
-        </template>
-
-        <Form @submit="handleSaveNewEntry" class="flex flex-col gap-4">
-            <WishInputFields v-if="newWish" v-model="newWish" />
-            <div class="flex justify-end items-center gap-2">
-                <Button :disable="busyAdding" @click="() => (adding = false)" flat>
-                    <Localized tkey="Cancel" />
-                </Button>
-                <Button :disable="busyAdding" type="submit">
-                    <Localized tkey="Confirm" />
-                </Button>
-            </div>
-        </Form>
-    </Dialog>
+    <WishAddDialog v-model="adding" />
 
     <Dialog v-model="editing">
         <template #title>
@@ -207,10 +164,10 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
         <Form @submit="handleUpdateEntry" class="flex flex-col gap-4">
             <WishInputFields v-if="editWish" v-model="editWish" />
             <div class="flex justify-end items-center gap-2">
-                <Button :disable="busyAdding" @click="() => (editing = false)" flat>
+                <Button :disable="busyUpdating" @click="() => (editing = false)" flat>
                     <Localized tkey="Cancel" />
                 </Button>
-                <Button :disable="busyAdding" type="submit">
+                <Button :disable="busyUpdating" type="submit">
                     <Localized tkey="Confirm" />
                 </Button>
             </div>
