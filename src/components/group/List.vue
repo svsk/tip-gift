@@ -1,5 +1,19 @@
 <script lang="ts" setup>
+import { type WishUserGroup } from '@prisma-app/client';
+
 const { data: groups } = await useGroups();
+
+interface Props {
+    allowAdding?: boolean;
+    disableNavigation?: boolean;
+}
+
+interface Emits {
+    (event: 'group-clicked', group: WishUserGroup): void;
+}
+
+withDefaults(defineProps<Props>(), { allowAdding: false, disableNavigation: false });
+const emit = defineEmits<Emits>();
 </script>
 
 <template>
@@ -8,7 +22,7 @@ const { data: groups } = await useGroups();
             <Localized tkey="NoGroupsYet" />...
         </EmptyState>
 
-        <GroupAddButton>
+        <GroupAddButton v-if="allowAdding">
             <template #="{ handleAddClicked }">
                 <button
                     v-ripple
@@ -34,20 +48,21 @@ const { data: groups } = await useGroups();
         </GroupAddButton>
 
         <NuxtLink
-            :to="`/my/group/${group.Id}`"
+            :to="disableNavigation ? undefined : `/my/group/${group.Id}`"
             v-ripple
             v-for="group in groups"
             :key="group.Id"
-            class="py-2 flex justify-between items-center border-slate-600 border-b last:border-b-0 relative"
+            class="py-2 flex justify-between items-center border-slate-600 border-b last:border-b-0 relative cursor-pointer"
+            @click="() => emit('group-clicked', group)"
         >
             <div class="flex items-center gap-2 flex-nowrap">
                 <GroupAvatar :group="group" />
                 <GroupListItem :group="group" />
             </div>
 
-            <div class="flex items-center">
+            <slot name="actions" class="flex items-center" :group="group">
                 <Icon font-size="24px" name="chevron_right" />
-            </div>
+            </slot>
         </NuxtLink>
     </div>
 </template>

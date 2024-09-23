@@ -44,6 +44,6 @@
             </div>
         </div>
 
-        <GroupList />
+        <GroupList allow-adding />
     </Card>
 </template>
