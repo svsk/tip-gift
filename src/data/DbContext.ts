@@ -7,6 +7,8 @@ import {
 } from '@prisma-app/client';
 import { usePrisma } from './usePrisma';
 import type { WishPurchaseWish, WishTag } from '~/prisma/customTypes';
+import { createRandomKey } from '~/lib/keyGenerator';
+import { randomBetween } from '~/lib/random';
 
 export class DbContext {
     private _db = usePrisma();
@@ -361,4 +363,53 @@ export class DbContext {
 
         return result.at(0);
     }
+
+    async generateGroupInviteCode(userId: string, groupId: string) {
+        // Ensure that the user is the creator of the group
+        const group = await this._db.wishUserGroup.findFirst({ where: { Id: groupId, CreatedByUserId: userId } });
+
+        if (!group) {
+            throw new Error("Couldn't find group");
+        }
+
+        if (group.InviteCode) {
+            return group.InviteCode;
+        }
+
+        // Generate a random invite code
+        const buildKey = () => createRandomKey(randomBetween(3, 5), 3, 6, true);
+
+        let inviteCode = buildKey();
+        let isUnique = false;
+        let retries = 0;
+
+        while (!isUnique && retries < 5) {
+            // Check that the invite code is unique
+            const existing = await this._db.wishUserGroup.findFirst({ where: { InviteCode: inviteCode } });
+
+            if (!existing) {
+                isUnique = true;
+            } else {
+                inviteCode = buildKey();
+            }
+
+            retries++;
+        }
+
+        if (!isUnique) {
+            throw new Error('Failed to generate unique invite code');
+        }
+
+        await this._db.wishUserGroup.update({
+            data: {
+                InviteCode: inviteCode,
+            },
+            where: {
+                Id: groupId,
+            },
+        });
+
+        return inviteCode;
+    }
+
 }

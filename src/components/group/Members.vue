@@ -64,8 +64,15 @@ const handleUserAdded = (user: WishUser) => {
 
     <Dialog v-model="showAddUserDialog">
         <template #title>
-            <Localized tkey="AddUser" />
+            <Localized tkey="InviteUser" />
         </template>
-        <AddUserForm :group-id="groupId" @confirm="handleUserAdded" @cancel="showAddUserDialog = false" />
+
+        <AddUserForm :group-id="groupId" @confirm="handleUserAdded" />
+
+        <div class="flex justify-end gap-2 pt-3">
+            <Button flat @click="showAddUserDialog = false">
+                <Localized tkey="Close" />
+            </Button>
+        </div>
     </Dialog>
 </template>

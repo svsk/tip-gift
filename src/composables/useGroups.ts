@@ -27,6 +27,17 @@ export const updateGroup = async (group: WishUserGroup) => {
     refreshGroups();
 };
 
+export const createGroupInviteCode = async (groupId: string) => {
+    const inviteCode = await $fetch(`/api/groups/${groupId}/createInviteCode`, {
+        method: 'POST',
+        ...useAuthentication(),
+    });
+
+    refreshGroups();
+
+    return inviteCode;
+};
+
 export const deleteGroup = async (group: WishUserGroup) => {
     await $fetch('/api/groups/delete', {
         method: 'DELETE',
