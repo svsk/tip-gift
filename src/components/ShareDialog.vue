@@ -3,7 +3,7 @@ import Input from './Input.vue';
 
 const listName = ref('');
 const nameInput = ref<InstanceType<typeof Input> | null>();
-const copied = ref(false);
+
 const { data: shares } = await useShares();
 const baseUrl = () => (process.client ? window.location.origin : '');
 
@@ -16,16 +16,9 @@ const listUrl = computed(() => {
 
     return null;
 });
+
 const linkExists = computed(() => !!listUrl.value);
 const generating = ref(false);
-
-watch(copied, () => {
-    if (copied.value) {
-        setTimeout(() => {
-            copied.value = false;
-        }, 2000);
-    }
-});
 
 onMounted(() => {
     nameInput.value?.focus();
@@ -44,13 +37,6 @@ const handleGenerateClicked = async () => {
         }
     } finally {
         generating.value = false;
-    }
-};
-
-const handleCopyClicked = async () => {
-    if (listUrl.value) {
-        await navigator.clipboard.writeText(listUrl.value);
-        copied.value = true;
     }
 };
 </script>
@@ -81,19 +67,7 @@ const handleCopyClicked = async () => {
         <Transition name="slideDown">
             <div class="w-full flex gap-3" v-if="linkExists">
                 <Input :label="i18n('Link')" readonly :model-value="listUrl" class="flex-grow w-full" />
-                <Button
-                    :disable="!linkExists"
-                    @click="handleCopyClicked"
-                    round
-                    class="flex items-center justify-center w-[50px]"
-                >
-                    <Transition name="slideDown">
-                        <Icon class="absolute" v-if="copied" font-size="24px" name="check" />
-                    </Transition>
-                    <Transition name="slideUp">
-                        <Icon class="absolute" v-if="!copied" font-size="24px" name="content_copy" />
-                    </Transition>
-                </Button>
+                <CopyToClipboardButton :text="listUrl" />
             </div>
         </Transition>
     </div>
