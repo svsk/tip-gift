@@ -1,13 +1,7 @@
 import { type WishListShare } from '@prisma-app/client';
+import { createRandomKey } from '~/lib/keyGenerator';
 import { DbContext } from '~~/data/DbContext';
 import { requireAuth } from '~~/lib/requireAuth';
-
-const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-const getRandomLetters = (from: string, amount: number) =>
-    new Array(amount)
-        .fill(0)
-        .map(() => from[Math.floor(Math.random() * from.length)])
-        .join('');
 
 export default defineEventHandler(async (event) =>
     requireAuth(event, async (auth) => {
@@ -24,6 +18,7 @@ export default defineEventHandler(async (event) =>
             let retries = 0;
             const db = new DbContext();
             let share: WishListShare | null = null;
+
             while (!share) {
                 if (retries > 5) {
                     setResponseStatus(event, 500);
@@ -32,12 +27,7 @@ export default defineEventHandler(async (event) =>
                 }
 
                 try {
-                    const random = [
-                        getRandomLetters(alphabet, 3),
-                        getRandomLetters(alphabet, 3),
-                        getRandomLetters(alphabet, 3),
-                    ].join('-');
-
+                    const random = createRandomKey(3);
                     share = await db.createShare(auth.id, random, body.slug, urlSlug);
                 } catch (error: any) {
                     console.warn(error);
