@@ -412,4 +412,7 @@ export class DbContext {
         return inviteCode;
     }
 
+    getGroupByInviteCode(inviteCode: string) {
+        return this._db.wishUserGroup.findFirst({ where: { InviteCode: inviteCode } });
+    }
 }

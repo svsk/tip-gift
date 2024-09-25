@@ -7,6 +7,10 @@ const groupUserKey = 'userGroupUsers';
 export const useGroups = () =>
     useAsyncData(storeKey, () => $fetch('/api/groups/getall', useAuthentication()), { immediate: true });
 
+export const getGroupByInviteCode = async (inviteCode: string) => {
+    return await $fetch<WishUserGroup>(`/api/groups/join/${inviteCode}`, { ...useAuthentication() });
+};
+
 export const addGroup = async (group: Partial<WishUserGroup>) => {
     await $fetch('/api/groups/add', {
         method: 'POST',

@@ -14,12 +14,23 @@ const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const showDialog = ref(props.modelValue);
-const joinOrAdd = ref<'join' | 'add' | 'undecided'>('add');
+const joinOrAdd = ref<'join' | 'add' | 'undecided'>('undecided');
 const group = ref<Partial<WishUserGroup>>({});
+const inviteCode = ref('');
+
+const handleModelValueChanged = () => {
+    const newModelValue = props.modelValue;
+
+    if (newModelValue === true && showDialog.value === false) {
+        joinOrAdd.value = 'undecided';
+    }
+
+    showDialog.value = newModelValue;
+};
 
 watch(
     () => props.modelValue,
-    () => (showDialog.value = props.modelValue)
+    () => handleModelValueChanged()
 );
 
 const handleCancel = () => {
@@ -27,7 +38,12 @@ const handleCancel = () => {
     joinOrAdd.value = 'add';
 };
 
-const handleJoin = () => {};
+const handleJoin = () => {
+    // Navigate to the join group page
+    const url = `/group/join/${inviteCode.value}`;
+    // Nuxt navigate
+    useRouter().push(url);
+};
 
 const handleAdd = () => {
     emit('add', group.value);
@@ -63,7 +79,7 @@ const handleAdd = () => {
             </div>
 
             <Form key="join" v-if="joinOrAdd === 'join'" @submit="handleJoin">
-                <GroupJoinForm class="mb-6" />
+                <GroupJoinForm v-model:invite-code="inviteCode" class="mb-6" />
 
                 <div class="flex justify-end gap-2">
                     <Button flat @click="handleCancel">
