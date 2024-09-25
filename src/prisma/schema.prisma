@@ -1,6 +1,6 @@
 generator client {
-  provider      = "prisma-client-js"
-  output        = "../node_modules/@prisma-app/client"
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma-app/client"
 }
 
 datasource db {
@@ -51,6 +51,7 @@ model WishUserGroup {
   CreatedByUserId String? @db.UniqueIdentifier
   AvatarEmoji     String? @db.NVarChar(24)
   AvatarColour    String? @db.VarChar(24)
+  InviteCode      String? @db.NVarChar(255)
 }
 
 model WishUserGroupUser {

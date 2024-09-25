@@ -1,0 +1,1 @@
+ALTER TABLE [WishUserGroup] ADD [InviteCode] NVARCHAR(255) NULL;
