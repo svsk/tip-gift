@@ -27,6 +27,7 @@ const langLib = (lang: SupportedLanguage) => {
                 'Trykk på medlemmer av gruppen for å se deres delte ønsker. Trykk på deg selv for å administrere hvilke ønsker du vil vise til andre medlemmer av gruppen.',
             AddGroup: 'Opprett Gruppe',
             AddUser: 'Legg til Bruker',
+            InviteUser: 'Inviter Bruker',
             Edit: 'Rediger',
             EditGroup: 'Rediger Gruppe',
             GroupName: 'Gruppenavn',
@@ -45,6 +46,7 @@ const langLib = (lang: SupportedLanguage) => {
             CreateLink: 'Opprett lenke',
             EditWish: 'Rediger Ønske',
             Link: 'Lenke',
+            Join: 'Bli Med',
             AddNewWish: 'Legg til Ønske',
             ShareNewWish: 'Del Ønske',
             Share: 'Del',
@@ -87,6 +89,7 @@ const langLib = (lang: SupportedLanguage) => {
             NewGroup: 'Ny Gruppe',
             JoinOrAddNewGroup: 'Bli med i en gruppe eller opprett en helt ny!',
             InviteCode: 'Invitasjonskode',
+            CreateInviteCode: 'Opprett Invitasjonskode',
             JoinGroupExplanation: 'Skriv inn invitasjonskoden fra gruppeeieren for å bli med i gruppen.',
             VisitStore: 'Gå til Butikk',
             ShowQRCode: 'Vis Til/Fra-lapp',
@@ -98,6 +101,8 @@ const langLib = (lang: SupportedLanguage) => {
             To: 'Til',
             From: 'Fra',
             Checklist: 'Sjekkliste',
+            InviteExplanation:
+                'Inviter venner og familie til å bli med i gruppen din ved å dele invitasjonskoden med dem. Klikk for å kopiere og send den til vennene dine!',
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -109,12 +114,16 @@ const langLib = (lang: SupportedLanguage) => {
             Edit: 'Edit',
             EditGroup: 'Edit Group',
             GroupName: 'Group Name',
+            InviteExplanation:
+                'Invite your friends and family to join your group by sharing the invite code with them. Click to copy it and send it to your friends!',
+            Join: 'Join',
             GroupHelpText:
                 'Join different groups with different sets of friends and family. Choose what wishes to share with which group.',
             GroupWishesExplanation:
                 'Click on members of the group to view their shared wishes. Click on yourself to manage what wishes to show to other members of the group.',
             AddGroup: 'Add Group',
             AddUser: 'Add User',
+            InviteUser: 'Invite User',
             ShoppingList: 'Shopping List',
             AddYourWishesHere: 'Add your wishes here',
             ItemsYouveReserved: "Items you're planning to gift",
@@ -172,6 +181,7 @@ const langLib = (lang: SupportedLanguage) => {
             NewGroup: 'New Group',
             JoinOrAddNewGroup: 'Join a group or add a brand new one!',
             InviteCode: 'Invite Code',
+            CreateInviteCode: 'Create Invite Code',
             JoinGroupExplanation: 'Enter the invite code you received from the group creator to join the group.',
             VisitStore: 'Visit Store',
             ShowQRCode: 'Show Gift Tag',
