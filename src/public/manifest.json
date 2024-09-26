@@ -1,0 +1,18 @@
+{
+    "name": "TipGift",
+    "short_name": "TipGift",
+    "description": "Need a tip for a gift? TipGift helps you find the perfect gift for your loved ones.",
+    "lang": "en-GB",
+    "start_url": "https://tipgift.it/",
+    "scope": "/",
+    "display": "standalone",
+    "theme_color": "#f8cb2e",
+    "background_color": "#1f2937",
+    "icons": [
+        {
+            "src": "/touch-icon.png",
+            "sizes": "800x800",
+            "type": "image/png"
+        }
+    ]
+}
