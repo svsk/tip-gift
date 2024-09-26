@@ -33,9 +33,9 @@ onMounted(() => {
 </script>
 
 <template>
-    <div>
+    <PullToRefresh>
         <NuxtLayout :name="layoutName">
             <NuxtPage />
         </NuxtLayout>
-    </div>
+    </PullToRefresh>
 </template>
