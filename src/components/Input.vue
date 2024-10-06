@@ -59,7 +59,7 @@ const focus = () => {
 
 const validate = () => {
     const brokenRule = props.rules?.map((rule) => rule(value.value)).find((result) => result !== true);
-    if (brokenRule !== true && brokenRule !== false && !!brokenRule) {
+    if (brokenRule !== false && !!brokenRule) {
         errorMessage.value = brokenRule;
     }
 
@@ -92,9 +92,11 @@ defineExpose({
             :name="name"
             :class="{
                 [inputClass || '']: true,
-                'border-b-2 border-blue-600 bg-black bg-opacity-20 rounded-t p-2 pt-4 outline-none w-full text-base': true,
+                'border-b-2 bg-black bg-opacity-20 rounded-t p-2 pt-4 outline-none w-full text-base': true,
                 'read-only:border-gray-400 read-only:border-dashed read-only:border-b': true,
+                'border-gray-700': !errorMessage,
                 'border-red-500': !!errorMessage,
+                'focus-within:border-blue-600': true,
                 'transition-colors': true,
             }"
             v-model="value"
