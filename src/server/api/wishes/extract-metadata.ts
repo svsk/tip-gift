@@ -127,21 +127,36 @@ export default defineEventHandler((event) =>
 
         const findMetadata = (...properties: string[]) => findMetadatas(...properties).at(0)?.content;
 
-        const extractAndFixPossibleImages = () =>
-            Array.from(
-                new Set(
-                    findMetadatas('image').map((md) => {
-                        const value = md?.content;
+        const extractAndFixPossibleImages = () => {
+            const images = findMetadatas('image').map((md) => {
+                const value = md?.content;
 
-                        if (value?.startsWith('/')) {
-                            const host = new URL(body.url);
-                            return `${host.origin}${value}`;
-                        }
+                if (value?.startsWith('/')) {
+                    const host = new URL(body.url);
+                    return `${host.origin}${value}`;
+                }
 
-                        return value;
-                    })
-                )
-            );
+                return value;
+            });
+
+            const imagesFroMDom = fullDOM?.match(/<img[^>]+src="([^">]+)"/g)?.map((img) => {
+                const src = img.match(/src="([^"]+)"/)?.[1];
+                if (!src) return null;
+
+                if (src.startsWith('/')) {
+                    const host = new URL(body.url);
+                    return `${host.origin}${src}`;
+                }
+
+                return src;
+            });
+
+            imagesFroMDom?.forEach((img) => {
+                if (img) images.push(img);
+            });
+
+            return Array.from(new Set(images));
+        };
 
         const findPossiblePrice = () => {
             // try {

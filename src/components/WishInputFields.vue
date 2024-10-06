@@ -23,6 +23,7 @@ const urlInput = ref<InstanceType<typeof Input> | null>();
 
 onMounted(() => {
     urlInput.value?.focus();
+    possibleImages.value = model.value.ImageUrl ? [model.value.ImageUrl] : [];
 });
 
 const getMetadata = async () => {
@@ -88,7 +89,7 @@ const shouldBeUrl = (val: any) => {
         </div>
 
         <Transition name="slideIn">
-            <div v-if="possibleImages.length" class="flex items-center gap-4">
+            <div v-if="possibleImages.length" class="flex items-center gap-4 overflow-x-auto">
                 <img
                     :class="{
                         'rounded max-h-20 cursor-pointer border-4 ': true,
