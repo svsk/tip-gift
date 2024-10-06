@@ -28,6 +28,16 @@ const value = ref(props.modelValue);
 const input = ref<HTMLInputElement>();
 let to: NodeJS.Timeout | undefined = undefined;
 
+const classes = computed(() => ({
+    [props.inputClass || '']: true,
+    'border-b-2 bg-black bg-opacity-20 rounded-t p-2 pt-4 outline-none w-full h-full text-base': true,
+    'read-only:border-gray-400 read-only:border-dashed read-only:border-b': true,
+    'border-gray-700': !errorMessage.value,
+    'border-red-500': !!errorMessage.value,
+    'focus-within:border-blue-600': true,
+    'transition-colors': true,
+}));
+
 watch(
     () => props.modelValue,
     () => (value.value = props.modelValue)
@@ -75,7 +85,7 @@ defineExpose({
 </script>
 
 <template>
-    <div :class="{ 'relative input-container': true, 'has-value': value != null && value !== '' }">
+    <div :class="{ 'relative input-container w-full': true, 'has-value': value != null && value !== '' }">
         <label
             :for="id"
             v-if="label"
@@ -83,23 +93,30 @@ defineExpose({
         >
             {{ label }}
         </label>
-        <input
+        <textarea
+            v-if="type === 'textarea'"
+            v-model="value"
             ref="input"
             :id="id"
             :readonly="readonly"
             :step="step"
             :type="type"
             :name="name"
-            :class="{
-                [inputClass || '']: true,
-                'border-b-2 bg-black bg-opacity-20 rounded-t p-2 pt-4 outline-none w-full text-base': true,
-                'read-only:border-gray-400 read-only:border-dashed read-only:border-b': true,
-                'border-gray-700': !errorMessage,
-                'border-red-500': !!errorMessage,
-                'focus-within:border-blue-600': true,
-                'transition-colors': true,
-            }"
+            :class="classes"
+        >
+            {{ value }}
+        </textarea>
+
+        <input
+            v-else
             v-model="value"
+            ref="input"
+            :id="id"
+            :readonly="readonly"
+            :step="step"
+            :type="type"
+            :name="name"
+            :class="classes"
         />
 
         <div class="absolute h-full w-full flex items-center justify-end top-0 gap-2 pointer-events-none p-2">
