@@ -12,6 +12,8 @@ const emit = defineEmits(['update:modelValue']);
 const model = ref<Partial<Wish>>(props.modelValue);
 const possibleImages = ref<string[]>([]);
 const busy = ref(false);
+const fetchingInfo = ref(false);
+const refreshingImages = ref(false);
 
 const linkAvailable = computed(() => {
     return model.value.Link?.startsWith('http');
@@ -41,14 +43,10 @@ const getMetadata = async () => {
             });
 
             if (!error.value) {
-                model.value.Name = result.value?.title || '';
-                model.value.Description = result.value?.description || '';
-                model.value.Price = parseInt(result.value?.price || '0') || model.value.Price;
-                model.value.ImageUrl = result.value?.possibleImages?.[0] || '';
-                possibleImages.value = (result.value?.possibleImages.filter((img) => !!img) as string[]) || [];
-
-                emit('update:modelValue', props.modelValue);
+                return result.value;
             }
+
+            throw new Error('Failed to fetch metadata: ' + error.value);
         } finally {
             busy.value = false;
         }
@@ -66,6 +64,35 @@ const required = (val: any) => {
 const shouldBeUrl = (val: any) => {
     return val?.toString()?.startsWith('http') ? true : 'Must be a URL';
 };
+
+const handleFetchInfoClicked = async () => {
+    fetchingInfo.value = true;
+
+    try {
+        const metadata = await getMetadata();
+
+        model.value.Name = metadata?.title || '';
+        model.value.Description = metadata?.description || '';
+        model.value.Price = parseInt(metadata?.price || '0') || model.value.Price;
+        model.value.ImageUrl = metadata?.possibleImages?.[0] || '';
+        possibleImages.value = (metadata?.possibleImages.filter((img) => !!img) as string[]) || [];
+
+        emit('update:modelValue', props.modelValue);
+    } finally {
+        fetchingInfo.value = false;
+    }
+};
+
+const handleRefreshImagesClicked = async () => {
+    refreshingImages.value = true;
+
+    try {
+        const metadata = await getMetadata();
+        possibleImages.value = (metadata?.possibleImages.filter((img) => !!img) as string[]) || [];
+    } finally {
+        refreshingImages.value = false;
+    }
+};
 </script>
 
 <template>
@@ -80,8 +107,8 @@ const shouldBeUrl = (val: any) => {
                 :label="`${i18n('Link')} *`"
             />
 
-            <Button :disable="!linkAvailable || busy" @click="getMetadata">
-                <Spinner v-if="busy" class="text-xs" />
+            <Button :disable="!linkAvailable || busy" @click="handleFetchInfoClicked">
+                <Spinner v-if="fetchingInfo" class="text-xs" />
                 <span v-else>
                     <Localized tkey="FetchInfo" />
                 </span>
@@ -89,7 +116,7 @@ const shouldBeUrl = (val: any) => {
         </div>
 
         <Transition name="slideIn">
-            <div v-if="possibleImages.length" class="flex items-center gap-4 overflow-x-auto">
+            <div class="flex items-center gap-4 overflow-x-auto">
                 <img
                     :class="{
                         'rounded max-h-20 cursor-pointer border-4 ': true,
@@ -100,6 +127,11 @@ const shouldBeUrl = (val: any) => {
                     :src="image"
                     @click="model.ImageUrl = image"
                 />
+
+                <Button v-if="model.Link && model.Id" :disable="busy" round flat @click="handleRefreshImagesClicked">
+                    <Spinner v-if="refreshingImages" class="text-xs" />
+                    <Icon v-else font-size="28px" name="refresh" />
+                </Button>
             </div>
         </Transition>
 
