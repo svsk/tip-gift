@@ -21,21 +21,19 @@ const canEdit = computed(() => {
 
 <template>
     <Card class="flex flex-col gap-4">
-        <div class="w-full flex justify-between items-center gap-4">
-            <div class="flex justify-between items-center gap-2">
-                <NuxtLink to="/my/groups">
-                    <Button round>
-                        <Icon font-size="24px" name="arrow_back" />
-                    </Button>
-                </NuxtLink>
-                <h1 class="font-medium text-lg">{{ group?.GroupName }}</h1>
+        <PageHeader back-to="/my/groups">
+            <div class="flex gap-3 items-center">
+                <GroupAvatar v-if="group" :group="group" />
+                {{ group?.GroupName }}
             </div>
 
-            <!-- Buttons go here -->
-            <Button v-if="canEdit" round @click="() => (showEditDialog = true)">
-                <Icon name="edit" font-size="24px" />
-            </Button>
-        </div>
+            <template #side>
+                <!-- Buttons go here -->
+                <Button v-if="canEdit" round @click="() => (showEditDialog = true)">
+                    <Icon name="edit" font-size="24px" />
+                </Button>
+            </template>
+        </PageHeader>
 
         <div class="text-sm opacity-60">
             <Localized tkey="GroupWishesExplanation" />

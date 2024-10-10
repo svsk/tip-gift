@@ -18,5 +18,7 @@ defineProps<Props>();
                 <slot />
             </h1>
         </div>
+
+        <slot name="side" />
     </div>
 </template>
