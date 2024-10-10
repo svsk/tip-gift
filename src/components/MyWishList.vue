@@ -126,8 +126,8 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
             item-key="Id"
         >
             <template #item="{ element: wish }">
-                <div class="flex items-center border-b border-slate-600 bg-gray-800 gap-1 last:border-b-0">
-                    <WishListItem class="py-3 flex-grow" :entry="wish" />
+                <ListItem class="mb-2">
+                    <WishListItem class="flex-grow" :entry="wish" />
 
                     <div class="flex gap-1 items-center">
                         <Button v-show="!reorderMode" @click="() => handleEditClicked(wish)" round>
@@ -142,7 +142,7 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
                             <Icon name="drag_indicator" font-size="20px" />
                         </Button>
                     </div>
-                </div>
+                </ListItem>
             </template>
         </draggable>
     </div>

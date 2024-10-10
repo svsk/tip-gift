@@ -8,31 +8,35 @@
             </div>
         </div>
 
-        <div class="flex flex-col gap-6">
-            <NuxtLink to="/my/wishes" class="flex items-center gap-2">
-                <EmojiAvatar :color="'#2563eb'"> 🎁 </EmojiAvatar>
+        <div class="flex flex-col gap-2">
+            <NuxtLink to="/my/wishes">
+                <ListItem clickable class="flex items-center gap-2">
+                    <EmojiAvatar :color="'#2563eb'"> 🎁 </EmojiAvatar>
 
-                <div>
                     <div>
-                        <Localized tkey="MyWishes" />
+                        <div>
+                            <Localized tkey="MyWishes" />
+                        </div>
+                        <div class="text-xs opacity-60">
+                            <Localized tkey="AddYourWishesHere" />
+                        </div>
                     </div>
-                    <div class="text-xs opacity-60">
-                        <Localized tkey="AddYourWishesHere" />
-                    </div>
-                </div>
+                </ListItem>
             </NuxtLink>
 
-            <NuxtLink to="/my/checklist" class="flex items-center gap-2">
-                <EmojiAvatar :color="'#2563eb'"> 📃 </EmojiAvatar>
+            <NuxtLink to="/my/checklist">
+                <ListItem clickable class="flex items-center gap-2">
+                    <EmojiAvatar :color="'#2563eb'"> 📃 </EmojiAvatar>
 
-                <div>
                     <div>
-                        <Localized tkey="MyChecklist" />
+                        <div>
+                            <Localized tkey="MyChecklist" />
+                        </div>
+                        <div class="text-xs opacity-60">
+                            <Localized tkey="ItemsYouveReserved" />
+                        </div>
                     </div>
-                    <div class="text-xs opacity-60">
-                        <Localized tkey="ItemsYouveReserved" />
-                    </div>
-                </div>
+                </ListItem>
             </NuxtLink>
         </div>
 

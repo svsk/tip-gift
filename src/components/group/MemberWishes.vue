@@ -53,12 +53,8 @@ const findGivers = (wish: Wish) => {
 <template>
     <div>
         <div class="flex flex-col">
-            <div v-if="groupMemberId === currentUserId">
-                <div
-                    v-for="wish in currentUserWishes"
-                    :key="wish.Id"
-                    class="flex items-center justify-between border-b border-1 border-slate-600 last:border-0 py-3 gap-4 w-full overflow-hidden"
-                >
+            <div v-if="groupMemberId === currentUserId" class="flex flex-col gap-2">
+                <ListItem v-for="wish in currentUserWishes" :key="wish.Id">
                     <WishListItem
                         :class="{ 'grow transition-opacity': true, 'opacity-40': !wishSharedWithGroup(wish) }"
                         :entry="wish"
@@ -71,7 +67,7 @@ const findGivers = (wish: Wish) => {
                     <Button round v-else @click="() => handleRemoveWishFromGroup(wish)">
                         <Icon font-size="24px" name="visibility" />
                     </Button>
-                </div>
+                </ListItem>
             </div>
             <div v-else>
                 <div class="flex items-center justify-end w-full flex-nowrap gap-3 pb-2">
@@ -91,12 +87,8 @@ const findGivers = (wish: Wish) => {
                 <EmptyState v-if="!groupMemberWishes?.length" class="text-center">
                     This person hasn't shared any wishes with this group yet.
                 </EmptyState>
-                <span v-else>
-                    <div
-                        v-for="wish in groupMemberWishes"
-                        :key="wish.Id"
-                        class="flex items-center justify-between border-b border-1 border-slate-600 last:border-0 py-3 gap-4 w-full overflow-hidden"
-                    >
+                <div v-else class="flex flex-col gap-2">
+                    <ListItem v-for="wish in groupMemberWishes" :key="wish.Id">
                         <WishListItem :class="{ grow: true }" :entry="wish" />
 
                         <div class="flex no-wrap items-center">
@@ -113,8 +105,8 @@ const findGivers = (wish: Wish) => {
                                 <Icon font-size="24px" name="shopping_cart" />
                             </Button>
                         </div>
-                    </div>
-                </span>
+                    </ListItem>
+                </div>
             </div>
         </div>
     </div>

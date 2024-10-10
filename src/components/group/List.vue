@@ -17,18 +17,14 @@ const emit = defineEmits<Emits>();
 </script>
 
 <template>
-    <div class="flex flex-col">
+    <div class="flex flex-col gap-2">
         <EmptyState v-if="!groups?.length" class="text-center text-base flex flex-col gap-2">
             <Localized tkey="NoGroupsYet" />...
         </EmptyState>
 
         <GroupAddButton v-if="allowAdding">
             <template #="{ handleAddClicked }">
-                <button
-                    v-ripple
-                    class="py-2 flex justify-between items-center border-slate-600 border-b last:border-b-0 w-full relative"
-                    @click="handleAddClicked"
-                >
+                <ListItem clickable class="w-full mb-3" @click="handleAddClicked">
                     <div class="flex items-center gap-2 flex-nowrap">
                         <div
                             class="rounded-full min-h-[48px] min-w-[48px] bg-slate-700 text-white flex items-center justify-center"
@@ -43,7 +39,7 @@ const emit = defineEmits<Emits>();
                             </div>
                         </div>
                     </div>
-                </button>
+                </ListItem>
             </template>
         </GroupAddButton>
 
@@ -52,17 +48,18 @@ const emit = defineEmits<Emits>();
             v-ripple
             v-for="group in groups"
             :key="group.Id"
-            class="py-2 flex justify-between items-center border-slate-600 border-b last:border-b-0 relative cursor-pointer"
             @click="() => emit('group-clicked', group)"
         >
-            <div class="flex items-center gap-2 flex-nowrap">
-                <GroupAvatar :group="group" />
-                <GroupListItem :group="group" />
-            </div>
+            <ListItem clickable class="flex justify-between">
+                <div class="flex items-center gap-2 flex-nowrap">
+                    <GroupAvatar :group="group" />
+                    <GroupListItem :group="group" />
+                </div>
 
-            <slot name="actions" class="flex items-center" :group="group">
-                <Icon font-size="24px" name="chevron_right" />
-            </slot>
+                <slot name="actions" class="flex items-center" :group="group">
+                    <Icon font-size="24px" name="chevron_right" />
+                </slot>
+            </ListItem>
         </NuxtLink>
     </div>
 </template>

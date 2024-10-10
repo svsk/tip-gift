@@ -47,17 +47,13 @@ onMounted(() => {
                         >Powered by 🎁TipGift</a
                     >
                 </h1>
-                <div class="flex flex-col">
-                    <div
-                        v-for="wish in shareData.wishes"
-                        :key="wish.Id"
-                        class="flex items-center justify-between border-b border-1 border-slate-600 last:border-0 py-3 gap-4 w-full overflow-hidden"
-                    >
+                <div class="flex flex-col gap-2">
+                    <ListItem v-for="wish in shareData.wishes" :key="wish.Id">
                         <WishListItem class="grow" :entry="wish" />
                         <Button round @click="() => handleBuyClicked(wish)">
                             <Icon font-size="24px" name="shopping_cart" />
                         </Button>
-                    </div>
+                    </ListItem>
                 </div>
             </div>
             <div v-else>
