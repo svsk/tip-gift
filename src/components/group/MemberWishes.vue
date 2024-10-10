@@ -85,7 +85,7 @@ const findGivers = (wish: Wish) => {
                 </div>
 
                 <EmptyState v-if="!groupMemberWishes?.length" class="text-center">
-                    This person hasn't shared any wishes with this group yet.
+                    <Localized tkey="NoSharedWishesInfoText" />
                 </EmptyState>
                 <div v-else class="flex flex-col gap-2">
                     <ListItem v-for="wish in groupMemberWishes" :key="wish.Id">
