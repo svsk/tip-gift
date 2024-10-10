@@ -62,11 +62,7 @@ const handleAddCustomPurchaseConfirmed = async () => {
                     <WishPurchaseListFilter v-model:filter-given="filterGiven" />
                 </div>
 
-                <div
-                    v-ripple
-                    class="cursor-pointer border-t first:border-t-0 py-2 flex flex-row items-center flex-nowrap gap-3 w-full justify-between relative rounded border-slate-600"
-                    @click="handleAddCustomPurchase"
-                >
+                <ListItem clickable class="mb-4" @click="handleAddCustomPurchase">
                     <div class="flex gap-2 items-center text-sm">
                         <div>
                             <div
@@ -78,38 +74,38 @@ const handleAddCustomPurchaseConfirmed = async () => {
 
                         <Localized tkey="AddCustomWishPurchase" />
                     </div>
-                    <div></div>
-                </div>
+                </ListItem>
 
                 <TransitionGroup name="growDownSlow">
                     <NuxtLink
                         v-for="purchase in filteredPurchases"
                         v-ripple
                         :key="purchase.Id"
-                        class="border-t first:border-t-0 py-2 flex flex-row items-center flex-nowrap gap-3 w-full justify-between relative rounded border-slate-600"
                         :to="`/my/checklist/${purchase.Id}`"
                     >
-                        <User
-                            v-if="purchase.WishOwnerId"
-                            :user-id="purchase.WishOwnerId"
-                            without-username
-                            class="ml-1"
-                        />
-                        <EmojiAvatar v-else color="rgb(37 99 235)"> 🙋 </EmojiAvatar>
+                        <ListItem clickable class="mb-2 flex gap-3">
+                            <User
+                                v-if="purchase.WishOwnerId"
+                                :user-id="purchase.WishOwnerId"
+                                without-username
+                                class="ml-1"
+                            />
+                            <EmojiAvatar v-else color="rgb(37 99 235)"> 🙋 </EmojiAvatar>
 
-                        <div class="flex flex-col flex-1 gap-1 text-sm">
-                            <div class="line-clamp-2">
-                                {{ purchase.Name }}
+                            <div class="flex flex-col flex-1 gap-1 text-sm">
+                                <div class="line-clamp-2">
+                                    {{ purchase.Name }}
+                                </div>
+
+                                <WishPurchaseProgress :wish-purchase="purchase" />
                             </div>
 
-                            <WishPurchaseProgress :wish-purchase="purchase" />
-                        </div>
-
-                        <div>
-                            <Button round flat>
-                                <Icon font-size="24px" name="navigate_next" />
-                            </Button>
-                        </div>
+                            <div>
+                                <Button round flat>
+                                    <Icon font-size="24px" name="navigate_next" />
+                                </Button>
+                            </div>
+                        </ListItem>
                     </NuxtLink>
                 </TransitionGroup>
             </TabPanel>
