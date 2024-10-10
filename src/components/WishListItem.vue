@@ -11,14 +11,8 @@ defineProps<Props>();
 <template>
     <div class="flex justify-between items-center flex-nowrap text-lg gap-2">
         <div class="flex-grow flex items-center gap-3">
-            <div class="self-start flex items-center justify-center w-[75px] h-[75px] rounded bg-white">
-                <img v-if="entry.ImageUrl" class="rounded max-w-[75px] max-h-[75px]" :src="entry.ImageUrl" />
-                <div
-                    v-else
-                    class="flex items-center w-[75px] h-[75px] justify-center text-4xl text-gray-400 select-none"
-                >
-                    ?
-                </div>
+            <div class="self-start flex items-center justify-center">
+                <WishImage :src="entry.ImageUrl" class="w-[75px] h-[75px]" />
             </div>
 
             <a class="cursor-pointer hover:underline flex flex-col gap-1" :href="entry.Link || '#'" target="_blank">
