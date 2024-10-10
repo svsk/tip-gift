@@ -19,6 +19,7 @@ model Wish {
   GroupId     String    @db.UniqueIdentifier
   ImageUrl    String?   @db.VarChar(Max)
   DeletedDate DateTime? @db.DateTimeOffset
+  CreatedDate DateTime  @default(dbgenerated("getutcdate()"), map: "DF__Wish__CreatedDat__69C6B1F5") @db.DateTimeOffset
 }
 
 model WishUser {
@@ -55,9 +56,10 @@ model WishUserGroup {
 }
 
 model WishUserGroupUser {
-  Id      String @id(map: "PK__WishUser__3214EC0760AAD65A") @default(dbgenerated("newid()"), map: "DF__WishUserGrou__Id__719CDDE7") @db.UniqueIdentifier
-  GroupId String @db.UniqueIdentifier
-  UserId  String @db.UniqueIdentifier
+  Id              String   @id(map: "PK__WishUser__3214EC0760AAD65A") @default(dbgenerated("newid()"), map: "DF__WishUserGrou__Id__719CDDE7") @db.UniqueIdentifier
+  GroupId         String   @db.UniqueIdentifier
+  UserId          String   @db.UniqueIdentifier
+  LastVisitedDate DateTime @default(dbgenerated("getutcdate()"), map: "DF__WishUserG__LastV__6ABAD62E") @db.DateTimeOffset
 }
 
 model WishListShare {

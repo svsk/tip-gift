@@ -7,7 +7,8 @@
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "postinstall": "nuxt prepare",
-        "rebuild-prisma": "prisma db pull && prisma generate"
+        "rebuild-prisma": "prisma db pull && prisma generate",
+        "migrate": "node ./sql/migrate.js && prisma db pull && prisma generate"
     },
     "devDependencies": {
         "@nuxtjs/supabase": "^1.1.3",

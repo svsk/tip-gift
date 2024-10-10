@@ -6,7 +6,8 @@ export const useWishes = () =>
     useAsyncData(
         storeKey,
         async () => {
-            return await $fetch('/api/wishes/getall', useAuthentication());
+            const result = await $fetch('/api/wishes/getall', useAuthentication());
+            return result?.map((wish) => ({ ...wish, CreatedDate: new Date(wish.CreatedDate) } as Wish));
         },
         { immediate: true }
     );

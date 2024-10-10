@@ -1,4 +1,4 @@
-import { type WishUserGroup } from '@prisma-app/client';
+import { type WishUserGroup, type Wish } from '@prisma-app/client';
 
 const storeKey = 'userGroups';
 const groupWishKey = 'userGroupWishes';
@@ -53,9 +53,16 @@ export const deleteGroup = async (group: WishUserGroup) => {
 };
 
 export const useGroupWishes = (groupId: string) =>
-    useAsyncData(`${groupWishKey}-${groupId}`, () => $fetch(`/api/groups/${groupId}/wishes`, useAuthentication()), {
-        immediate: true,
-    });
+    useAsyncData(
+        `${groupWishKey}-${groupId}`,
+        async () => {
+            const result = await $fetch(`/api/groups/${groupId}/wishes`, useAuthentication());
+            return result?.map((wish) => ({ ...wish, CreatedDate: new Date(wish.CreatedDate) } as Wish));
+        },
+        {
+            immediate: true,
+        }
+    );
 
 export const addWishToGroup = async (wishId: string, groupId: string) => {
     const result = await $fetch(`/api/groups/${groupId}/${wishId}`, {
