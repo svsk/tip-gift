@@ -44,6 +44,7 @@ const canEdit = computed(() => {
         <div class="overflow-x-auto">
             <GroupMembers v-model:selectedMemberId="groupMemberId" :group-id="groupId" />
         </div>
+
         <GroupMemberWishes :group-id="groupId.toString()" :group-member-id="groupMemberId" />
     </Card>
 

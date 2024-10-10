@@ -1,73 +1,21 @@
 <script setup lang="ts">
-import { type Wish } from '@prisma-app/client';
-
 interface Props {
     groupId: string;
     groupMemberId: string;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 
-const { data: groupWishes } = await useGroupWishes(props.groupId);
-const { data: currentUserWishes } = await useWishes();
-const { data: givenGifts } = await useGroupWishPurchases(props.groupId);
-
-const currentUserId = useAuth()?.value?.id;
-
-const boughtItem = ref<Wish | null>(null);
-const showBoughtItemDialog = ref<boolean>(false);
 const showGivers = ref(false);
 
-const wishSharedWithGroup = (wish: Wish) => {
-    return groupWishes.value?.some((gw) => gw.Id === wish.Id);
-};
-
-const handleAddWishToGroup = async (wish: Wish) => {
-    await addWishToGroup(wish.Id, props.groupId);
-};
-
-const handleRemoveWishFromGroup = async (wish: Wish) => {
-    await removeWishFromGroup(wish.Id, props.groupId);
-};
-
-const groupMemberWishes = computed(() => {
-    return groupWishes.value
-        ?.filter((gw) => gw.UserId === props.groupMemberId)
-        .sort((a, b) => (a.Order || 0) - (b.Order || 1));
-});
-
-const handleBuyClicked = (wish: Wish) => {
-    boughtItem.value = wish;
-    showBoughtItemDialog.value = true;
-};
-
-const findGivers = (wish: Wish) => {
-    if (!showGivers.value || !givenGifts.value) {
-        return [];
-    }
-
-    return givenGifts.value?.filter((gg) => gg.WishId === wish.Id);
-};
+const currentUserId = useAuth()?.value?.id;
 </script>
 
 <template>
     <div>
         <div class="flex flex-col">
             <div v-if="groupMemberId === currentUserId" class="flex flex-col gap-2">
-                <ListItem v-for="wish in currentUserWishes" :key="wish.Id">
-                    <WishListItem
-                        :class="{ 'grow transition-opacity': true, 'opacity-40': !wishSharedWithGroup(wish) }"
-                        :entry="wish"
-                    />
-
-                    <Button round v-if="!wishSharedWithGroup(wish)" @click="() => handleAddWishToGroup(wish)">
-                        <Icon font-size="24px" name="visibility_off" />
-                    </Button>
-
-                    <Button round v-else @click="() => handleRemoveWishFromGroup(wish)">
-                        <Icon font-size="24px" name="visibility" />
-                    </Button>
-                </ListItem>
+                <GroupCurrentUserWishes :group-id="groupId" />
             </div>
             <div v-else>
                 <div class="flex items-center justify-end w-full flex-nowrap gap-3 pb-2">
@@ -84,39 +32,12 @@ const findGivers = (wish: Wish) => {
                     />
                 </div>
 
-                <EmptyState v-if="!groupMemberWishes?.length" class="text-center">
-                    <Localized tkey="NoSharedWishesInfoText" />
-                </EmptyState>
-                <div v-else class="flex flex-col gap-2">
-                    <ListItem v-for="wish in groupMemberWishes" :key="wish.Id">
-                        <WishListItem :class="{ grow: true }" :entry="wish" />
-
-                        <div class="flex no-wrap items-center">
-                            <TransitionGroup name="grow">
-                                <BoughtIndicator
-                                    v-for="buyer in findGivers(wish)"
-                                    :key="buyer.Id"
-                                    :wish-purchase="buyer"
-                                    :wish-title="wish.Name"
-                                />
-                            </TransitionGroup>
-
-                            <Button v-if="showGivers" round @click="() => handleBuyClicked(wish)">
-                                <Icon font-size="24px" name="shopping_cart" />
-                            </Button>
-                        </div>
-                    </ListItem>
-                </div>
+                <GroupOtherMemberWishes
+                    :group-member-id="groupMemberId"
+                    :group-id="groupId"
+                    :show-givers="showGivers"
+                />
             </div>
         </div>
     </div>
-
-    <Dialog v-model="showBoughtItemDialog">
-        <BoughtItemForm
-            @close="(_) => (showBoughtItemDialog = false)"
-            v-if="boughtItem"
-            :item="boughtItem"
-            :group-id="groupId"
-        />
-    </Dialog>
 </template>

@@ -5,9 +5,9 @@ interface Props {
     wishTitle: string | null;
     wishPurchase: {
         Id: string;
-        WishId: string;
-        GroupId: string;
         UserId: string;
+        WishId: string | null;
+        GroupId: string | null;
     };
 }
 
@@ -27,6 +27,10 @@ const handleClick = () => {
 };
 
 const handleDeleteConfirmed = () => {
+    if (!props.wishPurchase.GroupId) {
+        return;
+    }
+
     deleteWishPurchase(props.wishPurchase.Id, props.wishPurchase.GroupId);
     showDeleteConfirmation.value = false;
 };
