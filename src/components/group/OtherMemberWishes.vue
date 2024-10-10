@@ -15,6 +15,10 @@ const { data: givenGifts } = await useGroupWishPurchases(props.groupId);
 const boughtItem = ref<Wish | null>(null);
 const showBoughtItemDialog = ref<boolean>(false);
 
+const currentUserLastVisit = computed(() => {
+    return new Date();
+});
+
 const groupMemberWishes = computed(() => {
     return groupWishes.value
         ?.filter((gw) => gw.UserId === props.groupMemberId)
@@ -42,7 +46,15 @@ const findGivers = (wish: Wish) => {
 
     <div v-else class="flex flex-col gap-2">
         <ListItem v-for="wish in groupMemberWishes" :key="wish.Id">
-            <WishListItem :class="{ grow: true }" :entry="wish" />
+            <WishListItem :class="{ grow: true }" :entry="wish">
+                <template #indicator>
+                    <WishNewBadge
+                        class="absolute top-1 left-0 z-20"
+                        :created-date="wish.CreatedDate"
+                        :last-visit-date="currentUserLastVisit"
+                    />
+                </template>
+            </WishListItem>
 
             <div class="flex no-wrap items-center">
                 <TransitionGroup name="grow">

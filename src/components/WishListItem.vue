@@ -12,6 +12,7 @@ defineProps<Props>();
     <div class="flex justify-between items-center flex-nowrap text-lg gap-2">
         <div class="flex-grow flex items-center gap-3">
             <div class="self-start flex items-center justify-center">
+                <slot name="indicator" />
                 <WishImage :src="entry.ImageUrl" class="w-[75px] h-[75px]" />
             </div>
 

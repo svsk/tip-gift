@@ -104,6 +104,7 @@ const langLib = (lang: SupportedLanguage) => {
             InviteExplanation:
                 'Inviter venner og familie til å bli med i gruppen din ved å dele invitasjonskoden med dem. Klikk for å kopiere og send den til vennene dine!',
             NoSharedWishesInfoText: `Denne personen har ikke delt noen ønsker med denne gruppen enda.`,
+            New: 'Ny',
         },
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -195,6 +196,7 @@ const langLib = (lang: SupportedLanguage) => {
             From: 'From',
             Checklist: 'Checklist',
             NoSharedWishesInfoText: `This person hasn't shared any wishes with this group yet.`,
+            New: 'New',
         },
     } as Record<SupportedLanguage, Record<string, string>>;
 
