@@ -36,18 +36,15 @@ const iconSize = computed(() => {
     <div @touchmove="handleTouchMove" @touchend="handleTouchEnd">
         <div
             :class="{
-                'w-full overflow-y-hidden flex items-center bg-blue-600': true,
+                'overflow-y-hidden flex items-center justify-center absolute rounded-full bg-blue-600 z-50': true,
             }"
-            :style="`height: ${pulledHeight}px`"
+            :style="`top: ${pulledHeight - 70}px; width: 50px; height: 50px; left: calc(50% - 25px);`"
         >
-            <div
-                class="w-full py-4 text-center"
-                :style="`transform: rotate(${
-                    260 + pulledHeight * 3
-                }deg) scale(${iconSize}); transform-origin: 50% 50%;`"
-            >
-                <Icon font-size="24px" name="refresh" />
-            </div>
+            <Icon
+                :style="`transform: rotate(${260 + pulledHeight * 3}deg) scale(${iconSize}); transform-origin: center;`"
+                name="refresh"
+                font-size="24px"
+            />
         </div>
         <slot v-if="!reloading" />
     </div>
