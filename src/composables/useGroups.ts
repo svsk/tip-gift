@@ -1,11 +1,13 @@
-import { type WishUserGroup, type Wish } from '@prisma-app/client';
+import { type WishUserGroup, type Wish, type WishUserGroupUser } from '@prisma-app/client';
 
 const storeKey = 'userGroups';
 const groupWishKey = 'userGroupWishes';
 const groupUserKey = 'userGroupUsers';
 
 export const useGroups = () =>
-    useAsyncData(storeKey, () => $fetch('/api/groups/getall', useAuthentication()), { immediate: true });
+    useAsyncData(storeKey, () => $fetch<WishUserGroup[]>('/api/groups/getall', useAuthentication()), {
+        immediate: true,
+    });
 
 export const getGroupByInviteCode = async (inviteCode: string) => {
     return await $fetch<WishUserGroup>(`/api/groups/join/${inviteCode}`, { ...useAuthentication() });
@@ -52,17 +54,19 @@ export const deleteGroup = async (group: WishUserGroup) => {
     refreshGroups();
 };
 
-export const useGroupWishes = (groupId: string) =>
-    useAsyncData(
-        `${groupWishKey}-${groupId}`,
-        async () => {
-            const result = await $fetch(`/api/groups/${groupId}/wishes`, useAuthentication());
-            return result?.map((wish) => ({ ...wish, CreatedDate: new Date(wish.CreatedDate) } as Wish));
-        },
-        {
-            immediate: true,
-        }
-    );
+export const useGroupWishes = (groupId: string, fromCache = false) => {
+    const storeKey = `${groupWishKey}-${groupId}`;
+
+    const cached = fromCache ? retrieveCachedData<Wish[]>(storeKey) : null;
+    if (cached) {
+        return cached;
+    }
+
+    return useAsyncData(storeKey, async () => {
+        const result = await $fetch(`/api/groups/${groupId}/wishes`, useAuthentication());
+        return result?.map((wish) => ({ ...wish, CreatedDate: new Date(wish.CreatedDate) } as Wish));
+    });
+};
 
 export const addWishToGroup = async (wishId: string, groupId: string) => {
     const result = await $fetch(`/api/groups/${groupId}/${wishId}`, {
@@ -95,9 +99,13 @@ export const removeWishFromGroup = async (wishGroupWishId: string, groupId: stri
 };
 
 export const useGroupUsers = (groupId: string) =>
-    useAsyncData(`${groupUserKey}-${groupId}`, () => $fetch(`/api/groups/${groupId}/users`, useAuthentication()), {
-        immediate: true,
-    });
+    useAsyncData(
+        `${groupUserKey}-${groupId}`,
+        () => $fetch<WishUserGroupUser[]>(`/api/groups/${groupId}/users`, useAuthentication()),
+        {
+            immediate: true,
+        }
+    );
 
 export const addUserToGroup = async (groupId: string, userId: string) => {
     const result = await $fetch(`/api/groups/${groupId}/users/${userId}`, {

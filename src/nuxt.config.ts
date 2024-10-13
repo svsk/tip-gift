@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
     modules: ['@nuxtjs/supabase'],
     css: ['~/assets/css/main.scss'],
+    compatibilityDate: '2024-10-13',
     nitro: {
         routeRules: {
             '/confirm': {

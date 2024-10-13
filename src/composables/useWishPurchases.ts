@@ -5,8 +5,17 @@ export const useMyWishPurchases = async () => {
     return await useFetch<WishPurchaseWish[]>('/api/wishpurchases', useAuthentication());
 };
 
-export const useGroupWishPurchases = async (groupId: string) => {
-    return await useFetch<WishPurchase[]>(`/api/groups/${groupId}/given`, useAuthentication());
+export const useGroupWishPurchases = async (groupId: string, fromCache = false) => {
+    const storeKey = `groupWishPurchases-${groupId}`;
+
+    const cached = fromCache ? retrieveCachedData<WishPurchase[]>(storeKey) : null;
+    if (cached) {
+        return cached;
+    }
+
+    return useAsyncData(storeKey, async () => {
+        return await $fetch<WishPurchase[]>(`/api/groups/${groupId}/given`, useAuthentication());
+    });
 };
 
 export const giveGift = async (groupId: string, wishId: string) => {

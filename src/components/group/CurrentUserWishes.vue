@@ -7,8 +7,8 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const { data: currentUserWishes } = await useWishes();
-const { data: groupWishes } = await useGroupWishes(props.groupId);
+const { data: currentUserWishes } = await useWishes(true);
+const { data: groupWishes } = await useGroupWishes(props.groupId, true);
 
 const wishSharedWithGroup = (wish: Wish) => {
     return groupWishes.value?.some((gw) => gw.Id === wish.Id);

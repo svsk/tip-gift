@@ -9,8 +9,8 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const { data: groupWishes } = await useGroupWishes(props.groupId);
-const { data: givenGifts } = await useGroupWishPurchases(props.groupId);
+const { data: groupWishes } = await useGroupWishes(props.groupId, true);
+const { data: givenGifts } = await useGroupWishPurchases(props.groupId, true);
 
 const boughtItem = ref<Wish | null>(null);
 const showBoughtItemDialog = ref<boolean>(false);
