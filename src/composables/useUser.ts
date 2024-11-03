@@ -3,7 +3,7 @@ import { type WishUser } from '@prisma-app/client';
 const loadPromises: { [key: string]: Promise<WishUser> } = {};
 const userCache = new Map<string, Ref<WishUser | null>>();
 
-const loadUser = async (id: string) => {
+export const loadUser = async (id: string) => {
     const user = await $fetch<WishUser>(`/api/users/${id}`, useAuthentication());
     return user;
 };

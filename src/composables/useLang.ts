@@ -203,8 +203,7 @@ const langLib = (lang: SupportedLanguage) => {
     return languages[lang as SupportedLanguage];
 };
 
-export const i18n = (tkey: string, ...params: string[]) => {
-    const lang = language.value as SupportedLanguage;
+const localize = (tkey: string, lang: SupportedLanguage, ...params: string[]) => {
     const lib = langLib(lang);
     const localized = lib[tkey] || tkey;
 
@@ -212,4 +211,21 @@ export const i18n = (tkey: string, ...params: string[]) => {
         const regex = new RegExp(`\\{${i}\\}`, 'g');
         return acc.replace(regex, param);
     }, localized);
+};
+
+export const i18n = (tkey: string, ...params: string[]) => {
+    const lang = language.value as SupportedLanguage;
+    return localize(tkey, lang, ...params);
+};
+
+export const useI18n = async () => {
+    const defaultLanguage = SupportedLanguage.EnglishUK;
+
+    const userId = useAuth().value?.id || '';
+    const user = !!userId ? await loadUser(userId) : null;
+    const lang = (user?.PreferredLanguage || defaultLanguage) as SupportedLanguage;
+
+    return {
+        i18n: (tkey: string, ...params: string[]) => localize(tkey, lang, ...params),
+    };
 };
