@@ -1,12 +1,10 @@
-export const useAuth = () => useSupabaseUser();
+export const useAuth = () => {
+    const { user } = useUserSession();
+    return user;
+};
 
 export const logout = async () => {
-    await useSupabaseClient().auth.signOut();
-    const accessToken = useCookie('sb-access-token');
-    const refreshToken = useCookie('sb-refresh-token');
-
-    accessToken.value = null;
-    refreshToken.value = null;
+    await useUserSession().clear();
 };
 
 export const useAuthentication = () => {

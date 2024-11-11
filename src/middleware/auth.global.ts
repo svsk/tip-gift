@@ -1,4 +1,12 @@
 export default defineNuxtRouteMiddleware((to) => {
-    // No longer in use
-    // This is all defined in the nuxt.config.ts's supabase settings
+    const { user } = useUserSession();
+
+    const exemptedRoutes = ['/login', '/api/auth/auth0'];
+    if (exemptedRoutes.includes(to.path)) {
+        return;
+    }
+
+    if (!user.value) {
+        return navigateTo('/login');
+    }
 });

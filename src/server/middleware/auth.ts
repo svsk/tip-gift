@@ -1,15 +1,14 @@
-import { serverSupabaseClient } from '#supabase/server';
-import { DbContext } from '~~/data/DbContext';
-
 export default defineEventHandler(async (event) => {
     try {
-        const e = await serverSupabaseClient(event);
-        const user = await e.auth.getUser();
-        event.context.auth = user;
+        const e = await getUserSession(event);
+        if (!e.user || !e.user.email) {
+            return;
+        }
 
-        const ctx = new DbContext();
-        ctx.ensureUserExists(user.data.user?.id, user.data.user?.email);
-    } catch {
+        const sessionUser = e.user;
+        event.context.auth = { user: sessionUser };
+    } catch (ex) {
+        console.log('It failed', ex);
         // Not logged in
     }
 });

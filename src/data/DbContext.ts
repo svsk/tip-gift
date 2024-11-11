@@ -143,17 +143,18 @@ export class DbContext {
         return (await this._db.wishUser.findFirst({ where: { Id: id } })) || null;
     }
 
-    async ensureUserExists(id: string | undefined, email: string | undefined) {
-        if (id && email) {
-            const user = await this.getUserById(id);
-            if (!user) {
-                await this.createUser(id, email);
-            }
+    async ensureUserExists(email: string) {
+        const user = await this.getUserByUsername(email);
+        if (!user) {
+            const createdUser = await this.createUser(email);
+            return createdUser;
         }
+
+        return user;
     }
 
-    createUser(id: string, email: string) {
-        return this._db.wishUser.create({ data: { Id: id, Email: email } });
+    createUser(email: string) {
+        return this._db.wishUser.create({ data: { Email: email } });
     }
 
     getUserByUsername(username: string) {

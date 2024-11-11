@@ -1,6 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-    modules: ['@nuxtjs/supabase'],
+    modules: ['nuxt-auth-utils'],
     css: ['~/assets/css/main.scss'],
     compatibilityDate: '2024-10-13',
     nitro: {
@@ -8,13 +8,6 @@ export default defineNuxtConfig({
             '/confirm': {
                 ssr: false,
             },
-        },
-    },
-    supabase: {
-        redirectOptions: {
-            login: '/login',
-            callback: '/confirm',
-            exclude: ['/wishes/**', '/embed/**', '/gift-tag/**'],
         },
     },
     postcss: {
