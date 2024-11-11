@@ -6,6 +6,11 @@ export default defineNuxtRouteMiddleware((to) => {
         return;
     }
 
+    const exemptedPatterns = ['/wishes/', '/embed/', '/gift-tag/'];
+    if (exemptedPatterns.some((pattern) => to.path.startsWith(pattern))) {
+        return;
+    }
+
     if (!user.value) {
         return navigateTo('/login');
     }
