@@ -10,6 +10,7 @@ const emit = defineEmits(['update:modelValue']);
 
 const props = defineProps<Props>();
 
+const { i18n } = await useI18n();
 const searchContent = ref('');
 const result = ref<WishUser[]>([]);
 const selectedUser = ref<WishUser | null>(props.modelValue);

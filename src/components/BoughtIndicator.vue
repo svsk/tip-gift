@@ -15,6 +15,7 @@ const props = defineProps<Props>();
 
 const user = useCurrentUser();
 const showDeleteConfirmation = ref(false);
+const { i18n } = await useI18n();
 
 const isCurrentUserBuyer = computed(() => {
     return props.wishPurchase.UserId === user?.value?.Id;

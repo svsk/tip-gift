@@ -213,11 +213,6 @@ const localize = (tkey: string, lang: SupportedLanguage, ...params: string[]) =>
     }, localized);
 };
 
-export const i18n = (tkey: string, ...params: string[]) => {
-    const lang = language.value as SupportedLanguage;
-    return localize(tkey, lang, ...params);
-};
-
 export const useI18n = async () => {
     const defaultLanguage = SupportedLanguage.EnglishUK;
 

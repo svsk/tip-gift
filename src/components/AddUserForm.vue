@@ -6,6 +6,7 @@ interface Props {
 const props = defineProps<Props>();
 
 const { data: groups } = await useGroups();
+const { i18n } = await useI18n();
 
 const generatingCode = ref(false);
 

@@ -4,6 +4,7 @@ interface Props {
 }
 
 defineProps<Props>();
+const { i18n } = await useI18n();
 
 const required = (val: string) => !!val || i18n('Required');
 </script>

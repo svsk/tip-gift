@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
 const tagDataUrl = ref<string | null>(null);
 const { data: tag, refresh: refreshTag } = await useWishTag(props.wishPurchase.Id);
 const saving = ref(false);
+const { i18n } = await useI18n();
 
 const tagData = reactive<Partial<WishTag>>({
     toText: null,

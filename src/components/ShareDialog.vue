@@ -5,6 +5,7 @@ const listName = ref('');
 const nameInput = ref<InstanceType<typeof Input> | null>();
 
 const { data: shares } = await useShares();
+const { i18n } = await useI18n();
 const baseUrl = () => (process.client ? window.location.origin : '');
 
 const listUrl = computed(() => {

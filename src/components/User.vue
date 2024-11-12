@@ -12,9 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
     avatarClass: '',
 });
 
-const user = computed(() => {
-    return useUser(props.userId).value;
-});
+const user = await loadUser(props.userId);
 </script>
 
 <template>

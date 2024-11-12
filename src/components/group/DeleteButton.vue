@@ -6,6 +6,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+const { i18n } = await useI18n();
 
 const deletingGroup = ref<WishUserGroup | null>(null);
 

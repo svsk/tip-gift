@@ -6,6 +6,7 @@ import Toast from '~/components/Toast.vue';
 
 const { data: wishes } = await useWishes();
 
+const { i18n } = await useI18n();
 const adding = ref(false);
 const editing = ref(false);
 const editWish = ref<Wish | null>(null);

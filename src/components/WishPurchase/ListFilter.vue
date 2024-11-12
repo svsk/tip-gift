@@ -9,6 +9,7 @@ interface Emits {
 
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
+const { i18n } = await useI18n();
 
 const filterGivenModel = ref(props.filterGiven);
 

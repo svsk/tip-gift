@@ -10,6 +10,7 @@ definePageMeta({
 const wishId = useRoute().params.wishId.toString();
 
 const { data: wishes } = await useWishes();
+const { i18n } = await useI18n();
 
 const wish = computed(() => {
     return wishes.value?.find((w) => w.Id === wishId);

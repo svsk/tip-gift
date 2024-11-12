@@ -9,6 +9,7 @@ interface Props {
 const props = defineProps<Props>();
 const emit = defineEmits(['update:modelValue']);
 
+const { i18n } = await useI18n();
 const model = ref<Partial<Wish>>(props.modelValue);
 const possibleImages = ref<string[]>([]);
 const busy = ref(false);

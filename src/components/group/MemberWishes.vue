@@ -5,6 +5,7 @@ interface Props {
 }
 
 defineProps<Props>();
+const { i18n } = await useI18n();
 
 const showGivers = ref(false);
 
