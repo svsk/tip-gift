@@ -1,26 +1,24 @@
 import { type WishUser } from '@prisma-app/client';
 
-const loadPromises: { [key: string]: Promise<WishUser> } = {};
-const userCache = new Map<string, Ref<WishUser | null>>();
+export const loadUser = async (id: string, forceReload = false) => {
+    const result = await withClientCache<WishUser>(`user-${id}`, `/api/users/${id}`, forceReload);
+    if (!result?.data?.value) {
+        throw new Error('User not found');
+    }
 
-export const loadUser = async (id: string) => {
-    const user = await $fetch<WishUser>(`/api/users/${id}`, useAuthentication());
-    return user;
+    return result.data;
 };
 
 export const useUser = (id: string) => {
-    const userRef = userCache.get(id) || ref(null);
-
-    if (!userCache.has(id)) {
-        userCache.set(id, userRef);
-    }
-
-    const promise = loadPromises[id] || (loadPromises[id] = loadUser(id));
-    promise.then((u) => {
-        userRef.value = u;
+    let user = reactive({
+        userRef: null as any,
     });
 
-    return userRef;
+    loadUser(id).then((result) => {
+        user.userRef = result;
+    });
+
+    return computed(() => user.userRef.value as WishUser | null);
 };
 
 export const refreshUser = async (userId: string) => {
@@ -28,14 +26,7 @@ export const refreshUser = async (userId: string) => {
         return;
     }
 
-    const existing = userCache.get(userId);
-
-    if (!existing) {
-        useUser(userId);
-        return;
-    }
-
-    existing.value = await loadUser(userId);
+    loadUser(userId, true);
 };
 
 export const updateUser = async (user: WishUser) => {
@@ -48,13 +39,13 @@ export const updateUser = async (user: WishUser) => {
     refreshUser(user.Id);
 };
 
-export const useCurrentUser = () => {
+export const useCurrentUser = async () => {
     const auth = useAuth();
     if (!auth.value?.id) {
         return null;
     }
 
-    return useUser(auth.value?.id);
+    return await loadUser(auth.value.id);
 };
 
 export const searchUsers = async (search: string) => {

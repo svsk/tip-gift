@@ -9,6 +9,7 @@ export default defineEventHandler((event) =>
         }
 
         const { userId } = event.context.params;
-        return new DbContext().getUserById(userId);
+        const result = await new DbContext().getUserById(userId);
+        return result;
     })
 );

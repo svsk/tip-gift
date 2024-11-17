@@ -13,7 +13,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const user = useCurrentUser();
+const user = await useCurrentUser();
 const showDeleteConfirmation = ref(false);
 const { i18n } = await useI18n();
 

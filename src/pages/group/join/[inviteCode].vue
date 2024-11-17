@@ -5,13 +5,14 @@ import { getGroupByInviteCode } from '~/composables/useGroups';
 const { inviteCode } = useRoute().params;
 const group = ref<WishUserGroup | null>(null);
 const busyJoining = ref(false);
+const currentUser = await useCurrentUser();
 
 if (typeof inviteCode === 'string') {
     group.value = await getGroupByInviteCode(inviteCode);
 }
 
 const handleJoinClicked = async () => {
-    const userId = useCurrentUser()?.value?.Id;
+    const userId = currentUser?.value?.Id;
 
     if (!group.value || !userId) {
         return;

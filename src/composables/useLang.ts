@@ -218,7 +218,7 @@ export const useI18n = async () => {
 
     const userId = useAuth().value?.id || '';
     const user = !!userId ? await loadUser(userId) : null;
-    const lang = (user?.PreferredLanguage || defaultLanguage) as SupportedLanguage;
+    const lang = (user?.value?.PreferredLanguage || defaultLanguage) as SupportedLanguage;
 
     return {
         i18n: (tkey: string, ...params: string[]) => localize(tkey, lang, ...params),

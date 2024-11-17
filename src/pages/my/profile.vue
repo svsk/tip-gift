@@ -5,7 +5,7 @@ const title = computed(() => i18n(termKey));
 watch(title, (newTitle) => usePageTitle(newTitle), { immediate: true });
 
 const userId = useAuth().value?.id || '';
-const user = useUser(userId);
+const user = await loadUser(userId);
 
 const handleNameChanged = (newName: string) => {
     if (user.value) {
