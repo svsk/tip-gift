@@ -55,7 +55,7 @@ export const addCustomWishPurchase = async (customName: string, receiverName: st
 };
 
 export const useWishTag = async (wishPurchaseId: string) => {
-    return await useFetch<WishTag>(`/api/wishtag/${wishPurchaseId}`, { method: 'GET', ...useAuthentication() });
+    return await withClientCache<WishTag>(`wish-tag-${wishPurchaseId}`, `/api/wishtag/${wishPurchaseId}`);
 };
 
 export const updateWishTag = async (wishPurchaseId: string, tag: Partial<WishTag>) => {

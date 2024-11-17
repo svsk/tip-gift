@@ -98,14 +98,9 @@ export const removeWishFromGroup = async (wishGroupWishId: string, groupId: stri
     return result;
 };
 
-export const useGroupUsers = (groupId: string) =>
-    useAsyncData(
-        `${groupUserKey}-${groupId}`,
-        () => $fetch<WishUserGroupUser[]>(`/api/groups/${groupId}/users`, useAuthentication()),
-        {
-            immediate: true,
-        }
-    );
+export const useGroupUsers = (groupId: string) => {
+    return withClientCache<WishUserGroupUser[]>(`${groupUserKey}-${groupId}`, `/api/groups/${groupId}/users`);
+};
 
 export const addUserToGroup = async (groupId: string, userId: string) => {
     const result = await $fetch(`/api/groups/${groupId}/users/${userId}`, {
