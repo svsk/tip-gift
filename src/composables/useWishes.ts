@@ -2,20 +2,8 @@ import { type Wish } from '@prisma-app/client';
 
 const storeKey = 'wishes';
 
-export const useWishes = (fromCache = false) => {
-    const cached = fromCache ? retrieveCachedData<Wish[]>(storeKey) : null;
-    if (cached) {
-        return cached;
-    }
-
-    return useAsyncData(
-        storeKey,
-        async () => {
-            const result = await $fetch('/api/wishes/getall', useAuthentication());
-            return result?.map((wish) => ({ ...wish, CreatedDate: new Date(wish.CreatedDate) } as Wish));
-        },
-        { immediate: true }
-    );
+export const useWishes = async () => {
+    return await withClientCache<Wish[]>(storeKey, '/api/wishes/getall');
 };
 
 export const addWish = async (wish: Wish) => {

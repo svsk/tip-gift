@@ -4,10 +4,9 @@ const storeKey = 'userGroups';
 const groupWishKey = 'userGroupWishes';
 const groupUserKey = 'userGroupUsers';
 
-export const useGroups = () =>
-    useAsyncData(storeKey, () => $fetch<WishUserGroup[]>('/api/groups/getall', useAuthentication()), {
-        immediate: true,
-    });
+export const useGroups = () => {
+    return withClientCache<WishUserGroup[]>(storeKey, '/api/groups/getall');
+};
 
 export const getGroupByInviteCode = async (inviteCode: string) => {
     return await $fetch<WishUserGroup>(`/api/groups/join/${inviteCode}`, { ...useAuthentication() });
@@ -54,18 +53,8 @@ export const deleteGroup = async (group: WishUserGroup) => {
     refreshGroups();
 };
 
-export const useGroupWishes = (groupId: string, fromCache = false) => {
-    const storeKey = `${groupWishKey}-${groupId}`;
-
-    const cached = fromCache ? retrieveCachedData<Wish[]>(storeKey) : null;
-    if (cached) {
-        return cached;
-    }
-
-    return useAsyncData(storeKey, async () => {
-        const result = await $fetch(`/api/groups/${groupId}/wishes`, useAuthentication());
-        return result?.map((wish) => ({ ...wish, CreatedDate: new Date(wish.CreatedDate) } as Wish));
-    });
+export const useGroupWishes = (groupId: string) => {
+    return withClientCache<Wish[]>(`${groupWishKey}-${groupId}`, `/api/groups/${groupId}/wishes`);
 };
 
 export const addWishToGroup = async (wishId: string, groupId: string) => {
