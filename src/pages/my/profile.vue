@@ -23,8 +23,8 @@ const handleLanguageChanged = async (newLanguage: string) => {
 };
 
 let debouncedUpdate: NodeJS.Timeout | undefined = undefined;
-const handleColorChanged = (newColour: string | null) => {
-    if (user.value) {
+const handleColorChanged = (newColour: string | null | undefined) => {
+    if (user.value && newColour) {
         user.value.AvatarColour = newColour;
         clearTimeout(debouncedUpdate);
         debouncedUpdate = setTimeout(() => {
