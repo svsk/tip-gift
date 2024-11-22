@@ -53,6 +53,7 @@ const performMigration = async () => {
 
         // Loop through and execute the relevant migrations
         for (var i = 0; i < migrations.length; i++) {
+            console.log(`Applying migration ${migrations[i].version}: ${migrations[i].description}`);
             await executeSqlCommand(migrations[i].sql, transaction);
         }
 

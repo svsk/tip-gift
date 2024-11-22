@@ -9,46 +9,46 @@ datasource db {
 }
 
 model Wish {
-  Id          String    @id(map: "PK__Wish__3214EC076C466BEE") @default(dbgenerated("newid()"), map: "DF__Wish__Id__7B264821") @db.UniqueIdentifier
-  Name        String?   @db.VarChar(Max)
-  Description String?   @db.VarChar(Max)
+  Id          String    @id(map: "PK__Wish__3214EC07BE4B5262") @default(dbgenerated("newid()"), map: "DF__Wish__Id__1B9317B3") @db.UniqueIdentifier
+  Name        String?   @db.NVarChar(Max)
+  Description String?   @db.NVarChar(Max)
   Price       Int
   Order       Int
-  Link        String?   @db.VarChar(Max)
+  Link        String?   @db.NVarChar(Max)
   UserId      String    @db.UniqueIdentifier
   GroupId     String    @db.UniqueIdentifier
-  ImageUrl    String?   @db.VarChar(Max)
+  ImageUrl    String?   @db.NVarChar(Max)
   DeletedDate DateTime? @db.DateTimeOffset
-  CreatedDate DateTime  @default(dbgenerated("getutcdate()"), map: "DF__Wish__CreatedDat__69C6B1F5") @db.DateTimeOffset
+  CreatedDate DateTime  @default(dbgenerated("getutcdate()"), map: "DF__Wish__CreatedDat__2BC97F7C") @db.DateTimeOffset
 }
 
 model WishUser {
-  Id                String  @id(map: "PK__WishUser__3214EC07F850D70D") @default(dbgenerated("newid()"), map: "DF__WishUser__Id__6BE40491") @db.UniqueIdentifier
-  Email             String  @db.VarChar(Max)
-  Name              String? @db.VarChar(Max)
-  AvatarColour      String? @db.VarChar(24)
+  Id                String  @id(map: "PK__WishUser__3214EC071B37DCB5") @default(dbgenerated("newid()"), map: "DF__WishUser__Id__12FDD1B2") @db.UniqueIdentifier
+  Email             String  @db.NVarChar(Max)
+  Name              String? @db.NVarChar(Max)
   AvatarEmoji       String? @db.NVarChar(24)
+  AvatarColour      String? @db.NVarChar(24)
   PreferredLanguage String? @db.VarChar(50)
 }
 
 model WishPurchase {
-  Id                   String    @id(map: "PK__WishPurc__3214EC0755BFE815") @default(dbgenerated("newid()"), map: "DF__WishPurchase__Id__2EA5EC27") @db.UniqueIdentifier
+  Id                   String    @id(map: "PK__WishPurc__3214EC07DF5AE62D") @default(dbgenerated("newid()"), map: "DF__WishPurchase__Id__214BF109") @db.UniqueIdentifier
   UserId               String    @db.UniqueIdentifier
   WishId               String?   @db.UniqueIdentifier
   GroupId              String?   @db.UniqueIdentifier
-  CreatedDate          DateTime  @default(dbgenerated("getutcdate()"), map: "DF__WishPurch__Creat__2F9A1060") @db.DateTimeOffset
+  CreatedDate          DateTime  @default(dbgenerated("getutcdate()"), map: "DF__WishPurch__Creat__22401542") @db.DateTimeOffset
   PurchasedDate        DateTime? @db.DateTimeOffset
   WrappedDate          DateTime? @db.DateTimeOffset
   GivenDate            DateTime? @db.DateTimeOffset
   ShipmentReceivedDate DateTime? @db.DateTimeOffset
-  IsCustom             Boolean   @default(false, map: "DF__WishPurch__IsCus__52E34C9D")
+  IsCustom             Boolean   @default(false, map: "DF__WishPurch__IsCus__27F8EE98")
   ReceiverName         String?   @db.NVarChar(255)
   CustomName           String?   @db.NVarChar(255)
 }
 
 model WishUserGroup {
-  Id              String  @id(map: "PK__WishUser__3214EC07C44A930C") @default(dbgenerated("newid()"), map: "DF__WishUserGrou__Id__6EC0713C") @db.UniqueIdentifier
-  GroupName       String  @db.VarChar(Max)
+  Id              String  @id(map: "PK__WishUser__3214EC072B8339B5") @default(dbgenerated("newid()"), map: "DF__WishUserGrou__Id__15DA3E5D") @db.UniqueIdentifier
+  GroupName       String  @db.NVarChar(Max)
   CreatedByUserId String? @db.UniqueIdentifier
   AvatarEmoji     String? @db.NVarChar(24)
   AvatarColour    String? @db.VarChar(24)
@@ -56,23 +56,23 @@ model WishUserGroup {
 }
 
 model WishUserGroupUser {
-  Id              String   @id(map: "PK__WishUser__3214EC0760AAD65A") @default(dbgenerated("newid()"), map: "DF__WishUserGrou__Id__719CDDE7") @db.UniqueIdentifier
+  Id              String   @id(map: "PK__WishUser__3214EC079924AEB2") @default(dbgenerated("newid()"), map: "DF__WishUserGrou__Id__18B6AB08") @db.UniqueIdentifier
   GroupId         String   @db.UniqueIdentifier
   UserId          String   @db.UniqueIdentifier
-  LastVisitedDate DateTime @default(dbgenerated("getutcdate()"), map: "DF__WishUserG__LastV__6ABAD62E") @db.DateTimeOffset
+  LastVisitedDate DateTime @default(dbgenerated("getutcdate()"), map: "DF__WishUserG__LastV__2CBDA3B5") @db.DateTimeOffset
 }
 
 model WishListShare {
-  Id          String   @id(map: "PK__WishList__3214EC07D11C3F6F") @default(dbgenerated("newid()"), map: "DF__WishListShar__Id__0A688BB1") @db.UniqueIdentifier
+  Id          String   @id(map: "PK__WishList__3214EC07344C073C") @default(dbgenerated("newid()"), map: "DF__WishListShar__Id__2610A626") @db.UniqueIdentifier
   UserId      String   @db.UniqueIdentifier
-  UniqueKey   String   @unique(map: "UQ__WishList__2DE46E9301F0B1EE") @db.VarChar(20)
-  Slug        String   @db.VarChar(1000)
-  Name        String   @db.VarChar(1000)
-  CreatedDate DateTime @default(dbgenerated("getutcdate()"), map: "DF__WishListS__Creat__0B5CAFEA") @db.DateTimeOffset
+  UniqueKey   String   @unique(map: "UQ__WishList__2DE46E930D8F2144") @db.NVarChar(20)
+  Slug        String
+  Name        String
+  CreatedDate DateTime @default(dbgenerated("getutcdate()"), map: "DF__WishListS__Creat__2704CA5F") @db.DateTimeOffset
 }
 
 model WishGroupWish {
-  Id      String @id(map: "PK__WishGrou__3214EC07B60DBF46") @default(dbgenerated("newid()"), map: "DF__WishGroupWis__Id__1B9317B3") @db.UniqueIdentifier
+  Id      String @id(map: "PK__WishGrou__3214EC071A9FEE6E") @default(dbgenerated("newid()"), map: "DF__WishGroupWis__Id__1E6F845E") @db.UniqueIdentifier
   GroupId String @db.UniqueIdentifier
   WishId  String @db.UniqueIdentifier
 }
@@ -82,13 +82,13 @@ model TipGiftMigrationHistory {
   Id          Int      @default(autoincrement())
   Version     String   @db.VarChar(50)
   Description String   @db.VarChar(100)
-  AppliedOn   DateTime @default(now(), map: "DF__TipGiftMi__Appli__4865BE2A") @db.DateTime
+  AppliedOn   DateTime @default(now(), map: "DF__TipGiftMi__Appli__10216507") @db.DateTime
 
   @@ignore
 }
 
 model WishGiftTag {
-  Id             String  @id(map: "PK__WishGift__3214EC078C441A85") @default(dbgenerated("newid()"), map: "DF__WishGiftTag__Id__5B78929E") @db.UniqueIdentifier
+  Id             String  @id(map: "PK__WishGift__3214EC074AF3C5F1") @default(dbgenerated("newid()"), map: "DF__WishGiftTag__Id__2AD55B43") @db.UniqueIdentifier
   UserId         String  @db.UniqueIdentifier
   WishPurchaseId String  @db.UniqueIdentifier
   FromText       String? @db.NVarChar(500)
