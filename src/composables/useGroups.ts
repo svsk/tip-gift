@@ -98,6 +98,7 @@ export const addUserToGroup = async (groupId: string, userId: string) => {
     });
 
     refreshGroupUsers(groupId);
+    refreshGroups();
     return result;
 };
 
