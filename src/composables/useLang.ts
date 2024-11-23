@@ -19,6 +19,7 @@ const langLib = (lang: SupportedLanguage) => {
             Reorder: 'Endre rekkefølge',
             Finish: 'Fullfør',
             MyWishLists: 'Mine Ønskelister',
+            Wishes: 'Ønsker',
             OwnedByYou: 'Opprettet av deg',
             MyWishes: 'Mine Ønsker',
             GroupHelpText:
@@ -111,6 +112,7 @@ const langLib = (lang: SupportedLanguage) => {
             Finish: 'Finish',
             Reorder: 'Reorder',
             MyWishLists: 'My Wish Lists',
+            Wishes: 'Wishes',
             OwnedByYou: 'Owned by you',
             MyWishes: 'My Wishes',
             Edit: 'Edit',

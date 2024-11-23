@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type WishUserGroup } from '@prisma-app/client';
+import { type WishUser, type WishUserGroup } from '@prisma-app/client';
 
 const { data: groups } = await useGroups();
 
@@ -7,16 +7,46 @@ const groupId = useRoute().params.groupId.toString();
 const group = computed(() => groups.value?.find((g) => g.Id === groupId));
 const currentUserId = useAuth()?.value?.id || '';
 
-const groupMemberId = ref<string>(currentUserId);
+const groupMemberId = ref<string | null>(currentUserId);
+const collaborationId = ref<string | null>(null);
+
 const showEditDialog = ref(false);
+const showAddUserDialog = ref(false);
+
+const canEdit = computed(() => {
+    return !!group.value && isGroupAdmin(group.value);
+});
 
 const handleGroupEdited = (updatedGroup: WishUserGroup) => {
     updateGroup(updatedGroup);
 };
 
-const canEdit = computed(() => {
-    return !!group.value && isGroupAdmin(group.value);
-});
+const handleAddUserClicked = () => {
+    showAddUserDialog.value = true;
+};
+
+const handleUserAdded = (user: WishUser) => {
+    addUserToGroup(groupId, user.Id);
+    showAddUserDialog.value = false;
+};
+
+watch(
+    () => groupMemberId.value,
+    () => {
+        if (groupMemberId.value) {
+            collaborationId.value = null;
+        }
+    }
+);
+
+watch(
+    () => collaborationId.value,
+    () => {
+        if (collaborationId.value) {
+            groupMemberId.value = null;
+        }
+    }
+);
 </script>
 
 <template>
@@ -41,12 +71,46 @@ const canEdit = computed(() => {
 
         <div class="h-[1px] bg-slate-600 w-full" />
 
-        <div class="overflow-x-auto">
-            <GroupMembers v-model:selectedMemberId="groupMemberId" :group-id="groupId" />
+        <div class="overflow-x-auto flex items-center gap-2">
+            <GroupMembers
+                v-model:selectedMemberId="groupMemberId"
+                :group-id="groupId"
+                class="flex gap-2 items-center"
+            />
+
+            <GroupCollaborationList
+                v-model:selectedCollaborationId="collaborationId"
+                :group-id="groupId"
+                class="flex gap-2 items-center"
+            />
+
+            <button
+                v-if="canEdit"
+                v-ripple
+                class="ml-3 relative rounded-full min-h-[42px] min-w-[42px] bg-slate-700 text-white flex items-center justify-center"
+                @click="handleAddUserClicked"
+            >
+                <Icon font-size="24px" name="add" />
+            </button>
         </div>
 
-        <GroupMemberWishes :group-id="groupId.toString()" :group-member-id="groupMemberId" />
+        <GroupMemberWishes v-if="groupMemberId" :group-id="groupId" :group-member-id="groupMemberId" />
+        <GroupCollaborationWishes v-if="collaborationId" :group-id="groupId" :collaboration-id="collaborationId" />
     </Card>
 
     <GroupEditDialog v-model="showEditDialog" :group="group" @confirm="handleGroupEdited" />
+
+    <Dialog v-model="showAddUserDialog">
+        <template #title>
+            <Localized tkey="InviteUser" />
+        </template>
+
+        <AddUserForm :group-id="groupId" @confirm="handleUserAdded" />
+
+        <div class="flex justify-end gap-2 pt-3">
+            <Button flat @click="showAddUserDialog = false">
+                <Localized tkey="Close" />
+            </Button>
+        </div>
+    </Dialog>
 </template>
