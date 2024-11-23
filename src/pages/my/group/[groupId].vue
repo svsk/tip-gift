@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type WishUser, type WishUserGroup } from '@prisma-app/client';
+import { type WishUserGroup } from '@prisma-app/client';
 
 const groups = await useGroups();
 
@@ -11,23 +11,11 @@ const groupMemberId = ref<string | null>(currentUserId);
 const collaborationId = ref<string | null>(null);
 
 const showEditDialog = ref(false);
-const showAddUserDialog = ref(false);
 
-const canEdit = computed(() => {
-    return !!group.value && isGroupAdmin(group.value);
-});
+const canEdit = computed(() => isGroupAdmin(group.value));
 
 const handleGroupEdited = (updatedGroup: WishUserGroup) => {
     updateGroup(updatedGroup);
-};
-
-const handleAddUserClicked = () => {
-    showAddUserDialog.value = true;
-};
-
-const handleUserAdded = (user: WishUser) => {
-    addUserToGroup(groupId, user.Id);
-    showAddUserDialog.value = false;
 };
 
 watch(
@@ -84,14 +72,7 @@ watch(
                 class="flex gap-2 items-center"
             />
 
-            <button
-                v-if="canEdit"
-                v-ripple
-                class="ml-3 relative rounded-full min-h-[42px] min-w-[42px] bg-slate-700 text-white flex items-center justify-center"
-                @click="handleAddUserClicked"
-            >
-                <Icon font-size="24px" name="add" />
-            </button>
+            <GroupAddPresenceButton :group-id="groupId" />
         </div>
 
         <GroupMemberWishes v-if="groupMemberId" :group-id="groupId" :group-member-id="groupMemberId" />
@@ -99,18 +80,4 @@ watch(
     </Card>
 
     <GroupEditDialog v-model="showEditDialog" :group="group" @confirm="handleGroupEdited" />
-
-    <Dialog v-model="showAddUserDialog">
-        <template #title>
-            <Localized tkey="InviteUser" />
-        </template>
-
-        <AddUserForm :group-id="groupId" @confirm="handleUserAdded" />
-
-        <div class="flex justify-end gap-2 pt-3">
-            <Button flat @click="showAddUserDialog = false">
-                <Localized tkey="Close" />
-            </Button>
-        </div>
-    </Dialog>
 </template>

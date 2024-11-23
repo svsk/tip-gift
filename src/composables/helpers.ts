@@ -1,6 +1,10 @@
 import { type WishUserGroup } from '@prisma-app/client';
 
-export const isGroupAdmin = (group: WishUserGroup) => {
+export const isGroupAdmin = (group?: WishUserGroup) => {
+    if (!group) {
+        return false;
+    }
+
     const user = useAuth();
     if (group && user.value) {
         return group.CreatedByUserId === user.value.id;
