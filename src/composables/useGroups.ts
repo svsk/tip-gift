@@ -1,4 +1,5 @@
 import { type WishUserGroup, type Wish, type WishUserGroupUser } from '@prisma-app/client';
+import type { WishWithShareRefs } from '~/prisma/customTypes';
 
 const storeKey = 'userGroups';
 const groupWishKey = 'userGroupWishes';
@@ -54,7 +55,7 @@ export const deleteGroup = async (group: WishUserGroup) => {
 };
 
 export const useGroupWishes = (groupId: string) => {
-    return withClientCache<Wish[]>(`${groupWishKey}-${groupId}`, `/api/groups/${groupId}/wishes`);
+    return withClientCache<WishWithShareRefs[]>(`${groupWishKey}-${groupId}`, `/api/groups/${groupId}/wishes`);
 };
 
 export const addWishToGroup = async (wishId: string, groupId: string) => {

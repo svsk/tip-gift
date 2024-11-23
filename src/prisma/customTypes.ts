@@ -1,3 +1,5 @@
+import { type Wish, type WishGroupWish } from '@prisma-app/client';
+
 export type WishPurchaseWish = {
     Id: string;
     UserId: string;
@@ -23,3 +25,7 @@ export type WishTag = {
     fromUserId: string | null;
     locked: boolean;
 };
+
+export interface WishWithShareRefs extends Wish {
+    Shares: WishGroupWish[];
+}

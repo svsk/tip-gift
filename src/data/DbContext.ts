@@ -6,7 +6,7 @@ import {
     type WishPurchase,
 } from '@prisma-app/client';
 import { usePrisma } from './usePrisma';
-import type { WishPurchaseWish, WishTag } from '~/prisma/customTypes';
+import type { WishPurchaseWish, WishTag, WishWithShareRefs } from '~/prisma/customTypes';
 import { createRandomKey } from '~/lib/keyGenerator';
 import { randomBetween } from '~/lib/random';
 
@@ -201,9 +201,17 @@ export class DbContext {
     }
 
     async getGroupWishes(groupId: string) {
-        const wishRefs = await this._db.wishGroupWish.findMany({ where: { GroupId: groupId } });
-        const wishIds = wishRefs.map((wr) => wr.WishId);
-        return this._db.wish.findMany({ where: { Id: { in: wishIds }, DeletedDate: { equals: null } } });
+        const groupShareRefs = await this._db.wishGroupWish.findMany({ where: { GroupId: groupId } });
+        const wishIds = groupShareRefs.map((wr) => wr.WishId);
+        const result = await this._db.wish.findMany({ where: { Id: { in: wishIds }, DeletedDate: { equals: null } } });
+
+        return result.map((wish) => {
+            const wishShareRefs = groupShareRefs.filter((wr) => wr.WishId === wish.Id);
+            return {
+                ...wish,
+                Shares: wishShareRefs,
+            } as WishWithShareRefs;
+        });
     }
 
     async getGroupUsers(groupId: string) {
