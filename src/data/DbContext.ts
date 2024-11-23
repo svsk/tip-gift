@@ -43,6 +43,34 @@ export class DbContext {
         return result;
     }
 
+    getGroupWishCollaborations(groupId: string, userId: string) {
+        this.ensureGroupMembership(userId, groupId);
+
+        return this._db.wishGroupCollaboration.findMany({
+            where: { WishUserGroupId: groupId },
+        });
+    }
+
+    ensureGroupMembership(userId: string, groupId: string) {
+        // Check that user is part of group
+        const groupUser = this._db.wishUserGroupUser.findFirst({ where: { UserId: userId, GroupId: groupId } });
+        if (!groupUser) {
+            throw new Error('User is not part of group');
+        }
+    }
+
+    addCollaboration(userId: string, groupId: string, title: string) {
+        this.ensureGroupMembership(userId, groupId);
+
+        return this._db.wishGroupCollaboration.create({
+            data: {
+                Title: title,
+                WishUserGroupId: groupId,
+                CreatedByUserId: userId,
+            },
+        });
+    }
+
     async addCustomWishPurchase(userId: string, customName: string, receiverName: string) {
         await this._db.wishPurchase.create({
             data: { UserId: userId, ReceiverName: receiverName, CustomName: customName, IsCustom: true },
