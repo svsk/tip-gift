@@ -72,9 +72,10 @@ model WishListShare {
 }
 
 model WishGroupWish {
-  Id      String @id(map: "PK__WishGrou__3214EC071A9FEE6E") @default(dbgenerated("newid()"), map: "DF__WishGroupWis__Id__1E6F845E") @db.UniqueIdentifier
-  GroupId String @db.UniqueIdentifier
-  WishId  String @db.UniqueIdentifier
+  Id                       String  @id(map: "PK__WishGrou__3214EC071A9FEE6E") @default(dbgenerated("newid()"), map: "DF__WishGroupWis__Id__1E6F845E") @db.UniqueIdentifier
+  GroupId                  String  @db.UniqueIdentifier
+  WishId                   String  @db.UniqueIdentifier
+  WishGroupCollaborationId String? @db.UniqueIdentifier
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
@@ -93,4 +94,22 @@ model WishGiftTag {
   WishPurchaseId String  @db.UniqueIdentifier
   FromText       String? @db.NVarChar(500)
   ToText         String? @db.NVarChar(500)
+}
+
+model WishGroupCollaboration {
+  Id              String    @id(map: "PK__WishGrou__3214EC07BCB0E410") @default(dbgenerated("newid()"), map: "DF__WishGroupCol__Id__36470DEF") @db.UniqueIdentifier
+  WishUserGroupId String    @db.UniqueIdentifier
+  Title           String?   @db.NVarChar(Max)
+  AvatarColour    String?   @db.NVarChar(24)
+  AvatarEmoji     String?   @db.NVarChar(24)
+  CreatedByUserId String?   @db.UniqueIdentifier
+  CreatedDate     DateTime  @default(dbgenerated("getutcdate()"), map: "DF__WishGroup__Creat__373B3228") @db.DateTimeOffset
+  DeletedByUserId String?   @db.UniqueIdentifier
+  DeletedDate     DateTime? @db.DateTimeOffset
+}
+
+model WishGroupCollaborationUser {
+  Id                       String @id(map: "PK__WishGrou__3214EC076304CB6F") @default(dbgenerated("newid()"), map: "DF__WishGroupCol__Id__3A179ED3") @db.UniqueIdentifier
+  WishGroupCollaborationId String @db.UniqueIdentifier
+  UserId                   String @db.UniqueIdentifier
 }
