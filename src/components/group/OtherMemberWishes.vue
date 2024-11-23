@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { type Wish } from '@prisma-app/client';
+import type { WishWithShareRefs } from '~/prisma/customTypes';
 
 interface Props {
     groupId: string;
-    groupMemberId: string;
+    groupMemberId?: string;
+    collaborationId?: string;
     showGivers: boolean;
 }
 
 const props = defineProps<Props>();
 
-const { data: groupWishes } = await useGroupWishes(props.groupId, true);
+const { data: groupWishes } = await useGroupWishes(props.groupId);
 const { data: givenGifts } = await useGroupWishPurchases(props.groupId, true);
 
 const boughtItem = ref<Wish | null>(null);
@@ -19,9 +21,25 @@ const currentUserLastVisit = computed(() => {
     return new Date();
 });
 
+const ownedByGroupMember = (wish: WishWithShareRefs, groupMemberId?: string) => {
+    if (!groupMemberId) {
+        return false;
+    }
+
+    return wish.UserId === groupMemberId && wish.Shares.some((s) => !s.WishGroupCollaborationId);
+};
+
+const partOfCollaboration = (wish: WishWithShareRefs, collaborationId?: string) => {
+    if (!collaborationId) {
+        return false;
+    }
+
+    return wish.Shares.some((s) => s.WishGroupCollaborationId === collaborationId);
+};
+
 const groupMemberWishes = computed(() => {
     return groupWishes.value
-        ?.filter((gw) => gw.UserId === props.groupMemberId)
+        ?.filter((gw) => ownedByGroupMember(gw, props.groupMemberId) || partOfCollaboration(gw, props.collaborationId))
         .sort((a, b) => (a.Order || 0) - (b.Order || 1));
 });
 
@@ -75,10 +93,10 @@ const findGivers = (wish: Wish) => {
 
     <Dialog v-model="showBoughtItemDialog">
         <BoughtItemForm
-            @close="(_) => (showBoughtItemDialog = false)"
             v-if="boughtItem"
             :item="boughtItem"
             :group-id="groupId"
+            @close="(_) => (showBoughtItemDialog = false)"
         />
     </Dialog>
 </template>
