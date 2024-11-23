@@ -58,9 +58,12 @@ export const useGroupWishes = (groupId: string) => {
     return withClientCache<WishWithShareRefs[]>(`${groupWishKey}-${groupId}`, `/api/groups/${groupId}/wishes`);
 };
 
-export const addWishToGroup = async (wishId: string, groupId: string) => {
+export const addWishToGroup = async (wishId: string, groupId: string, collaborationId?: string) => {
     const result = await $fetch(`/api/groups/${groupId}/${wishId}`, {
         method: 'POST',
+        body: {
+            collaborationId,
+        },
         ...useAuthentication(),
     });
 

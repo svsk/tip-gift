@@ -9,6 +9,8 @@ export default defineEventHandler(async (event) =>
         }
 
         const { groupId, wishId } = event.context.params;
-        return new DbContext().saveWishGroupWish(groupId, wishId);
+        const { collaborationId } = await readBody<{ collaborationId?: string }>(event);
+
+        return new DbContext().saveWishGroupWish(groupId, wishId, collaborationId);
     })
 );

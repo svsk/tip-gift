@@ -8,7 +8,8 @@ export default defineEventHandler(async (event) =>
             return null;
         }
 
-        const { wishId, groupId } = event.context.params;
-        return new DbContext().deleteWishGroupWish(wishId, groupId);
+        // This is kinda lame, but I didn't wanna mess up the route.
+        const { wishId: wishGroupWishId, groupId } = event.context.params;
+        return new DbContext().deleteWishGroupWish(wishGroupWishId, groupId);
     })
 );

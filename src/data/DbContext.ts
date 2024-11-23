@@ -219,11 +219,12 @@ export class DbContext {
         return userRefs;
     }
 
-    saveWishGroupWish(groupId: string, wishId: string) {
+    saveWishGroupWish(groupId: string, wishId: string, collaborationId?: string) {
         return this._db.wishGroupWish.create({
             data: {
                 WishId: wishId,
                 GroupId: groupId,
+                WishGroupCollaborationId: collaborationId,
             },
         });
     }
@@ -274,11 +275,11 @@ export class DbContext {
         // todo: make this
     }
 
-    async deleteWishGroupWish(wishId: string, groupId: string) {
+    async deleteWishGroupWish(wishGroupWishId: string, groupId: string) {
         const wish = await this._db.wishGroupWish.findFirst({
             where: {
+                Id: wishGroupWishId,
                 GroupId: groupId,
-                WishId: wishId,
             },
         });
 
