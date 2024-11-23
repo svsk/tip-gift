@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type WishUser, type WishUserGroup } from '@prisma-app/client';
 
-const { data: groups } = await useGroups();
+const groups = await useGroups();
 
 const groupId = useRoute().params.groupId.toString();
 const group = computed(() => groups.value?.find((g) => g.Id === groupId));

@@ -5,8 +5,15 @@ const storeKey = 'userGroups';
 const groupWishKey = 'userGroupWishes';
 const groupUserKey = 'userGroupUsers';
 
-export const useGroups = () => {
-    return withClientCache<WishUserGroup[]>(storeKey, '/api/groups/getall');
+export const useGroups = async (forceReload = false) => {
+    const result = await withClientCache<WishUserGroup[]>(storeKey, '/api/groups/getall', forceReload);
+
+    if (!result?.data?.value) {
+        console.error('Failed to find groups.', result?.error);
+        throw new Error('Failed to find groups.');
+    }
+
+    return result.data;
 };
 
 export const getGroupByInviteCode = async (inviteCode: string) => {
@@ -106,6 +113,6 @@ export const addUserToGroup = async (groupId: string, userId: string) => {
     return result;
 };
 
-export const refreshGroups = async () => await (await useGroups()).refresh();
+export const refreshGroups = async () => await useGroups(true);
 export const refreshGroupWishes = async (groupId: string) => await (await useGroupWishes(groupId)).refresh();
 export const refreshGroupUsers = async (groupId: string) => await (await useGroupUsers(groupId)).refresh();
