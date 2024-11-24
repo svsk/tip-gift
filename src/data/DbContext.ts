@@ -59,15 +59,34 @@ export class DbContext {
         }
     }
 
-    addCollaboration(userId: string, groupId: string, title: string) {
+    async addCollaboration(userId: string, groupId: string, title: string, memberIds: string[]) {
         this.ensureGroupMembership(userId, groupId);
 
-        return this._db.wishGroupCollaboration.create({
-            data: {
-                Title: title,
-                WishUserGroupId: groupId,
-                CreatedByUserId: userId,
-            },
+        // Add collaboration and members in single transaction
+        return this._db.$transaction(async (tx) => {
+            const collaboration = await tx.wishGroupCollaboration.create({
+                data: {
+                    Title: title,
+                    WishUserGroupId: groupId,
+                    CreatedByUserId: userId,
+                },
+            });
+
+            await Promise.all(
+                memberIds.map((m) =>
+                    tx.wishGroupCollaborationMember.create({
+                        data: {
+                            WishGroupCollaborationId: collaboration.Id,
+                            WishUserGroupId: groupId,
+                            UserId: m,
+                            CreatedByUserId: userId,
+                            IsAdmin: userId === m,
+                        },
+                    })
+                )
+            );
+
+            return collaboration;
         });
     }
 

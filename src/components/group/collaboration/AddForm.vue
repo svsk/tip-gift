@@ -27,7 +27,7 @@ const handleMemberClicked = (memberId: string) => {
 const handleSubmit = async () => {
     busy.value = true;
     try {
-        await createGroupCollaboration(props.groupId, title.value);
+        await createGroupCollaboration(props.groupId, title.value, selectedMemberIds.value);
         emit('confirmed');
     } finally {
         busy.value = false;

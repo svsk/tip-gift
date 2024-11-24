@@ -113,3 +113,15 @@ model WishGroupCollaborationUser {
   WishGroupCollaborationId String @db.UniqueIdentifier
   UserId                   String @db.UniqueIdentifier
 }
+
+model WishGroupCollaborationMember {
+  Id                       String    @id(map: "PK__WishGrou__3214EC0715B0290D") @default(dbgenerated("newid()"), map: "DF__WishGroupCol__Id__3CF40B7E") @db.UniqueIdentifier
+  WishUserGroupId          String    @db.UniqueIdentifier
+  WishGroupCollaborationId String    @db.UniqueIdentifier
+  UserId                   String    @db.UniqueIdentifier
+  IsAdmin                  Boolean
+  CreatedDate              DateTime  @default(dbgenerated("getutcdate()"), map: "DF__WishGroup__Creat__3DE82FB7") @db.DateTimeOffset
+  CreatedByUserId          String    @db.UniqueIdentifier
+  DeletedDate              DateTime? @db.DateTimeOffset
+  DeletedByUserId          String?   @db.UniqueIdentifier
+}

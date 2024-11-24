@@ -15,10 +15,10 @@ export const getGroupCollaborations = async (groupId: string, forceReload = fals
     return result.data;
 };
 
-export const createGroupCollaboration = async (groupId: string, title: string) => {
+export const createGroupCollaboration = async (groupId: string, title: string, memberIds: string[]) => {
     await $fetch(`/api/groups/${groupId}/collaborations/add`, {
         method: 'POST',
-        body: { groupId, title },
+        body: { groupId, title, memberIds },
         ...useAuthentication(),
     });
 
