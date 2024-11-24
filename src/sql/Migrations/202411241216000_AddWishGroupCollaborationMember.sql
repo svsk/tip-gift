@@ -9,3 +9,5 @@ CREATE TABLE [WishGroupCollaborationMember] (
     [DeletedDate] DATETIMEOFFSET(5) NULL,
     [DeletedByUserId] UNIQUEIDENTIFIER NULL
 );
+
+DROP TABLE [WishGroupCollaborationUser];

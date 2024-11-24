@@ -105,6 +105,7 @@ export interface LanguageStrings {
     DeleteCollaboration: string;
     ConfirmDeleteCollaboration: string;
     CollaborateWithWho: string;
+    BoughtItemExplanation: string;
 }
 
 const langLib = (lang: SupportedLanguage) => {
@@ -205,6 +206,8 @@ const langLib = (lang: SupportedLanguage) => {
             DeleteCollaboration: 'Slett Fellesønsker',
             ConfirmDeleteCollaboration: 'Er du sikker på at du ønsker å slette disse fellesønskene?',
             CollaborateWithWho: 'Hvem vil du ha fellesønsker med?',
+            BoughtItemExplanation:
+                'Er du sikker på at du vil varsle gruppen om at du gir denne gaven? Mottakeren vil selvfølgelig ikke bli varslet.',
         } as LanguageStrings,
         [SupportedLanguage.EnglishUK]: {
             AddNew: 'Add New',
@@ -302,6 +305,8 @@ const langLib = (lang: SupportedLanguage) => {
             DeleteCollaboration: 'Delete Collaboration',
             ConfirmDeleteCollaboration: 'Are you sure you want to delete this collaboration?',
             CollaborateWithWho: 'Who do you want to create collaborative wishes with?',
+            BoughtItemExplanation:
+                "Are you sure you want to notify the group that you're giving this gift? The receiver will obviously not be notified.",
         } as LanguageStrings,
     } as Record<SupportedLanguage, LanguageStrings>;
 

@@ -51,6 +51,14 @@ export class DbContext {
         });
     }
 
+    getCollaborationMembers(userId: string, groupId: string, collaborationId: string): any {
+        this.ensureGroupMembership(userId, groupId);
+
+        return this._db.wishGroupCollaborationMember.findMany({
+            where: { WishGroupCollaborationId: collaborationId },
+        });
+    }
+
     ensureGroupMembership(userId: string, groupId: string) {
         // Check that user is part of group
         const groupUser = this._db.wishUserGroupUser.findFirst({ where: { UserId: userId, GroupId: groupId } });

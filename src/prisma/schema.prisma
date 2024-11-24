@@ -108,12 +108,6 @@ model WishGroupCollaboration {
   DeletedDate     DateTime? @db.DateTimeOffset
 }
 
-model WishGroupCollaborationUser {
-  Id                       String @id(map: "PK__WishGrou__3214EC076304CB6F") @default(dbgenerated("newid()"), map: "DF__WishGroupCol__Id__3A179ED3") @db.UniqueIdentifier
-  WishGroupCollaborationId String @db.UniqueIdentifier
-  UserId                   String @db.UniqueIdentifier
-}
-
 model WishGroupCollaborationMember {
   Id                       String    @id(map: "PK__WishGrou__3214EC0715B0290D") @default(dbgenerated("newid()"), map: "DF__WishGroupCol__Id__3CF40B7E") @db.UniqueIdentifier
   WishUserGroupId          String    @db.UniqueIdentifier

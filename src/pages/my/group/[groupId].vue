@@ -73,8 +73,18 @@ watch(
             <GroupAddPresenceButton :group-id="groupId" />
         </div>
 
-        <GroupMemberWishes v-if="groupMemberId" :group-id="groupId" :group-member-id="groupMemberId" />
-        <GroupCollaborationWishes v-if="collaborationId" :group-id="groupId" :collaboration-id="collaborationId" />
+        <GroupMemberWishes
+            v-if="groupMemberId"
+            :key="groupMemberId"
+            :group-id="groupId"
+            :group-member-id="groupMemberId"
+        />
+        <GroupCollaborationWishes
+            v-if="collaborationId"
+            :key="collaborationId"
+            :group-id="groupId"
+            :collaboration-id="collaborationId"
+        />
     </Card>
 
     <GroupEditDialog v-model="showEditDialog" :group="group" @confirm="handleGroupEdited" />

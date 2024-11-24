@@ -1,4 +1,4 @@
-import type { WishGroupCollaboration } from '@prisma-app/client';
+import type { WishGroupCollaboration, WishGroupCollaborationMember } from '@prisma-app/client';
 
 export const getGroupCollaborations = async (groupId: string, forceReload = false) => {
     const result = await withClientCache<WishGroupCollaboration[]>(
@@ -43,4 +43,21 @@ export const canManageCollaboration = (collaboration?: WishGroupCollaboration) =
     return collaboration.CreatedByUserId === user.value?.id;
 };
 
+export const useCollaborationMembers = async (groupId: string, collaborationId: string, forceReload = false) => {
+    const result = await withClientCache<WishGroupCollaborationMember[]>(
+        `collabmembers-${collaborationId}`,
+        `/api/groups/${groupId}/collaborations/${collaborationId}/members`,
+        forceReload
+    );
+
+    if (!result?.data?.value) {
+        console.error('Failed to get collaboration members.', result.error);
+        throw new Error('Failed to get collaboration members.');
+    }
+
+    return result.data;
+};
+
 export const refreshCollaborations = async (groupId: string) => getGroupCollaborations(groupId, true);
+export const refreshCollaborationMembers = async (groupId: string, collaborationId: string) =>
+    useCollaborationMembers(groupId, collaborationId, true);

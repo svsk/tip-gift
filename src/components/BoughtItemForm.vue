@@ -27,14 +27,17 @@ const handleCancel = () => {
 
 <template>
     <Form @submit="handleSubmit" class="flex flex-col gap-2">
-        Are you sure you want to notify the group that you're giving this gift? The receiver will obviously not be
-        notified.
+        <Localized tkey="BoughtItemExplanation" />
 
         <!-- <div>List people here</div> -->
 
-        <div class="flex justify-end gap-2 flex-nowrap">
-            <Button :disable="loading" flat @click="handleCancel">Cancel</Button>
-            <Button :disable="loading" type="submit">Confirm</Button>
+        <div class="flex justify-end gap-2 flex-nowrap pt-2">
+            <Button :disable="loading" flat @click="handleCancel">
+                <Localized tkey="Cancel" />
+            </Button>
+            <Button :disable="loading" type="submit">
+                <Localized tkey="Confirm" />
+            </Button>
         </div>
     </Form>
 </template>
