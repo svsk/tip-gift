@@ -1,6 +1,6 @@
 <script setup lang="ts">
 interface Props {
-    tkey: string;
+    tkey: keyof LanguageStrings;
     lowercase?: boolean;
 }
 
