@@ -45,7 +45,7 @@ watch(
 
             <template #side>
                 <!-- Buttons go here -->
-                <div class="flex gap-3">
+                <div class="flex gap-3 items-center">
                     <Button v-if="canEdit" round @click="() => (showEditDialog = true)">
                         <Icon name="edit" font-size="24px" />
                     </Button>
