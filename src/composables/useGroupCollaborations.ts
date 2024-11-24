@@ -25,4 +25,22 @@ export const createGroupCollaboration = async (groupId: string, title: string) =
     refreshCollaborations(groupId);
 };
 
+export const deleteGroupCollaboration = async (groupId: string, collaborationId: string) => {
+    await $fetch(`/api/groups/${groupId}/collaborations/${collaborationId}`, {
+        method: 'DELETE',
+        ...useAuthentication(),
+    });
+
+    refreshCollaborations(groupId);
+};
+
+export const canManageCollaboration = (collaboration?: WishGroupCollaboration) => {
+    if (!collaboration) {
+        return false;
+    }
+
+    const user = useAuth();
+    return collaboration.CreatedByUserId === user.value?.id;
+};
+
 export const refreshCollaborations = async (groupId: string) => getGroupCollaborations(groupId, true);

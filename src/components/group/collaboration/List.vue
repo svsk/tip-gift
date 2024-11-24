@@ -5,7 +5,7 @@ interface Props {
 }
 
 interface Emits {
-    (event: 'update:selectedCollaborationId', value: string): void;
+    (event: 'update:selectedCollaborationId', value: string | null): void;
 }
 
 const props = defineProps<Props>();
@@ -16,6 +16,18 @@ const collaborations = await getGroupCollaborations(props.groupId);
 const handleCollaborationClicked = (collaborationId: string) => {
     emit('update:selectedCollaborationId', collaborationId);
 };
+
+watch(
+    () => collaborations.value,
+    () => {
+        if (
+            props.selectedCollaborationId &&
+            !collaborations.value.some((c) => c.Id === props.selectedCollaborationId)
+        ) {
+            emit('update:selectedCollaborationId', null);
+        }
+    }
+);
 </script>
 
 <template>

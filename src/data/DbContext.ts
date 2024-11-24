@@ -47,7 +47,7 @@ export class DbContext {
         this.ensureGroupMembership(userId, groupId);
 
         return this._db.wishGroupCollaboration.findMany({
-            where: { WishUserGroupId: groupId },
+            where: { WishUserGroupId: groupId, DeletedDate: { equals: null } },
         });
     }
 
@@ -67,6 +67,36 @@ export class DbContext {
                 Title: title,
                 WishUserGroupId: groupId,
                 CreatedByUserId: userId,
+            },
+        });
+    }
+
+    async ensureUserIsCollaborationOwner(userId: string, collaborationId: string) {
+        const collaboration = await this._db.wishGroupCollaboration.findFirst({
+            where: {
+                Id: collaborationId,
+            },
+        });
+
+        if (!collaboration) {
+            throw new Error("Couldn't find collaboration");
+        }
+
+        if (collaboration.CreatedByUserId !== userId) {
+            throw new Error('User is not the owner of the collaboration');
+        }
+    }
+
+    async deleteCollaboration(userId: string, collaborationId: string) {
+        await this.ensureUserIsCollaborationOwner(userId, collaborationId);
+
+        return this._db.wishGroupCollaboration.update({
+            data: {
+                DeletedDate: new Date(),
+                DeletedByUserId: userId,
+            },
+            where: {
+                Id: collaborationId,
             },
         });
     }

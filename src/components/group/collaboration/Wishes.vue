@@ -33,6 +33,9 @@ const isMember = true;
 
         <TabPanels v-model="tab">
             <TabPanel name="edit" class="p-3">
+                <div class="flex items-center justify-end pb-4">
+                    <GroupCollaborationDeleteButton :group-id="groupId" :collaboration-id="collaborationId" />
+                </div>
                 <GroupCurrentUserWishes :group-id="groupId" :collaboration-id="collaborationId" />
             </TabPanel>
             <TabPanel name="view" class="p-3">
