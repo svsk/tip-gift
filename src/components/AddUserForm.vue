@@ -22,8 +22,6 @@ const inviteUrl = computed(() => {
     return `${window.location.origin}/group/join/${inviteCode.value}`;
 });
 
-const emit = defineEmits(['confirm', 'cancel']);
-
 const handleGenerateCodeClicked = async () => {
     try {
         generatingCode.value = true;

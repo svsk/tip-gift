@@ -1,12 +1,21 @@
 <script setup lang="ts">
 interface Props {
     groupId: string;
-    selectedMemberId: string | null;
+    excludeSelf?: boolean;
+    selectedMemberId?: string | null;
+    selectedMemberIds?: string[] | null;
 }
 
 const props = defineProps<Props>();
 
-const { data: members } = await useGroupUsers(props.groupId);
+const self = useAuth();
+
+const groupUserResult = await useGroupUsers(props.groupId);
+
+const members = computed(() => {
+    const groupUsers = groupUserResult?.data?.value || [];
+    return props.excludeSelf ? groupUsers.filter((user) => user.UserId !== self.value?.id) : groupUsers;
+});
 
 const emit = defineEmits(['update:selectedMemberId']);
 
@@ -20,7 +29,7 @@ const handleMemberClicked = (userId: string) => {
         <SelectionButton
             v-for="member in members"
             :key="member.Id"
-            :selected="selectedMemberId === member.UserId"
+            :selected="selectedMemberId === member.UserId || selectedMemberIds?.includes(member.UserId)"
             @click="() => handleMemberClicked(member.UserId)"
         >
             <template #avatar>

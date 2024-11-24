@@ -14,9 +14,7 @@ const showEditDialog = ref(false);
 
 const canEdit = computed(() => isGroupAdmin(group.value));
 
-const handleGroupEdited = (updatedGroup: WishUserGroup) => {
-    updateGroup(updatedGroup);
-};
+const handleGroupEdited = (updatedGroup: WishUserGroup) => updateGroup(updatedGroup);
 
 watch(
     () => groupMemberId.value,

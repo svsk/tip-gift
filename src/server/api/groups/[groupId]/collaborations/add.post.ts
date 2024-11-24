@@ -1,4 +1,3 @@
-import { type WishUserGroup } from '@prisma-app/client';
 import { DbContext } from '~~/data/DbContext';
 import { requireAuth } from '~~/lib/requireAuth';
 

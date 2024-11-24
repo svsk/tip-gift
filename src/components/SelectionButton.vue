@@ -9,6 +9,7 @@ defineProps<Props>();
 <template>
     <button
         v-ripple
+        type="button"
         :class="{
             'relative flex items-center justify-center p-4 flex-col gap-2 rounded min-w-[90px] max-w-[110px] ': true,
             'bg-white bg-opacity-20': selected,
