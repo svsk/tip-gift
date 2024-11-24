@@ -60,7 +60,10 @@ const isGroupMember = computed(() => members.value?.some((m) => m.UserId === use
                 <div class="flex items-center justify-end pb-4">
                     <GroupCollaborationDeleteButton :group-id="groupId" :collaboration-id="collaborationId" />
                 </div>
-                <GroupCurrentUserWishes :group-id="groupId" :collaboration-id="collaborationId" />
+
+                <div class="flex flex-col gap-2">
+                    <GroupCurrentUserWishes :group-id="groupId" :collaboration-id="collaborationId" />
+                </div>
             </TabPanel>
         </TabPanels>
     </div>
