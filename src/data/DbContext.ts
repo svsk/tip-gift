@@ -10,6 +10,8 @@ import type { WishPurchaseWish, WishTag, WishWithShareRefs } from '~/prisma/cust
 import { createRandomKey } from '~/lib/keyGenerator';
 import { randomBetween } from '~/lib/random';
 
+const excludeDeleted = { DeletedDate: { equals: null } };
+
 export class DbContext {
     private _db = usePrisma();
 
@@ -59,12 +61,17 @@ export class DbContext {
         });
     }
 
-    ensureGroupMembership(userId: string, groupId: string) {
+    async ensureGroupMembership(userId: string, groupId: string) {
         // Check that user is part of group
-        const groupUser = this._db.wishUserGroupUser.findFirst({ where: { UserId: userId, GroupId: groupId } });
+        const groupUser = await this._db.wishUserGroupUser.findFirst({
+            where: { UserId: userId, GroupId: groupId, DeletedDate: { equals: null } },
+        });
+
         if (!groupUser) {
             throw new Error('User is not part of group');
         }
+
+        return groupUser;
     }
 
     async addCollaboration(userId: string, groupId: string, title: string, memberIds: string[]) {
@@ -258,7 +265,10 @@ export class DbContext {
     }
 
     async getGroupWishes(groupId: string) {
-        const groupShareRefs = await this._db.wishGroupWish.findMany({ where: { GroupId: groupId } });
+        const groupShareRefs = await this._db.wishGroupWish.findMany({
+            where: { GroupId: groupId, ...excludeDeleted },
+        });
+
         const wishIds = groupShareRefs.map((wr) => wr.WishId);
         const result = await this._db.wish.findMany({ where: { Id: { in: wishIds }, DeletedDate: { equals: null } } });
 
@@ -272,7 +282,10 @@ export class DbContext {
     }
 
     async getGroupUsers(groupId: string) {
-        const userRefs = await this._db.wishUserGroupUser.findMany({ where: { GroupId: groupId } });
+        const userRefs = await this._db.wishUserGroupUser.findMany({
+            where: { GroupId: groupId, DeletedDate: { equals: null } },
+        });
+
         return userRefs;
     }
 
@@ -332,11 +345,12 @@ export class DbContext {
         // todo: make this
     }
 
-    async deleteWishGroupWish(wishGroupWishId: string, groupId: string) {
+    async deleteWishGroupWish(userId: string, wishGroupWishId: string, groupId: string) {
         const wish = await this._db.wishGroupWish.findFirst({
             where: {
                 Id: wishGroupWishId,
                 GroupId: groupId,
+                ...excludeDeleted,
             },
         });
 
@@ -344,7 +358,11 @@ export class DbContext {
             throw new Error("Couldn't find wish");
         }
 
-        return this._db.wishGroupWish.delete({
+        return await this._db.wishGroupWish.update({
+            data: {
+                DeletedDate: new Date(),
+                DeletedByUserId: userId,
+            },
             where: {
                 Id: wish.Id,
             },
@@ -415,25 +433,93 @@ export class DbContext {
         });
     }
 
-    saveGroupUser(groupUser: WishUserGroupUser) {
+    async saveGroupUser(groupUser: WishUserGroupUser) {
+        const existing = await this._db.wishUserGroupUser.findFirst({
+            where: { UserId: groupUser.UserId, GroupId: groupUser.GroupId },
+        });
+
+        // Remove soft deletion if exists
+        if (existing) {
+            return this._db.wishUserGroupUser.update({
+                data: {
+                    DeletedDate: null,
+                    DeletedByUserId: null,
+                },
+                where: {
+                    Id: existing.Id,
+                },
+            });
+        }
+
         return this._db.wishUserGroupUser.create({ data: groupUser });
     }
 
     async getUserGroups(userId: string) {
-        const memberships = (await this._db.wishUserGroupUser.findMany({ where: { UserId: userId } })).map(
-            (g) => g.GroupId
-        );
+        const memberships = (
+            await this._db.wishUserGroupUser.findMany({ where: { UserId: userId, DeletedDate: { equals: null } } })
+        ).map((g) => g.GroupId);
 
         return this._db.wishUserGroup.findMany({ where: { Id: { in: memberships } } });
     }
 
     async addUserToGroup(groupId: string, userId: string) {
         const existing = await this._db.wishUserGroupUser.findFirst({ where: { UserId: userId, GroupId: groupId } });
+
+        // Remove soft deletion if exists
         if (existing) {
-            return existing;
+            return this._db.wishUserGroupUser.update({
+                data: {
+                    DeletedDate: null,
+                    DeletedByUserId: null,
+                },
+                where: {
+                    Id: existing.Id,
+                },
+            });
         }
 
         return this._db.wishUserGroupUser.create({ data: { GroupId: groupId, UserId: userId } });
+    }
+
+    async leaveGroup(userId: string, groupId: string) {
+        const membership = await this.ensureGroupMembership(userId, groupId);
+
+        // Soft delete wish user group and wishgroupwishes for user in single transaction
+        return await this._db.$transaction(async (tx) => {
+            // select only id column
+            const userWishIds = (
+                await tx.wish.findMany({
+                    select: {
+                        Id: true,
+                    },
+                    where: {
+                        UserId: userId,
+                    },
+                })
+            ).map((p) => p.Id);
+
+            await tx.wishUserGroupUser.update({
+                data: {
+                    DeletedDate: new Date(),
+                    DeletedByUserId: userId,
+                },
+                where: {
+                    Id: membership.Id,
+                },
+            });
+
+            await tx.wishGroupWish.updateMany({
+                data: {
+                    DeletedDate: new Date(),
+                    DeletedByUserId: userId,
+                },
+                where: {
+                    GroupId: groupId,
+                    WishId: { in: userWishIds },
+                    ...excludeDeleted,
+                },
+            });
+        });
     }
 
     deleteUserGroup(groupId: string) {

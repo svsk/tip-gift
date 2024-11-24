@@ -10,6 +10,6 @@ export default defineEventHandler(async (event) =>
 
         // This is kinda lame, but I didn't wanna mess up the route.
         const { wishId: wishGroupWishId, groupId } = event.context.params;
-        return new DbContext().deleteWishGroupWish(wishGroupWishId, groupId);
+        return new DbContext().deleteWishGroupWish(auth.id, wishGroupWishId, groupId);
     })
 );

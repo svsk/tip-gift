@@ -45,9 +45,12 @@ watch(
 
             <template #side>
                 <!-- Buttons go here -->
-                <Button v-if="canEdit" round @click="() => (showEditDialog = true)">
-                    <Icon name="edit" font-size="24px" />
-                </Button>
+                <div class="flex gap-3">
+                    <Button v-if="canEdit" round @click="() => (showEditDialog = true)">
+                        <Icon name="edit" font-size="24px" />
+                    </Button>
+                    <GroupLeaveButton :group-id="groupId" />
+                </div>
             </template>
         </PageHeader>
 

@@ -113,6 +113,16 @@ export const addUserToGroup = async (groupId: string, userId: string) => {
     return result;
 };
 
+export const leaveGroup = async (groupId: string) => {
+    const result = await $fetch(`/api/groups/${groupId}/leave`, {
+        method: 'DELETE',
+        ...useAuthentication(),
+    });
+
+    refreshGroups();
+    return result;
+};
+
 export const refreshGroups = async () => await useGroups(true);
 export const refreshGroupWishes = async (groupId: string) => await (await useGroupWishes(groupId)).refresh();
 export const refreshGroupUsers = async (groupId: string) => await (await useGroupUsers(groupId)).refresh();

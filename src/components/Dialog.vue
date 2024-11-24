@@ -3,6 +3,10 @@ interface Props {
     modelValue: boolean;
     persistent?: boolean;
     withConfirm?: boolean;
+    confirmText?: string;
+    confirmColor?: string;
+    disableConfirm?: boolean;
+    disableCancel?: boolean;
     preload?: boolean;
 }
 
@@ -15,6 +19,8 @@ interface Emits {
 const props = withDefaults(defineProps<Props>(), { withConfirm: false, preload: false });
 
 const emit = defineEmits<Emits>();
+
+const { i18n } = await useI18n();
 
 const handleClickOutside = () => {
     if (props.persistent) {
@@ -48,11 +54,11 @@ const handleClickOutside = () => {
                     </div>
 
                     <div v-if="withConfirm" class="w-full flex justify-end pb-4 px-4 gap-2">
-                        <Button flat @click="emit('cancel')">
+                        <Button :disable="disableCancel" flat @click="emit('cancel')">
                             <Localized tkey="Cancel" />
                         </Button>
-                        <Button @click="emit('confirm')">
-                            <Localized tkey="Confirm" />
+                        <Button :disable="disableConfirm" :color="confirmColor" @click="emit('confirm')">
+                            {{ confirmText || i18n('Confirm') }}
                         </Button>
                     </div>
                 </Card>
