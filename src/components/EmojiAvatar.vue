@@ -4,11 +4,13 @@ import { type WishUser } from '@prisma-app/client';
 interface Props {
     user?: WishUser;
     color?: string | null;
+    size?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     user: undefined,
     color: 'red',
+    size: '48px',
 });
 
 const backgroundColor = computed(() => {
@@ -19,8 +21,8 @@ const backgroundColor = computed(() => {
 
 <template>
     <div
-        class="min-h-[48px] min-w-[48px] text-center text-xl flex justify-center items-center rounded-full p-2 select-none"
-        :style="`${backgroundColor}`"
+        class="text-center text-xl flex justify-center items-center rounded-full p-2 select-none aspect-square"
+        :style="`${backgroundColor} height: ${props.size}; width: ${props.size};`"
     >
         <span v-if="user?.AvatarEmoji">
             {{ user.AvatarEmoji }}

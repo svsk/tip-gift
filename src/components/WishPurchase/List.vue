@@ -84,12 +84,12 @@ const handleAddCustomPurchaseConfirmed = async () => {
                         :to="`/my/checklist/${purchase.Id}`"
                     >
                         <ListItem clickable class="mb-2 flex gap-3">
-                            <div class="text-xs text-opacity-50">
-                                <div v-if="purchase.WishOwnerId" class="text-center flex flex-col gap-1">
+                            <div class="text-xs text-opacity-50 w-[75px]">
+                                <div v-if="purchase.WishOwnerId" class="text-center flex flex-col gap-1 items-center">
                                     <User :user-id="purchase.WishOwnerId" without-username />
                                     <User :user-id="purchase.WishOwnerId" without-avatar class="opacity-60" />
                                 </div>
-                                <div v-else class="text-center flex flex-col gap-1">
+                                <div v-else class="text-center flex flex-col gap-1 items-center">
                                     <EmojiAvatar color="rgb(37 99 235)"> 🙋 </EmojiAvatar>
                                     <div class="opacity-60">{{ purchase.ReceiverName }}</div>
                                 </div>
