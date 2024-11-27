@@ -24,7 +24,7 @@ const tagData = reactive<Partial<WishTag>>({
 });
 
 const baseUrl = computed(() => {
-    return process.client ? window.location.origin : '';
+    return import.meta.client ? window.location.origin : '';
 });
 
 const url = computed(() => {
@@ -66,7 +66,9 @@ const handleSaveTag = async () => {
             <div v-if="tag"><Localized tkey="To" lowercase /> {{ tag.toText }}</div>
         </div>
 
-        <img v-if="tagDataUrl" :src="tagDataUrl" />
+        <ClientOnly>
+            <img v-if="tagDataUrl" :src="tagDataUrl" />
+        </ClientOnly>
 
         <a v-if="!hidePreview" :href="url" target="_blank">
             <Button class="flex items-center gap-2">
