@@ -58,16 +58,18 @@ const handleClickOutside = (click: MouseEvent) => {
 </script>
 
 <template>
-    <Teleport to="body">
-        <Transition name="fade">
-            <div
-                v-show="show"
-                ref="menuElement"
-                class="absolute"
-                :style="`top: ${position.top}px; left: ${position.left}px; z-index: 1000;`"
-            >
-                <slot />
-            </div>
-        </Transition>
-    </Teleport>
+    <ClientOnly>
+        <Teleport to="body">
+            <Transition name="fade">
+                <div
+                    v-show="show"
+                    ref="menuElement"
+                    class="absolute"
+                    :style="`top: ${position.top}px; left: ${position.left}px; z-index: 1000;`"
+                >
+                    <slot />
+                </div>
+            </Transition>
+        </Teleport>
+    </ClientOnly>
 </template>

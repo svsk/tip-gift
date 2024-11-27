@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Form } from '#build/components';
+import type { WishPurchaseWish } from '~/prisma/customTypes';
 
 const { data: purchases, refresh: refreshPurchases } = await useMyWishPurchases();
 
@@ -9,6 +10,7 @@ const showAddCustomWishPurchaseDialog = ref(false);
 const customForm = ref<InstanceType<typeof Form> | null>(null);
 const customArgs = ref<{ customName: string; receiverName: string }>({ customName: '', receiverName: '' });
 const selectedTab = cachedRef<'checklist' | 'tags'>('checklist-selected-tab', 'checklist');
+const filters = ref<((purchase: WishPurchaseWish) => boolean)[]>([]);
 
 const sortedPurchases = computed(() => {
     return Array.from(purchases.value || []).sort((a, b) => {
@@ -20,6 +22,10 @@ const filteredPurchases = computed(() => {
     return sortedPurchases.value.filter((p) => {
         if (filterGiven.value && !!p.GivenDate) {
             return false;
+        }
+
+        if (filters.value.length > 0) {
+            return filters.value.every((f) => f(p));
         }
 
         return true;
@@ -58,8 +64,13 @@ const handleAddCustomPurchaseConfirmed = async () => {
 
         <TabPanels v-model="selectedTab">
             <TabPanel name="checklist" class="pt-6">
-                <div class="w-full flex items-center justify-end pb-4">
-                    <WishPurchaseListFilter v-model:filter-given="filterGiven" />
+                <div class="w-full flex items-center justify-between pb-4">
+                    <div>
+                        <WishPurchaseListFilterButton v-model="filters" />
+                    </div>
+                    <div>
+                        <WishPurchaseListFilter v-model:filter-given="filterGiven" />
+                    </div>
                 </div>
 
                 <ListItem clickable class="mb-4" @click="handleAddCustomPurchase">

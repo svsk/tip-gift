@@ -100,8 +100,10 @@ export const enGb: LanguageStrings = {
         "Are you sure you want to notify the group that you're giving this gift? The receiver will obviously not be notified.",
     LeaveGroup: 'Leave Group',
     LeaveGroupConfirmation: 'Are you sure you want to leave the group?',
+    StatusAwaitingPurchase: 'Awaiting Purchase',
     StatusPurchased: 'Purchased',
     StatusShipmentReceived: 'Shipment Received',
     StatusWrapped: 'Wrapped',
     StatusGiven: 'Given',
+    ShowPurchasesWithStatus: 'Show gifts that are',
 };

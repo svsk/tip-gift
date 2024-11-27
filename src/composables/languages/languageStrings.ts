@@ -94,8 +94,10 @@ export interface LanguageStrings {
     BoughtItemExplanation: string;
     LeaveGroup: string;
     LeaveGroupConfirmation: string;
+    StatusAwaitingPurchase: string;
     StatusPurchased: string;
     StatusWrapped: string;
     StatusGiven: string;
     StatusShipmentReceived: string;
+    ShowPurchasesWithStatus: string;
 }

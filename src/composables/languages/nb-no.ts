@@ -100,8 +100,10 @@ export const nbNo: LanguageStrings = {
         'Er du sikker på at du vil varsle gruppen om at du gir denne gaven? Mottakeren vil selvfølgelig ikke bli varslet.',
     LeaveGroup: 'Forlat Gruppe',
     LeaveGroupConfirmation: 'Er du sikker på at du ønsker å forlate gruppen?',
+    StatusAwaitingPurchase: 'Venter på kjøp',
     StatusPurchased: 'Kjøpt',
     StatusShipmentReceived: 'Mottatt',
     StatusWrapped: 'Innpakket',
     StatusGiven: 'Gitt',
+    ShowPurchasesWithStatus: 'Vis gaver som er',
 };

@@ -2,6 +2,7 @@
 interface Props {
     type?: 'button' | 'submit' | 'reset';
     round?: boolean;
+    outlined?: boolean;
     flat?: boolean;
     disable?: boolean;
     color?: string;
@@ -11,6 +12,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     round: false,
     flat: false,
+    outlined: false,
     type: 'button',
     disable: false,
     color: 'bg-blue-600',
@@ -25,10 +27,14 @@ const classes = computed(() => {
     }
 
     if (props.flat) {
-        return 'rounded bg-opacity-0 bg-white py-2 px-4 active:bg-opacity-10 hover:bg-opacity-10';
+        return 'rounded border border-transparent bg-opacity-0 bg-white py-2 px-4 active:bg-opacity-10 hover:bg-opacity-10';
     }
 
-    return `rounded ${props.color} py-2 px-4`;
+    if (props.outlined) {
+        return `rounded border border-blue-600 border-solid bg-transparent py-2 px-4`;
+    }
+
+    return `rounded border border-transparent ${props.color} py-2 px-4`;
 });
 </script>
 
