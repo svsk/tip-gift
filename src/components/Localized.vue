@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { LanguageStrings } from '~/composables/languages/languageStrings';
+
 interface Props {
     tkey: keyof LanguageStrings;
     lowercase?: boolean;
