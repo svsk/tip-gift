@@ -1,6 +1,7 @@
 <script setup lang="ts">
 interface Props {
     options: { value: any; label: string }[];
+    vertical?: boolean;
     modelValue: any;
 }
 
@@ -39,7 +40,7 @@ const classes = computed(() => {
     return `border-blue-600 border py-2 px-4`;
 });
 
-const buildBorderClass = (index: number) => {
+const buildBorderHorizontalClass = (index: number) => {
     if (index === 0) {
         // Start button - no right borders
         return 'border-r-0 rounded-l';
@@ -54,11 +55,26 @@ const buildBorderClass = (index: number) => {
     return 'border-l-0 rounded-r';
 };
 
+const buildBorderVerticalClass = (index: number) => {
+    if (index === 0) {
+        // Start button - no bottom borders
+        return 'border-b-0 rounded-t';
+    }
+
+    if (index < props.options.length - 1) {
+        // Middle button - no top or bottom borders
+        return 'border-t-0 border-b-0';
+    }
+
+    // End button - no top borders
+    return 'border-t-0 rounded-b';
+};
+
 const active = computed(() => 'bg-blue-600');
 </script>
 
 <template>
-    <div class="flex flex-nowrap">
+    <div :class="{ 'flex flex-nowrap': true, 'flex-col': vertical }">
         <button
             v-ripple
             v-for="(option, index) in options"
@@ -66,7 +82,8 @@ const active = computed(() => 'bg-blue-600');
             :class="{
                 'relative focus-visible:outline-none transition-all uppercase tracking-wide font-medium text-sm flex-grow': true,
                 [classes]: true,
-                [buildBorderClass(index)]: true,
+                [buildBorderHorizontalClass(index)]: !vertical,
+                [buildBorderVerticalClass(index)]: !!vertical,
                 [active]: option.value === value,
             }"
             @click="() => (value = option.value)"

@@ -71,6 +71,7 @@ watchEffect(() => {
 
                     <ButtonToggle
                         v-model="statusFilter"
+                        vertical
                         :options="[
                             { value: Filter.AwaitingPurchase, label: `💡 ${i18n('StatusAwaitingPurchase')}` },
                             { value: Filter.Purchased, label: `🛍️ ${i18n('StatusPurchased')}` },
