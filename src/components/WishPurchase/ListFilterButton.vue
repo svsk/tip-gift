@@ -9,22 +9,21 @@ interface Emits {
     (event: 'update:modelValue', value: ((purchase: WishPurchaseWish) => boolean)[]): void;
 }
 
+enum StatusFilter {
+    AwaitingPurchase = 'awaitingPurchase',
+    Purchased = 'purchased',
+    ShipmentReceived = 'shipmentReceived',
+    Wrapped = 'wrapped',
+    Given = 'given',
+}
+
 const { i18n } = await useI18n();
 
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const filterCollection = ref<((purchase: WishPurchaseWish) => boolean)[]>([]);
-
-enum Filter {
-    Purchased = 'purchased',
-    ShipmentReceived = 'shipmentReceived',
-    Wrapped = 'wrapped',
-    Given = 'given',
-    AwaitingPurchase = 'awaitingPurchase',
-}
-
-const statusFilter = ref<Filter | null>(null);
+const statusFilter = cachedRef<StatusFilter | null>('wishPurchaseListStatusFilter', null);
 
 watchEffect(() => {
     if (props.modelValue !== filterCollection.value) {
@@ -37,19 +36,19 @@ watchEffect(() => {
 
     if (statusFilter.value) {
         switch (statusFilter.value) {
-            case Filter.AwaitingPurchase:
+            case StatusFilter.AwaitingPurchase:
                 filters.push((purchase) => !purchase.PurchasedDate);
                 break;
-            case Filter.Purchased:
+            case StatusFilter.Purchased:
                 filters.push((purchase) => !!purchase.PurchasedDate && !purchase.ShipmentReceivedDate);
                 break;
-            case Filter.ShipmentReceived:
+            case StatusFilter.ShipmentReceived:
                 filters.push((purchase) => !!purchase.ShipmentReceivedDate && !purchase.WrappedDate);
                 break;
-            case Filter.Wrapped:
+            case StatusFilter.Wrapped:
                 filters.push((purchase) => !!purchase.WrappedDate && !purchase.GivenDate);
                 break;
-            case Filter.Given:
+            case StatusFilter.Given:
                 filters.push((purchase) => !!purchase.GivenDate);
                 break;
         }
@@ -72,12 +71,13 @@ watchEffect(() => {
                     <ButtonToggle
                         v-model="statusFilter"
                         vertical
+                        togglable
                         :options="[
-                            { value: Filter.AwaitingPurchase, label: `💡 ${i18n('StatusAwaitingPurchase')}` },
-                            { value: Filter.Purchased, label: `🛍️ ${i18n('StatusPurchased')}` },
-                            { value: Filter.ShipmentReceived, label: `📦 ${i18n('StatusShipmentReceived')}` },
-                            { value: Filter.Wrapped, label: `🎁 ${i18n('StatusWrapped')}` },
-                            { value: Filter.Given, label: `❣️ ${i18n('StatusGiven')}` },
+                            { value: StatusFilter.AwaitingPurchase, label: `💡 ${i18n('StatusAwaitingPurchase')}` },
+                            { value: StatusFilter.Purchased, label: `🛍️ ${i18n('StatusPurchased')}` },
+                            { value: StatusFilter.ShipmentReceived, label: `📦 ${i18n('StatusShipmentReceived')}` },
+                            { value: StatusFilter.Wrapped, label: `🎁 ${i18n('StatusWrapped')}` },
+                            { value: StatusFilter.Given, label: `❣️ ${i18n('StatusGiven')}` },
                         ]"
                     />
                 </Card>

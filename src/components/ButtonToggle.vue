@@ -3,6 +3,7 @@ interface Props {
     options: { value: any; label: string }[];
     vertical?: boolean;
     modelValue: any;
+    togglable?: boolean;
 }
 
 interface Emits {
@@ -13,20 +14,6 @@ const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const value = ref(props.modelValue);
-
-watch(
-    () => props.modelValue,
-    (newValue) => {
-        value.value = newValue;
-    }
-);
-
-watch(
-    () => value.value,
-    (newValue) => {
-        emit('update:modelValue', newValue);
-    }
-);
 
 const classes = computed(() => {
     // if (props.round) {
@@ -39,6 +26,8 @@ const classes = computed(() => {
 
     return `border-blue-600 border py-2 px-4`;
 });
+
+const active = computed(() => 'bg-blue-600');
 
 const buildBorderHorizontalClass = (index: number) => {
     if (index === 0) {
@@ -70,7 +59,27 @@ const buildBorderVerticalClass = (index: number) => {
     return 'border-t-0 rounded-b';
 };
 
-const active = computed(() => 'bg-blue-600');
+const handleClick = (clickedValue: string) => {
+    if (props.togglable && value.value === clickedValue) {
+        value.value = null;
+    } else {
+        value.value = clickedValue;
+    }
+};
+
+watch(
+    () => props.modelValue,
+    (newValue) => {
+        value.value = newValue;
+    }
+);
+
+watch(
+    () => value.value,
+    (newValue) => {
+        emit('update:modelValue', newValue);
+    }
+);
 </script>
 
 <template>
@@ -86,7 +95,7 @@ const active = computed(() => 'bg-blue-600');
                 [buildBorderVerticalClass(index)]: !!vertical,
                 [active]: option.value === value,
             }"
-            @click="() => (value = option.value)"
+            @click="(_) => handleClick(option.value)"
         >
             {{ option.label }}
         </button>
