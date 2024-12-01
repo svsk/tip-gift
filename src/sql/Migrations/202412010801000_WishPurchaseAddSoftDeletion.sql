@@ -1,0 +1,2 @@
+ALTER TABLE [WishPurchase] ADD [DeletedDate] DATETIMEOFFSET(5) NULL;
+ALTER TABLE [WishPurchase] ADD [DeletedByUserId] UNIQUEIDENTIFIER NULL;

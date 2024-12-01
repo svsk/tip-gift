@@ -44,6 +44,8 @@ model WishPurchase {
   IsCustom             Boolean   @default(false, map: "DF__WishPurch__IsCus__27F8EE98")
   ReceiverName         String?   @db.NVarChar(255)
   CustomName           String?   @db.NVarChar(255)
+  DeletedDate          DateTime? @db.DateTimeOffset
+  DeletedByUserId      String?   @db.UniqueIdentifier
 }
 
 model WishUserGroup {
