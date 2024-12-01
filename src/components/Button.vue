@@ -7,6 +7,7 @@ interface Props {
     disable?: boolean;
     color?: string;
     noRipple?: boolean;
+    icon?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -50,6 +51,7 @@ const classes = computed(() => {
         }"
         @click="() => emit('click')"
     >
+        <Icon v-if="icon" :name="icon" font-size="24px" />
         <slot />
     </button>
 </template>
