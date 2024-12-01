@@ -1,7 +1,7 @@
 export const cachedRef = <T>(cacheKey: string, defaultValue: T) => {
     const theRef = ref(defaultValue);
 
-    onMounted(() => {
+    if (import.meta.client) {
         const cachedValue = localStorage.getItem(cacheKey);
 
         if (cachedValue) {
@@ -11,7 +11,7 @@ export const cachedRef = <T>(cacheKey: string, defaultValue: T) => {
                 console.warn('Failed to parse cached value for:', cacheKey);
             }
         }
-    });
+    }
 
     watch(
         () => theRef,
