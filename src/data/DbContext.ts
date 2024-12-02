@@ -17,7 +17,9 @@ export class DbContext {
 
     async getGivenGifts(groupId: any, userId: string) {
         const myWishes = await this.getWishes(userId);
-        const givenGifts = await this._db.wishPurchase.findMany({ where: { GroupId: groupId, WishId: { not: null } } });
+        const givenGifts = await this._db.wishPurchase.findMany({
+            where: { GroupId: groupId, WishId: { not: null }, ...excludeDeleted },
+        });
 
         const myWishIds = myWishes.map((w) => w.Id);
         return givenGifts.filter((gg) => !!gg.WishId && !myWishIds.includes(gg.WishId));
@@ -39,6 +41,7 @@ export class DbContext {
 				 ON u.Id = w.UserId
 			WHERE wp.UserId = ${userId}
 			AND (w.Id IS NOT NULL OR wp.IsCustom = 1)
+			AND wp.DeletedDate IS NULL
 		`;
 
         return result;
@@ -322,6 +325,7 @@ export class DbContext {
         const wishPurchase = await this._db.wishPurchase.findFirst({
             where: {
                 Id: wishPurchaseId,
+                ...excludeDeleted,
             },
         });
 
@@ -333,7 +337,12 @@ export class DbContext {
             throw new Error('User does not own wish.');
         }
 
-        return this._db.wishPurchase.delete({
+        // soft delete wish purchase
+        return await this._db.wishPurchase.update({
+            data: {
+                DeletedDate: new Date(),
+                DeletedByUserId: userId,
+            },
             where: {
                 Id: wishPurchaseId,
             },
