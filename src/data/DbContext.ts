@@ -28,7 +28,6 @@ export class DbContext {
 			SELECT
 				wp.*,
 				COALESCE(w.[Name], wp.CustomName) AS Name,
-				w.UserId,
 				w.ImageUrl,
 				w.UserId AS WishOwnerId,
 				w.Link,
