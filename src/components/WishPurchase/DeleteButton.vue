@@ -1,21 +1,17 @@
 <script setup lang="ts">
-import { useCurrentUser } from '~/composables/useUser';
+import { type WishPurchase } from '@prisma-app/client';
 
 interface Props {
+    wishPurchase: WishPurchase;
     wishTitle: string | null;
-    wishPurchase: {
-        Id: string;
-        UserId: string;
-        WishId: string | null;
-        GroupId: string | null;
-    };
 }
 
 const props = defineProps<Props>();
 
 const user = await useCurrentUser();
-const showDeleteConfirmation = ref(false);
 const { i18n } = await useI18n();
+
+const showDeleteConfirmation = ref(false);
 
 const isCurrentUserBuyer = computed(() => {
     return props.wishPurchase.UserId === user?.value?.Id;
@@ -38,11 +34,10 @@ const handleDeleteConfirmed = () => {
 </script>
 
 <template>
-    <div :class="{ 'relative select-none w-[36px]': true }" @click="handleClick">
-        <div class="scale-[0.5]">
-            <User without-username :user-id="wishPurchase.UserId" :class="{ 'cursor-pointer': isCurrentUserBuyer }" />
-        </div>
-        <div class="absolute bottom-[4px] right-[-6px] scale-75">🎁</div>
+    <div>
+        <Button flat round :disable="!isCurrentUserBuyer" @click="handleClick">
+            <slot />
+        </Button>
 
         <Dialog :model-value="showDeleteConfirmation">
             <template #title> <Localized tkey="RemoveBoughtWish" /> </template>

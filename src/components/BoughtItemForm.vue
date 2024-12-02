@@ -15,7 +15,6 @@ const props = defineProps<Props>();
 const handleSubmit = async () => {
     loading.value = true;
     await giveGift(props.groupId, props.item.Id);
-    refreshGivenGifts(props.groupId);
     emit('close');
     loading.value = false;
 };

@@ -12,7 +12,6 @@ interface Props {
 const props = defineProps<Props>();
 
 const { data: groupWishes } = await useGroupWishes(props.groupId);
-const { data: givenGifts } = await useGroupWishPurchases(props.groupId, true);
 
 const boughtItem = ref<Wish | null>(null);
 const showBoughtItemDialog = ref<boolean>(false);
@@ -47,14 +46,6 @@ const handleBuyClicked = (wish: Wish) => {
     boughtItem.value = wish;
     showBoughtItemDialog.value = true;
 };
-
-const findGivers = (wish: Wish) => {
-    if (!props.showGivers || !givenGifts.value) {
-        return [];
-    }
-
-    return givenGifts.value?.filter((gg) => gg.WishId === wish.Id);
-};
 </script>
 
 <template>
@@ -74,17 +65,9 @@ const findGivers = (wish: Wish) => {
                 </template>
             </WishListItem>
 
-            <div class="flex no-wrap items-center">
-                <TransitionGroup name="grow">
-                    <BoughtIndicator
-                        v-for="buyer in findGivers(wish)"
-                        :key="buyer.Id"
-                        :wish-purchase="buyer"
-                        :wish-title="wish.Name"
-                    />
-                </TransitionGroup>
-
-                <Button v-if="showGivers" round @click="() => handleBuyClicked(wish)">
+            <div v-if="showGivers" class="flex no-wrap items-center">
+                <WishPurchaseIndicators :group-id="groupId" :wish-id="wish.Id" />
+                <Button round @click="() => handleBuyClicked(wish)">
                     <Icon font-size="24px" name="shopping_cart" />
                 </Button>
             </div>
