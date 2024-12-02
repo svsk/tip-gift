@@ -1,21 +1,15 @@
 import { type WishPurchase } from '@prisma-app/client';
 import type { WishPurchaseWish, WishTag } from '~/prisma/customTypes';
+import { withEnsuredSuccess } from './withClientCache';
 
 export const useMyWishPurchases = async () => {
     return await useFetch<WishPurchaseWish[]>('/api/wishpurchases', useAuthentication());
 };
 
-export const useGroupWishPurchases = async (groupId: string, fromCache = false) => {
-    const storeKey = `groupWishPurchases-${groupId}`;
-
-    const cached = fromCache ? retrieveCachedData<WishPurchase[]>(storeKey) : null;
-    if (cached) {
-        return cached;
-    }
-
-    return useAsyncData(storeKey, async () => {
-        return await $fetch<WishPurchase[]>(`/api/groups/${groupId}/given`, useAuthentication());
-    });
+export const useGroupWishPurchases = (groupId: string, forceReload = false) => {
+    return withEnsuredSuccess(
+        withClientCache<WishPurchase[]>(`groupWishPurchases-${groupId}`, `/api/groups/${groupId}/given`, forceReload)
+    );
 };
 
 export const giveGift = async (groupId: string, wishId: string) => {
@@ -23,6 +17,8 @@ export const giveGift = async (groupId: string, wishId: string) => {
         method: 'POST',
         ...useAuthentication(),
     });
+
+    refreshGivenGifts(groupId);
 };
 
 export const updateWishPurchase = async (purchase: Partial<WishPurchase>) => {
@@ -66,4 +62,4 @@ export const updateWishTag = async (wishPurchaseId: string, tag: Partial<WishTag
     });
 };
 
-export const refreshGivenGifts = async (groupId: string) => await useGroupWishPurchases(groupId);
+export const refreshGivenGifts = async (groupId: string) => await useGroupWishPurchases(groupId, true);

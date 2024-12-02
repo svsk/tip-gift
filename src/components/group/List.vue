@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { type WishUserGroup } from '@prisma-app/client';
 
-const groups = await useGroups();
+const { data: groups } = await useGroups();
 
 interface Props {
     allowAdding?: boolean;

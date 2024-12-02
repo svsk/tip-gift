@@ -1,19 +1,13 @@
 import { type WishUserGroup, type Wish, type WishUserGroupUser } from '@prisma-app/client';
 import type { WishWithShareRefs } from '~/prisma/customTypes';
+import { withEnsuredSuccess } from './withClientCache';
 
 const storeKey = 'userGroups';
 const groupWishKey = 'userGroupWishes';
 const groupUserKey = 'userGroupUsers';
 
-export const useGroups = async (forceReload = false) => {
-    const result = await withClientCache<WishUserGroup[]>(storeKey, '/api/groups/getall', forceReload);
-
-    if (!result?.data?.value) {
-        console.error('Failed to find groups.', result?.error);
-        throw new Error('Failed to find groups.');
-    }
-
-    return result.data;
+export const useGroups = (forceReload = false) => {
+    return withEnsuredSuccess(withClientCache<WishUserGroup[]>(storeKey, '/api/groups/getall', forceReload));
 };
 
 export const getGroupByInviteCode = async (inviteCode: string) => {
@@ -61,8 +55,10 @@ export const deleteGroup = async (group: WishUserGroup) => {
     refreshGroups();
 };
 
-export const useGroupWishes = (groupId: string) => {
-    return withClientCache<WishWithShareRefs[]>(`${groupWishKey}-${groupId}`, `/api/groups/${groupId}/wishes`);
+export const useGroupWishes = (groupId: string, forceReload = false) => {
+    return withEnsuredSuccess(
+        withClientCache<WishWithShareRefs[]>(`${groupWishKey}-${groupId}`, `/api/groups/${groupId}/wishes`, forceReload)
+    );
 };
 
 export const addWishToGroup = async (wishId: string, groupId: string, collaborationId?: string) => {
@@ -124,5 +120,5 @@ export const leaveGroup = async (groupId: string) => {
 };
 
 export const refreshGroups = async () => await useGroups(true);
-export const refreshGroupWishes = async (groupId: string) => await (await useGroupWishes(groupId)).refresh();
+export const refreshGroupWishes = async (groupId: string) => await useGroupWishes(groupId, true);
 export const refreshGroupUsers = async (groupId: string) => await (await useGroupUsers(groupId)).refresh();

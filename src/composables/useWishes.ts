@@ -2,8 +2,8 @@ import { type Wish } from '@prisma-app/client';
 
 const storeKey = 'wishes';
 
-export const useWishes = async () => {
-    return await withClientCache<Wish[]>(storeKey, '/api/wishes/getall');
+export const useWishes = (forceReload = false) => {
+    return withEnsuredSuccess(withClientCache<Wish[]>(storeKey, '/api/wishes/getall', forceReload));
 };
 
 export const addWish = async (wish: Wish) => {
@@ -38,4 +38,4 @@ export const updateWishes = async (wishes: Wish[]) => {
     refreshWishes();
 };
 
-export const refreshWishes = async () => await (await useWishes()).refresh();
+export const refreshWishes = async () => await useWishes(true);
