@@ -35,3 +35,5 @@ export const Toast = () => {
 
     return { show };
 };
+
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

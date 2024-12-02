@@ -12,12 +12,23 @@ const wishPurchaseId = useRoute().params.wishPurchaseId.toString();
 const { data: purchases } = await useMyWishPurchases();
 
 const item = computed(() => purchases.value?.find((p) => p.Id === wishPurchaseId));
+
+const handlePurchaseDeleted = async () => {
+    await delay(1000);
+    navigateTo('/my/checklist');
+};
 </script>
 
 <template>
     <Card class="relative" v-if="item">
         <PageHeader back-to="/my/checklist">
             {{ item?.Name }}
+
+            <template #side>
+                <div class="flex gap-2">
+                    <WishPurchaseDeleteButton :wish-purchase="item" @wish-purchase-deleted="handlePurchaseDeleted" />
+                </div>
+            </template>
         </PageHeader>
 
         <div class="w-full text-center pt-4 text-sm">
