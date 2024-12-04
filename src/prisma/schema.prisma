@@ -73,6 +73,7 @@ model WishListShare {
   Slug        String
   Name        String
   CreatedDate DateTime @default(dbgenerated("getutcdate()"), map: "DF__WishListS__Creat__2704CA5F") @db.DateTimeOffset
+  GroupId     String?  @db.UniqueIdentifier
 }
 
 model WishGroupWish {
