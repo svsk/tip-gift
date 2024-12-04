@@ -61,6 +61,6 @@ watch(
             </template>
         </Badge>
 
-        <slot name="empty-state" v-if="!notes.length" />
+        <slot name="empty-state" v-if="!wishPurchaseNotes.length" />
     </div>
 </template>
