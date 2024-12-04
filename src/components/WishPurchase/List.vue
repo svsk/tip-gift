@@ -112,6 +112,11 @@ const handleAddCustomPurchaseConfirmed = async () => {
                                 </div>
 
                                 <WishPurchaseProgress :wish-purchase="purchase" />
+
+                                <WishPurchaseNoteBadges
+                                    :wish-purchase-id="purchase.Id"
+                                    class="flex gap-2 flex-wrap mt-1"
+                                />
                             </div>
 
                             <div>

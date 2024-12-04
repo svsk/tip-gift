@@ -106,4 +106,14 @@ export const enGb: LanguageStrings = {
     StatusWrapped: 'Wrapped',
     StatusGiven: 'Given',
     ShowPurchasesWithStatus: 'Show gifts that are',
+    ManageWishPurchaseNotes: 'Manage Gift Notes',
+    NewNote: 'New Note',
+    EditNote: 'Edit Note',
+    Update: 'Update',
+    WishPurchaseNotesExplanation:
+        'For convenience you may add any notes about your gifts such as tracking number, where you got it from and so on.',
+    DeleteWishPurchaseNote: 'Delete Note',
+    DeleteWishPurchaseNoteConfirmation: 'Are you sure you want to delete this note?',
+    NoNotesAdded: 'No notes added.',
+    MaxLength: 'Max {0} characters',
 };

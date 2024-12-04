@@ -26,10 +26,16 @@ const handlePurchaseDeleted = async () => {
 
             <template #side>
                 <div class="flex gap-2">
+                    <!-- <Button round flat icon="edit" /> -->
+                    <WishPurchaseNoteManageButton :wish-purchase-id="item.Id" />
                     <WishPurchaseDeleteButton :wish-purchase="item" @wish-purchase-deleted="handlePurchaseDeleted" />
                 </div>
             </template>
         </PageHeader>
+
+        <div class="px-3 py-2">
+            <WishPurchaseNoteBadges :wish-purchase-id="wishPurchaseId" class="flex gap-2 flex-wrap" />
+        </div>
 
         <div class="w-full text-center pt-4 text-sm">
             <Localized tkey="GiftFor" /><br />

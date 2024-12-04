@@ -100,4 +100,13 @@ export interface LanguageStrings {
     StatusGiven: string;
     StatusShipmentReceived: string;
     ShowPurchasesWithStatus: string;
+    ManageWishPurchaseNotes: string;
+    NewNote: string;
+    EditNote: string;
+    Update: string;
+    WishPurchaseNotesExplanation: string;
+    DeleteWishPurchaseNote: string;
+    DeleteWishPurchaseNoteConfirmation: string;
+    NoNotesAdded: string;
+    MaxLength: string;
 }

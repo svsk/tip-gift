@@ -106,4 +106,14 @@ export const nbNo: LanguageStrings = {
     StatusWrapped: 'Innpakket',
     StatusGiven: 'Gitt',
     ShowPurchasesWithStatus: 'Vis gaver som er',
+    ManageWishPurchaseNotes: 'Rediger Gavenotater',
+    NewNote: 'Nytt Notat',
+    EditNote: 'Rediger Notat',
+    Update: 'Oppdater',
+    WishPurchaseNotesExplanation:
+        'Her kan du legge til små, praktiske notater om gaven. For eksempel sendingsnummer, hvor du kjøpte den, eller andre ting du vil huske på.',
+    DeleteWishPurchaseNote: 'Fjern Notat',
+    DeleteWishPurchaseNoteConfirmation: 'Er du sikker på at du ønsker å fjerne dette notatet?',
+    NoNotesAdded: 'Ingen notater lagt til.',
+    MaxLength: 'Maks {0} karakterer',
 };

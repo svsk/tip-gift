@@ -29,3 +29,5 @@ export type WishTag = {
 export interface WishWithShareRefs extends Wish {
     Shares: WishGroupWish[];
 }
+
+export * from '@prisma-app/client';

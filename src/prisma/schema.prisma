@@ -125,3 +125,13 @@ model WishGroupCollaborationMember {
   DeletedDate              DateTime? @db.DateTimeOffset
   DeletedByUserId          String?   @db.UniqueIdentifier
 }
+
+model WishPurchaseNote {
+  Id              String    @id(map: "PK__WishPurc__3214EC07B6EAD7C4") @default(dbgenerated("newid()"), map: "DF__WishPurchase__Id__40C49C62") @db.UniqueIdentifier
+  WishPurchaseId  String    @db.UniqueIdentifier
+  Note            String    @db.NVarChar(150)
+  CreatedDate     DateTime  @default(dbgenerated("getutcdate()"), map: "DF__WishPurch__Creat__41B8C09B") @db.DateTimeOffset
+  CreatedByUserId String    @db.UniqueIdentifier
+  DeletedDate     DateTime? @db.DateTimeOffset
+  DeletedByUserId String?   @db.UniqueIdentifier
+}
