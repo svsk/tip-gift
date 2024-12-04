@@ -2,7 +2,7 @@
 import type { Form } from '#build/components';
 import type { WishPurchaseWish } from '~/prisma/customTypes';
 
-const { data: purchases, refresh: refreshPurchases } = await useMyWishPurchases();
+const { data: purchases } = await useMyWishPurchases();
 
 const filterGiven = cachedRef('filter-completed-wish-purchases', true);
 
@@ -45,7 +45,6 @@ const handleAddCustomPurchaseConfirmed = async () => {
     }
 
     await addCustomWishPurchase(customArgs.value.customName, customArgs.value.receiverName);
-    refreshPurchases();
 
     showAddCustomWishPurchaseDialog.value = false;
 };

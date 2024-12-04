@@ -53,6 +53,8 @@ export const addCustomWishPurchase = async (customName: string, receiverName: st
         method: 'POST',
         ...useAuthentication(),
     });
+
+    refreshMyWishPurchases();
 };
 
 export const useWishTag = async (wishPurchaseId: string) => {
