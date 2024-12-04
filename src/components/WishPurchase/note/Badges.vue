@@ -22,6 +22,14 @@ const handleNoteClicked = (noteId: string) => {
     }
 };
 
+const isUrl = (note: string) => {
+    return props.selectable ? false : note.startsWith('http://') || note.startsWith('https://');
+};
+
+const urlDisplayValue = (note: string) => {
+    return new URL(note).hostname;
+};
+
 watch(
     () => notes.value,
     () => {
@@ -38,9 +46,19 @@ watch(
         <Badge
             v-for="noteEntry in wishPurchaseNotes"
             @click="(_) => handleNoteClicked(noteEntry.Id)"
-            :class="{ 'select-none': selectable, 'outline-blue-300 outline': selectedNoteId === noteEntry.Id }"
+            :class="{
+                'select-none': selectable,
+                'outline-blue-300 outline': selectedNoteId === noteEntry.Id,
+                'max-w-full overflow-hidden inline-block': true,
+            }"
         >
-            {{ noteEntry.Note }}
+            <a v-if="isUrl(noteEntry.Note)" :href="noteEntry.Note" target="_blank" class="flex items-center gap-1">
+                <Icon name="open_in_new" />
+                {{ urlDisplayValue(noteEntry.Note) }}
+            </a>
+            <template v-else>
+                {{ noteEntry.Note }}
+            </template>
         </Badge>
 
         <slot name="empty-state" v-if="!notes.length" />
