@@ -255,17 +255,6 @@ export class DbContext {
         return this._db.wishUser.findFirst({ where: { Email: username } });
     }
 
-    createShare(userId: string, uniqueKey: string, name: string, slug: string) {
-        return this._db.wishListShare.create({
-            data: {
-                UserId: userId,
-                UniqueKey: uniqueKey,
-                Name: name,
-                Slug: slug,
-            },
-        });
-    }
-
     async getGroupWishes(groupId: string) {
         const groupShareRefs = await this._db.wishGroupWish.findMany({
             where: { GroupId: groupId, ...excludeDeleted },
