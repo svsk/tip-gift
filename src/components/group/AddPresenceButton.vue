@@ -1,19 +1,16 @@
 <script setup lang="ts">
-import { type WishUser } from '@prisma-app/client';
-
 interface Props {
     groupId: string;
 }
 
 const props = defineProps<Props>();
 
-const groups = await useGroups();
+const { data: groups } = await useGroups();
 
 const tab = ref('user');
+const showAddUserDialog = ref(false);
 
 const group = computed(() => groups.value?.find((g) => g.Id === props.groupId));
-
-const showAddUserDialog = ref(false);
 
 const isAdmin = computed(() => isGroupAdmin(group.value));
 
