@@ -5,18 +5,40 @@ import { createRandomKey } from '~/lib/keyGenerator';
 export class ShareQueries {
     private _db = usePrisma();
 
-    insertShare(userId: string, uniqueKey: string, name: string, slug: string) {
+    async getAllGroupShares(userId: string, groupId: string) {
+        await this.ensureGroupMembership(userId, groupId);
+
+        return this._db.wishListShare.findMany({
+            where: { GroupId: groupId, UserId: userId },
+        });
+    }
+
+    async ensureGroupMembership(userId: string, groupId: string) {
+        // Check that user is part of group
+        const groupUser = await this._db.wishUserGroupUser.findFirst({
+            where: { UserId: userId, GroupId: groupId, DeletedDate: { equals: null } },
+        });
+
+        if (!groupUser) {
+            throw new Error('User is not part of group');
+        }
+
+        return groupUser;
+    }
+
+    insertShare(userId: string, uniqueKey: string, name: string, slug: string, groupId: string | null) {
         return this._db.wishListShare.create({
             data: {
                 UserId: userId,
                 UniqueKey: uniqueKey,
                 Name: name,
                 Slug: slug,
+                GroupId: groupId,
             },
         });
     }
 
-    async createShare(userId: string, desiredSlug: string) {
+    async tryCreateShare(userId: string, desiredSlug: string, groupId: string | null) {
         const urlSlug = desiredSlug
             .toLowerCase()
             .replaceAll(' ', '-')
@@ -37,7 +59,7 @@ export class ShareQueries {
 
             try {
                 const random = createRandomKey(3);
-                share = await this.insertShare(userId, random, desiredSlug, urlSlug);
+                share = await this.insertShare(userId, random, desiredSlug, urlSlug, groupId);
             } catch (error: any) {
                 console.warn(error);
             }
@@ -46,5 +68,13 @@ export class ShareQueries {
         }
 
         return share;
+    }
+
+    async createShare(userId: string, desiredSlug: string) {
+        return await this.tryCreateShare(userId, desiredSlug, null);
+    }
+
+    async createGroupShare(userId: string, desiredSlug: string, groupId: string) {
+        return await this.tryCreateShare(userId, desiredSlug, groupId);
     }
 }

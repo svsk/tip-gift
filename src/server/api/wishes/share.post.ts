@@ -1,7 +1,4 @@
-import { type WishListShare } from '@prisma-app/client';
 import { ShareQueries } from '~/data/ShareQueries';
-import { createRandomKey } from '~/lib/keyGenerator';
-import { DbContext } from '~~/data/DbContext';
 import { requireAuth } from '~~/lib/requireAuth';
 
 export default defineEventHandler(async (event) =>

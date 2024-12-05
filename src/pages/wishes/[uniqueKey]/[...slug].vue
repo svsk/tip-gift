@@ -1,11 +1,15 @@
 <script lang="ts" setup>
 import { type Wish } from '@prisma-app/client';
+import type { WishListShare, WishWithShareRefs } from '~/prisma/customTypes';
 
 const embedded = useRoute().query.embedded === 'true';
 const { uniqueKey } = useRoute().params;
 const card = ref<HTMLElement | null>(null);
 
-const { data: shareData } = await useFetch('/api/wishes/get-shared-by-key', {
+const { data: shareData } = await useFetch<{
+    share: WishListShare;
+    wishes: Wish[] | WishWithShareRefs[];
+}>('/api/wishes/get-shared-by-key', {
     query: { uniqueKey },
     key: uniqueKey.toString(),
 });

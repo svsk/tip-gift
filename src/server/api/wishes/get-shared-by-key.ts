@@ -16,7 +16,9 @@ export default defineEventHandler(async (event) => {
         return null;
     }
 
-    const wishes = await db.getWishes(share.UserId);
+    const { GroupId: groupId } = share;
+
+    const wishes = groupId ? await db.getGroupWishes(groupId) : await db.getWishes(share.UserId);
     return {
         wishes,
         share,

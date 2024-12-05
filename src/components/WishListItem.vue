@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { type Wish } from '@prisma-app/client';
+import type { WishWithShareRefs } from '~/prisma/customTypes';
 
 interface Props {
-    entry: Partial<Wish>;
+    entry: Wish | WishWithShareRefs;
 }
 
 defineProps<Props>();

@@ -46,6 +46,7 @@ watch(
             <template #side>
                 <!-- Buttons go here -->
                 <div class="flex gap-3 items-center">
+                    <GroupShareButton v-if="group" :group-id="group.Id" />
                     <Button v-if="canEdit" round @click="() => (showEditDialog = true)">
                         <Icon name="edit" font-size="24px" />
                     </Button>
