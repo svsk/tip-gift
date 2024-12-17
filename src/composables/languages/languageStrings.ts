@@ -109,4 +109,5 @@ export interface LanguageStrings {
     DeleteWishPurchaseNoteConfirmation: string;
     NoNotesAdded: string;
     MaxLength: string;
+    Search: string;
 }

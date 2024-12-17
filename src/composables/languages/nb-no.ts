@@ -116,4 +116,5 @@ export const nbNo: LanguageStrings = {
     DeleteWishPurchaseNoteConfirmation: 'Er du sikker på at du ønsker å fjerne dette notatet?',
     NoNotesAdded: 'Ingen notater lagt til.',
     MaxLength: 'Maks {0} karakterer',
+    Search: 'Søk',
 };

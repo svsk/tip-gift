@@ -116,4 +116,5 @@ export const enGb: LanguageStrings = {
     DeleteWishPurchaseNoteConfirmation: 'Are you sure you want to delete this note?',
     NoNotesAdded: 'No notes added.',
     MaxLength: 'Max {0} characters',
+    Search: 'Search',
 };
