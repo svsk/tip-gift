@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import type { Form } from '#build/components';
+import { type ListItem, type Form } from '#build/components';
 import type { WishPurchaseWish } from '~/prisma/customTypes';
 
 const { data: purchases } = await useMyWishPurchases();
+const { i18n } = await useI18n();
 
 const filterGiven = cachedRef('filter-completed-wish-purchases', true);
+const freeTextSearch = cachedRef('checklist-freetext-search', '');
+const selectedTab = cachedRef<'checklist' | 'tags'>('checklist-selected-tab', 'checklist');
 
 const showAddCustomWishPurchaseDialog = ref(false);
 const customForm = ref<InstanceType<typeof Form> | null>(null);
 const customArgs = ref<{ customName: string; receiverName: string }>({ customName: '', receiverName: '' });
-const selectedTab = cachedRef<'checklist' | 'tags'>('checklist-selected-tab', 'checklist');
 const filters = ref<((purchase: WishPurchaseWish) => boolean)[]>([]);
+const purchaseListItems = ref<InstanceType<typeof ListItem>[]>([]);
+const freeTextFilterIds = ref<string[] | null>(null);
 
 const sortedPurchases = computed(() => {
     return Array.from(purchases.value || []).sort((a, b) => {
@@ -20,6 +24,10 @@ const sortedPurchases = computed(() => {
 
 const filteredPurchases = computed(() => {
     return sortedPurchases.value.filter((p) => {
+        if (!!freeTextFilterIds.value && !freeTextFilterIds.value.includes(p.Id)) {
+            return false;
+        }
+
         if (filterGiven.value && !!p.GivenDate) {
             return false;
         }
@@ -48,6 +56,26 @@ const handleAddCustomPurchaseConfirmed = async () => {
 
     showAddCustomWishPurchaseDialog.value = false;
 };
+
+watchEffect(() => {
+    if (!import.meta.client) {
+        return;
+    }
+
+    if (freeTextSearch.value.length < 3) {
+        freeTextFilterIds.value = null;
+        return;
+    }
+
+    const invariantSearch = freeTextSearch.value.toLowerCase();
+
+    freeTextFilterIds.value = purchaseListItems.value
+        .filter((item) => {
+            const shouldShow = item.$el.innerText.toLowerCase().includes(invariantSearch);
+            return shouldShow;
+        })
+        .map((item) => item.$el.getAttribute('data-key') || '');
+});
 </script>
 
 <template>
@@ -64,10 +92,11 @@ const handleAddCustomPurchaseConfirmed = async () => {
         <TabPanels v-model="selectedTab">
             <TabPanel name="checklist" class="pt-6">
                 <div class="w-full flex items-center justify-between pb-4">
-                    <div>
+                    <div class="flex items-center gap-3">
+                        <Input v-model="freeTextSearch" :label="i18n('Search')" />
                         <WishPurchaseListFilterButton v-model="filters" />
                     </div>
-                    <div>
+                    <div class="flex items-center gap-3">
                         <WishPurchaseListFilter v-model:filter-given="filterGiven" />
                     </div>
                 </div>
@@ -93,7 +122,7 @@ const handleAddCustomPurchaseConfirmed = async () => {
                         :key="purchase.Id"
                         :to="`/my/checklist/${purchase.Id}`"
                     >
-                        <ListItem clickable class="mb-2 flex gap-3">
+                        <ListItem ref="purchaseListItems" :data-key="purchase.Id" clickable class="mb-2 flex gap-3">
                             <div class="text-xs text-opacity-50 w-[75px]">
                                 <div v-if="purchase.WishOwnerId" class="text-center flex flex-col gap-1 items-center">
                                     <User :user-id="purchase.WishOwnerId" without-username />
@@ -112,10 +141,13 @@ const handleAddCustomPurchaseConfirmed = async () => {
 
                                 <WishPurchaseProgress :wish-purchase="purchase" />
 
-                                <WishPurchaseNoteBadges
-                                    :wish-purchase-id="purchase.Id"
-                                    class="flex gap-2 flex-wrap mt-1"
-                                />
+                                <div class="flex items-center gap-2">
+                                    <WishPurchaseNoteManageButton :wish-purchase-id="purchase.Id" @click.stop.prevent />
+                                    <WishPurchaseNoteBadges
+                                        :wish-purchase-id="purchase.Id"
+                                        class="flex gap-2 flex-wrap mt-1"
+                                    />
+                                </div>
                             </div>
 
                             <div>
