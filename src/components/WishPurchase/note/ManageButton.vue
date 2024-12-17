@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Input } from '#build/components';
+
 interface Props {
     wishPurchaseId: string;
 }
@@ -12,6 +14,13 @@ const showManageDialog = ref(false);
 const noteText = ref('');
 const selectedNoteId = ref<string | null>(null);
 const busy = ref(false);
+const noteInput = ref<InstanceType<typeof Input> | null>(null);
+
+const handleManageButtonClicked = async () => {
+    showManageDialog.value = true;
+    await delay(50);
+    noteInput.value?.focus();
+};
 
 const handleNoteAdded = async () => {
     try {
@@ -53,7 +62,7 @@ const maxWidth = (max: number) => (v: string) => v.length <= max || i18n('MaxLen
 
 <template>
     <div>
-        <Button round flat icon="label" @click="showManageDialog = true" />
+        <Button round flat icon="label" @click="handleManageButtonClicked" />
 
         <Dialog v-model="showManageDialog">
             <template #title>
@@ -80,6 +89,7 @@ const maxWidth = (max: number) => (v: string) => v.length <= max || i18n('MaxLen
 
                 <Form class="flex flex-col gap-2" @submit="selectedNoteId ? handleNoteEdited() : handleNoteAdded()">
                     <Input
+                        ref="noteInput"
                         v-model="noteText"
                         :readonly="busy"
                         :label="selectedNoteId ? i18n('EditNote') : i18n('NewNote')"
