@@ -17,18 +17,33 @@ interface Emits {
 }
 
 const props = withDefaults(defineProps<Props>(), { withConfirm: false, preload: false });
-
 const emit = defineEmits<Emits>();
 
 const { i18n } = await useI18n();
 
-const handleClickOutside = () => {
+const dialogContainer = ref<HTMLElement | null>(null);
+
+const handleCloseRequested = () => {
     if (props.persistent) {
         return;
     }
 
     emit('update:modelValue', false);
 };
+
+watch(
+    () => props.modelValue,
+    async () => {
+        if (import.meta.server) {
+            return;
+        }
+
+        if (props.modelValue) {
+            await nextTick();
+            dialogContainer.value?.focus();
+        }
+    }
+);
 </script>
 
 <template>
@@ -37,10 +52,13 @@ const handleClickOutside = () => {
             <div
                 v-if="modelValue || preload"
                 v-show="modelValue"
+                ref="dialogContainer"
+                tabindex="1"
                 class="fixed w-full h-full bg-opacity-30 bg-black top-0 left-0 flex flex-col items-center justify-center p-6 z-50"
-                @click="handleClickOutside"
+                @click="handleCloseRequested"
+                @keydown.escape="handleCloseRequested"
             >
-                <Card @click.stop class="w-full max-w-[450px] py-0 px-0">
+                <Card class="w-full max-w-[450px] py-0 px-0" @click.stop>
                     <div v-if="$slots.title" class="p-4">
                         <h2 class="font-medium text-lg">
                             <slot name="title" />
