@@ -64,6 +64,8 @@ watchEffect(() => {
             <Icon name="filter_list" font-size="24px" />
             <Menu>
                 <Card class="shadow-xl flex flex-col gap-2">
+                    <slot />
+
                     <div>
                         <Localized tkey="ShowPurchasesWithStatus" />
                     </div>

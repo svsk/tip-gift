@@ -93,8 +93,9 @@ watchEffect(() => {
             <TabPanel name="checklist" class="pt-6">
                 <div class="w-full flex items-center justify-between pb-4">
                     <div class="flex items-center gap-3">
-                        <Input v-model="freeTextSearch" :label="i18n('Search')" />
-                        <WishPurchaseListFilterButton v-model="filters" />
+                        <WishPurchaseListFilterButton v-model="filters">
+                            <Input v-model="freeTextSearch" :label="i18n('Search')" />
+                        </WishPurchaseListFilterButton>
                     </div>
                     <div class="flex items-center gap-3">
                         <WishPurchaseListFilter v-model:filter-given="filterGiven" />
