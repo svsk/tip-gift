@@ -3,6 +3,7 @@ import { type ListItem, type Form } from '#build/components';
 import type { WishPurchaseWish } from '~/prisma/customTypes';
 
 const { data: purchases } = await useMyWishPurchases();
+const { data: notes } = await useWishPurchaseNotes().getWishPurchaseNotes();
 const { i18n } = await useI18n();
 
 const filterGiven = cachedRef('filter-completed-wish-purchases', true);
@@ -67,14 +68,18 @@ watchEffect(() => {
         return;
     }
 
+    const purchaseSearches = purchases.value.map((p) => {
+        const purchaseNotes = notes.value
+            .filter((n) => n.WishPurchaseId === p.Id)
+            .map((n) => n.Note)
+            .join('');
+
+        return { searchString: `${p.ReceiverName}${p.Name}${purchaseNotes}`.toLowerCase(), id: p.Id };
+    });
+
     const invariantSearch = freeTextSearch.value.toLowerCase();
 
-    freeTextFilterIds.value = purchaseListItems.value
-        .filter((item) => {
-            const shouldShow = item.$el.innerText.toLowerCase().includes(invariantSearch);
-            return shouldShow;
-        })
-        .map((item) => item.$el.getAttribute('data-key') || '');
+    freeTextFilterIds.value = purchaseSearches.filter((p) => p.searchString.includes(invariantSearch)).map((p) => p.id);
 });
 </script>
 
