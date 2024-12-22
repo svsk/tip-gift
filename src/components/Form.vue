@@ -1,5 +1,10 @@
 <script setup lang="ts">
-const emit = defineEmits(['submit']);
+interface Emits {
+    (event: 'submit'): void;
+}
+
+const emit = defineEmits<Emits>();
+
 const childValidators: (() => boolean)[] = [];
 provide('formValidators', childValidators);
 
@@ -22,5 +27,6 @@ defineExpose({
 <template>
     <form @submit.prevent="handleSubmit" novalidate>
         <slot />
+        <input type="submit" hidden />
     </form>
 </template>
