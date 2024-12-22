@@ -174,7 +174,7 @@ watchEffect(() => {
                 <Localized tkey="AddCustomWishPurchase" />
             </template>
 
-            <Form ref="customForm">
+            <Form ref="customForm" @submit="handleAddCustomPurchaseConfirmed">
                 <WishPurchaseAddCustomForm :args="customArgs" />
             </Form>
         </Dialog>

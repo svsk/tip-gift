@@ -93,6 +93,7 @@ defineExpose({
         >
             {{ label }}
         </label>
+
         <textarea
             v-if="type === 'textarea'"
             v-model="value"
