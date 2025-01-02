@@ -5,6 +5,10 @@
 @import './transitions.scss';
 @import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');
 
+.font-medium {
+	font-weight: 501;
+}
+
 :root {
 	--background: #202020;
 }
