@@ -40,7 +40,7 @@ const iconSize = computed(() => {
 </script>
 
 <template>
-    <div @touchmove="handleTouchMove" @touchend="handleTouchEnd">
+    <div v-if="!reloading" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
         <div
             :class="{
                 'overflow-y-hidden flex items-center justify-center absolute rounded-full bg-blue-600 z-50': true,
@@ -55,7 +55,7 @@ const iconSize = computed(() => {
                 font-size="24px"
             />
         </div>
-        <slot v-if="!reloading" />
+        <slot />
     </div>
 </template>
 
