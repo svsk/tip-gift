@@ -27,7 +27,7 @@ const required = (val: string) => {
         </div>
         <div class="flex flex-nowrap gap-2 items-center">
             <ColorPicker v-model="group.AvatarColour" />
-            <EmojiPicker v-model="group.AvatarEmoji" />
+            <EmojiPickerButton v-model="group.AvatarEmoji" />
         </div>
     </div>
 </template>

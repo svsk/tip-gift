@@ -84,7 +84,11 @@ const handleLogOut = async () => {
         <div class="flex gap-6 justify-between">
             <div class="flex gap-2">
                 <ColorPicker v-if="user" :model-value="user.AvatarColour" @update:modelValue="handleColorChanged" />
-                <EmojiPicker v-if="user" :model-value="user.AvatarEmoji" @update:modelValue="handleEmojiClicked" />
+                <EmojiPickerButton
+                    v-if="user"
+                    :model-value="user.AvatarEmoji"
+                    @update:modelValue="handleEmojiClicked"
+                />
             </div>
 
             <div>
