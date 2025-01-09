@@ -16,10 +16,6 @@ const emit = defineEmits<Emits>();
 
 const showEmojiPicker = ref(false);
 
-const handleChangeEmoji = () => {
-    showEmojiPicker.value = !showEmojiPicker.value;
-};
-
 const handleEmojiClicked = (ev: { detail: { unicode: string } }) => {
     showEmojiPicker.value = false;
     emit('update:modelValue', ev.detail.unicode);
@@ -27,17 +23,17 @@ const handleEmojiClicked = (ev: { detail: { unicode: string } }) => {
 </script>
 
 <template>
-    <div class="relative">
-        <Button round style="height: 45px; width: 45px" @click="handleChangeEmoji">
+    <Button round class="relative" style="height: 45px; width: 45px">
+        <slot>
             <Icon font-size="24px" name="mood" />
+        </slot>
 
-            <Menu class="fixed mt-2">
-                <ClientOnly>
-                    <emoji-picker class="dark" @emoji-click="handleEmojiClicked" />
-                </ClientOnly>
-            </Menu>
-        </Button>
-    </div>
+        <Menu v-model="showEmojiPicker" transition="slideUp" class="fixed mt-2">
+            <ClientOnly>
+                <emoji-picker class="dark" @emoji-click="handleEmojiClicked" />
+            </ClientOnly>
+        </Menu>
+    </Button>
 </template>
 
 <style scoped lang="scss">

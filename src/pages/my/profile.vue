@@ -66,7 +66,9 @@ const handleLogOut = async () => {
 
         <div class="flex gap-6 items-center">
             <div class="flex">
-                <EmojiAvatar :user="user" class="cursor-pointer" />
+                <EmojiPickerButton v-if="user" :model-value="user.AvatarEmoji" @update:modelValue="handleEmojiClicked">
+                    <EmojiAvatar :user="user" class="cursor-pointer" />
+                </EmojiPickerButton>
             </div>
             <Input
                 :debounce="600"
