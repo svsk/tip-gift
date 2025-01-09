@@ -30,15 +30,13 @@ const handleEmojiClicked = (ev: { detail: { unicode: string } }) => {
     <div class="relative">
         <Button round style="height: 45px; width: 45px" @click="handleChangeEmoji">
             <Icon font-size="24px" name="mood" />
-        </Button>
 
-        <ClientOnly>
-            <Transition name="slideUp">
-                <div v-show="showEmojiPicker" class="fixed mt-2">
+            <Menu class="fixed mt-2">
+                <ClientOnly>
                     <emoji-picker class="dark" @emoji-click="handleEmojiClicked" />
-                </div>
-            </Transition>
-        </ClientOnly>
+                </ClientOnly>
+            </Menu>
+        </Button>
     </div>
 </template>
 
