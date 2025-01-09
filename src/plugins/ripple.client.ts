@@ -1,7 +1,49 @@
+const ensureStyleExists = () => {
+    if (!document.getElementById('ripple-style')) {
+        // Add the style to the head.
+        const style = `
+            [data-has-ripple] {
+                overflow: hidden;
+
+                .ripple {
+                    background-color: white;
+                    border-radius: 50%;
+                    pointer-events: none;
+                    position: absolute;
+                    transform: scale(0);
+                    opacity: 0.2;
+                    will-change: transform, opacity;
+
+                    &.ripple-start {
+                        transform: scale(0.2);
+                    }
+
+                    &.ripple-active {
+                        transform: scale(2);
+                        transition: transform 700ms, opacity 700ms;
+                        opacity: 0.2;
+                    }
+
+                    &.ripple-ended {
+                        opacity: 0;
+                    }
+                }
+            }
+        `;
+
+        const styleElement = document.createElement('style');
+        styleElement.id = 'ripple-style';
+        styleElement.innerHTML = style;
+        document.head.appendChild(styleElement);
+    }
+};
+
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.directive('ripple', {
         mounted: (parent: HTMLElement, directiveData: { value: boolean }) => {
             if (directiveData.value === false) return;
+
+            ensureStyleExists();
 
             parent.dataset.hasRipple = 'true';
             let timerId: any = 0;

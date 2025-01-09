@@ -6,15 +6,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');
 
 .font-medium {
-	font-weight: 501;
+    font-weight: 501;
 }
 
 :root {
-	--background: #202020;
+    --background: #202020;
 }
 
 .handwritten {
-	font-family: 'Shadows Into Light', cursive;
+    font-family: 'Shadows Into Light', cursive;
 }
 
 body {
@@ -24,32 +24,4 @@ body {
 
 body.embedded {
     background-color: transparent;
-}
-
-[data-has-ripple] {
-    overflow: hidden;
-
-    .ripple {
-        background-color: white;
-        border-radius: 50%;
-        pointer-events: none;
-        position: absolute;
-        transform: scale(0);
-        opacity: 0.2;
-        will-change: transform, opacity;
-
-        &.ripple-start {
-            transform: scale(0.2);
-        }
-
-        &.ripple-active {
-            transform: scale(2);
-            transition: transform 700ms, opacity 700ms;
-            opacity: 0.2;
-        }
-
-		&.ripple-ended {
-			opacity: 0;
-		}
-    }
 }
