@@ -21,7 +21,9 @@ const handleTouchMove = (e: TouchEvent) => {
 
     const currentFingerPosition = e.touches[0].clientY;
     clientYWhenTopWasHit = clientYWhenTopWasHit || currentFingerPosition;
-    pulledHeight.value = Math.min(Math.abs(clientYWhenTopWasHit - currentFingerPosition) / 2, maxPullSize);
+
+    const pullDistance = -(clientYWhenTopWasHit - currentFingerPosition);
+    pulledHeight.value = Math.min(pullDistance / 2, maxPullSize);
 };
 
 const handleTouchEnd = (e: TouchEvent) => {
