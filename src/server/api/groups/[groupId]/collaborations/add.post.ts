@@ -3,7 +3,13 @@ import { requireAuth } from '~~/lib/requireAuth';
 
 export default defineEventHandler(async (event) =>
     requireAuth(event, async (auth) => {
-        const params = await readBody<{ groupId: string; title: string; memberIds: string[] }>(event);
+        const params = await readBody<{
+            groupId: string;
+            title: string;
+            memberIds: string[];
+            avatarColour: string;
+            avatarEmoji: string;
+        }>(event);
 
         const memberIds = params.memberIds ?? [];
         if (!memberIds.includes(auth.id)) {
@@ -16,6 +22,13 @@ export default defineEventHandler(async (event) =>
         }
 
         const db = new DbContext();
-        return await db.addCollaboration(auth.id, params.groupId, params.title, memberIds);
+        return await db.addCollaboration(
+            auth.id,
+            params.groupId,
+            params.title,
+            memberIds,
+            params.avatarColour,
+            params.avatarEmoji
+        );
     })
 );

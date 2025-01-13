@@ -6,7 +6,7 @@ import {
     type WishPurchase,
 } from '@prisma-app/client';
 import { usePrisma } from './usePrisma';
-import type { WishPurchaseWish, WishTag, WishWithShareRefs } from '~/prisma/customTypes';
+import type { WishGroupCollaboration, WishPurchaseWish, WishTag, WishWithShareRefs } from '~/prisma/customTypes';
 import { createRandomKey } from '~/lib/keyGenerator';
 import { randomBetween } from '~/lib/random';
 
@@ -76,7 +76,14 @@ export class DbContext {
         return groupUser;
     }
 
-    async addCollaboration(userId: string, groupId: string, title: string, memberIds: string[]) {
+    async addCollaboration(
+        userId: string,
+        groupId: string,
+        title: string,
+        memberIds: string[],
+        avatarColour: string,
+        avatarEmoji: string
+    ) {
         this.ensureGroupMembership(userId, groupId);
 
         // Add collaboration and members in single transaction
@@ -86,6 +93,8 @@ export class DbContext {
                     Title: title,
                     WishUserGroupId: groupId,
                     CreatedByUserId: userId,
+                    AvatarColour: avatarColour,
+                    AvatarEmoji: avatarEmoji,
                 },
             });
 
@@ -104,6 +113,21 @@ export class DbContext {
             );
 
             return collaboration;
+        });
+    }
+
+    async updateCollaboration(userId: string, collaboration: WishGroupCollaboration) {
+        await this.ensureUserIsCollaborationOwner(userId, collaboration.Id);
+
+        return await this._db.wishGroupCollaboration.update({
+            data: {
+                Title: collaboration.Title,
+                AvatarColour: collaboration.AvatarColour,
+                AvatarEmoji: collaboration.AvatarEmoji,
+            },
+            where: {
+                Id: collaboration.Id,
+            },
         });
     }
 

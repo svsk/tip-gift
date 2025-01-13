@@ -94,6 +94,7 @@ export const enGb: LanguageStrings = {
     New: 'New',
     Collaboration: 'Collaboration',
     DeleteCollaboration: 'Delete Collaboration',
+    EditCollaboration: 'Edit Collaboration',
     ConfirmDeleteCollaboration: 'Are you sure you want to delete this collaboration?',
     CollaborateWithWho: 'Who do you want to create collaborative wishes with?',
     BoughtItemExplanation:

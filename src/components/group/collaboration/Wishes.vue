@@ -57,7 +57,8 @@ const isGroupMember = computed(() => members.value?.some((m) => m.UserId === use
                 />
             </TabPanel>
             <TabPanel v-if="isGroupMember" name="edit" class="p-3">
-                <div class="flex items-center justify-end pb-4">
+                <div class="flex items-center justify-end pb-4 gap-2">
+                    <GroupCollaborationEditButton :group-id="groupId" :collaboration-id="collaborationId" />
                     <GroupCollaborationDeleteButton :group-id="groupId" :collaboration-id="collaborationId" />
                 </div>
 

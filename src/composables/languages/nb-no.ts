@@ -94,6 +94,7 @@ export const nbNo: LanguageStrings = {
     New: 'Ny',
     Collaboration: 'Fellesønsker',
     DeleteCollaboration: 'Slett Fellesønsker',
+    EditCollaboration: 'Rediger Fellesønsker',
     ConfirmDeleteCollaboration: 'Er du sikker på at du ønsker å slette disse fellesønskene?',
     CollaborateWithWho: 'Hvem vil du ha fellesønsker med?',
     BoughtItemExplanation:

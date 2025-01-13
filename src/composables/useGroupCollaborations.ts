@@ -15,14 +15,36 @@ export const getGroupCollaborations = async (groupId: string, forceReload = fals
     return result.data;
 };
 
-export const createGroupCollaboration = async (groupId: string, title: string, memberIds: string[]) => {
+export const createGroupCollaboration = async (
+    groupId: string,
+    title: string,
+    memberIds: string[],
+    avatarEmoji = '🤝',
+    avatarColour = '#339DD7'
+) => {
     await $fetch(`/api/groups/${groupId}/collaborations/add`, {
         method: 'POST',
-        body: { groupId, title, memberIds },
+        body: { groupId, title, memberIds, avatarColour, avatarEmoji },
         ...useAuthentication(),
     });
 
     refreshCollaborations(groupId);
+};
+
+export const updateGroupCollaboration = async (collaboration: {
+    Id: string;
+    Title: string;
+    AvatarEmoji: string;
+    AvatarColour: string;
+    WishUserGroupId: string;
+}) => {
+    await $fetch(`/api/groups/${collaboration.WishUserGroupId}/collaborations/${collaboration.Id}`, {
+        method: 'PATCH',
+        body: collaboration,
+        ...useAuthentication(),
+    });
+
+    refreshCollaborations(collaboration.WishUserGroupId);
 };
 
 export const deleteGroupCollaboration = async (groupId: string, collaborationId: string) => {

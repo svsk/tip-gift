@@ -89,6 +89,7 @@ export interface LanguageStrings {
     New: string;
     Collaboration: string;
     DeleteCollaboration: string;
+    EditCollaboration: string;
     ConfirmDeleteCollaboration: string;
     CollaborateWithWho: string;
     BoughtItemExplanation: string;
