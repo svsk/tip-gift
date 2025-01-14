@@ -18,7 +18,7 @@ const sharing = ref(false);
 const showDeleteConfirmation = ref(false);
 const wishForDeletion = ref<Wish | null>(null);
 const deleteToast = ref<InstanceType<typeof Toast>>();
-const pullToRefreshEnabled = inject<Ref<boolean> | null>('pullToRefreshEnabled', () => null);
+const pullToRefreshEnabled = inject<Ref<boolean> | null>('pullToRefreshEnabled', null);
 
 const handleDeleteEntryClicked = (entry: Wish) => {
     wishForDeletion.value = entry;
@@ -89,7 +89,7 @@ const handleReorder = async (moveEvent: { moved: { newIndex: number; oldIndex: n
 watch(
     () => reorderMode.value,
     () => {
-        if ('value' in pullToRefreshEnabled === false) {
+        if (!isRef(pullToRefreshEnabled)) {
             return;
         }
 
@@ -102,7 +102,7 @@ watch(
 );
 
 onBeforeUnmount(() => {
-    if ('value' in pullToRefreshEnabled) {
+    if (isRef(pullToRefreshEnabled)) {
         pullToRefreshEnabled.value = true;
     }
 });
