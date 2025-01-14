@@ -90,11 +90,13 @@ export default defineEventHandler((event) =>
         let fullDOM: string | null = null;
 
         try {
-            const result = await Promise.any([getWithPuppeteer(body.url), getWithOFetch(body.url)]);
-            head = result.head;
-            fullDOM = result.fullDOM;
-        } catch {
-            console.warn('Failed to get it');
+            const results = await Promise.all([getWithPuppeteer(body.url), getWithOFetch(body.url)]);
+
+            head = results.sort((a, b) => (a.head?.length || 0) - (b.head?.length || 0)).at(-1)?.head || null;
+            fullDOM =
+                results.sort((a, b) => (a.fullDOM?.length || 0) - (b.fullDOM?.length || 0)).at(-1)?.fullDOM || null;
+        } catch (ex) {
+            console.warn('Failed to get it', ex);
             setResponseStatus(event, 500);
             return null;
         }
