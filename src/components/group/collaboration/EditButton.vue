@@ -10,7 +10,6 @@ const collaborations = await getGroupCollaborations(props.groupId);
 const { i18n } = await useI18n();
 
 const showEditDialog = ref(false);
-const canEdit = computed(() => true);
 const busy = ref(false);
 
 const editModel = reactive({
@@ -21,17 +20,24 @@ const editModel = reactive({
     AvatarColour: '',
 });
 
+const collaboration = computed(() => {
+    return collaborations.value?.find((c) => c.Id === props.collaborationId);
+});
+
+const canEdit = computed(() => canManageCollaboration(collaboration.value));
+
 const handleEditClicked = () => {
-    const collaboration = collaborations.value.find((c) => c.Id === props.collaborationId);
-    if (!collaboration) {
+    if (!collaboration.value) {
         return;
     }
 
-    editModel.Id = collaboration.Id;
-    editModel.WishUserGroupId = collaboration.WishUserGroupId;
-    editModel.Title = collaboration.Title || '';
-    editModel.AvatarEmoji = collaboration.AvatarEmoji || '🤝';
-    editModel.AvatarColour = collaboration.AvatarColour || '#339DD7';
+    const sourceModel = collaboration.value;
+
+    editModel.Id = sourceModel.Id;
+    editModel.WishUserGroupId = sourceModel.WishUserGroupId;
+    editModel.Title = sourceModel.Title || '';
+    editModel.AvatarEmoji = sourceModel.AvatarEmoji || '🤝';
+    editModel.AvatarColour = sourceModel.AvatarColour || '#339DD7';
 
     showEditDialog.value = true;
 };
