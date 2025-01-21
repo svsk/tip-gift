@@ -82,6 +82,14 @@ const getWithOFetch = async (url: string) => {
     };
 };
 
+const pickBiggest = (results: { head: string | null; fullDOM: string | null }[]) => {
+    results.sort((a, b) => {
+        return (a.fullDOM?.length || 0) - (b.fullDOM?.length || 0);
+    });
+
+    return results.at(-1) || { head: '', fullDOM: '' };
+};
+
 export default defineEventHandler((event) =>
     requireAuth(event, async (_) => {
         const body = await readBody<{ url: string }>(event);
@@ -90,11 +98,21 @@ export default defineEventHandler((event) =>
         let fullDOM: string | null = null;
 
         try {
-            const results = await Promise.all([getWithPuppeteer(body.url), getWithOFetch(body.url)]);
+            const results = await Promise.allSettled([getWithPuppeteer(body.url), getWithOFetch(body.url)]);
+            const successfulResults = results
+                .filter((re) => {
+                    return re.status === 'fulfilled';
+                })
+                .map((res) => res.value);
 
-            head = results.sort((a, b) => (a.head?.length || 0) - (b.head?.length || 0)).at(-1)?.head || null;
-            fullDOM =
-                results.sort((a, b) => (a.fullDOM?.length || 0) - (b.fullDOM?.length || 0)).at(-1)?.fullDOM || null;
+            if (successfulResults.length === 0) {
+                throw new Error('No successful results');
+            }
+
+            // Pick the result with the longest content
+            const biggest = pickBiggest(successfulResults);
+            head = biggest.head;
+            fullDOM = biggest.fullDOM;
         } catch (ex) {
             console.warn('Failed to get it', ex);
             setResponseStatus(event, 500);
