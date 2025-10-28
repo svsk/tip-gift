@@ -19,13 +19,14 @@ FROM base as build
 ENV NODE_ENV=development
 RUN apt-get update -y && apt-get install -y openssl
 
-COPY package*.json ./
+# Copy package files from the 'src' subfolder
+COPY src/package*.json ./
 
 # Install all dependencies (including dev)
 RUN npm install
 
-# Copy all source code
-COPY . .
+# Copy all source code from the 'src' subfolder
+COPY src/. .
 
 # Build the Nuxt app
 RUN npm run build
@@ -38,8 +39,6 @@ RUN npm prune --production
 # This is our final, slim production image
 #--------------------
 FROM base
-
-# ARG/ENV for non-secret variables
 ARG PORT=3000
 ENV PORT=$PORT
 
@@ -47,7 +46,7 @@ ENV PORT=$PORT
 COPY --from=build /src/.output /src/.output
 COPY --from=build /src/node_modules /src/node_modules
 COPY --from=build /src/prisma /src/prisma
-COPY --from=build /src/entrypoint.sh /src/entrypoint.sh
+COPY entrypoint.sh /src/entrypoint.sh
 RUN chmod +x /src/entrypoint.sh
 
 # Install Google Chrome
@@ -58,8 +57,5 @@ RUN apt-get update && apt-get install gnupg wget -y && \
     apt-get install google-chrome-stable -y --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
-# This is the command that will run FIRST
 ENTRYPOINT [ "/src/entrypoint.sh" ]
-
-# This is the command that gets passed to the entrypoint script ("$@")
 CMD [ "node", ".output/server/index.mjs" ]
