@@ -7,8 +7,8 @@
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "postinstall": "nuxt prepare",
-        "rebuild-prisma": "prisma db pull && prisma generate",
-        "migrate": "node ./sql/migrate.js && prisma db pull && prisma generate"
+        "rebuild-prisma": "prisma generate",
+        "migrate": "node prisma migrate dev && prisma generate"
     },
     "devDependencies": {
         "@nuxtjs/tailwindcss": "^6.8.0",
@@ -25,7 +25,6 @@
         "cheerio": "^1.0.0",
         "dotenv": "^16.3.1",
         "emoji-picker-element": "^1.26.0",
-        "mssql": "^11.0.1",
         "puppeteer": "^23.4.0",
         "qrcode": "^1.5.3",
         "vuedraggable": "^4.1.0"

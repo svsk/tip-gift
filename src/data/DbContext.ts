@@ -27,22 +27,22 @@ export class DbContext {
 
     async getWishPurchases(userId: string) {
         const result = await this._db.$queryRaw<WishPurchaseWish[]>`
-			SELECT
-				wp.*,
-				COALESCE(w.[Name], wp.CustomName) AS Name,
-				w.ImageUrl,
-				w.UserId AS WishOwnerId,
-				w.Link,
-				COALESCE(u.Name, wp.ReceiverName) AS ReceiverName
-			FROM [WishPurchase] wp
-			LEFT JOIN [Wish] w
-				ON w.Id = wp.WishId
-			LEFT JOIN [WishUser] u
-				 ON u.Id = w.UserId
-			WHERE wp.UserId = ${userId}
-			AND (w.Id IS NOT NULL OR wp.IsCustom = 1)
-			AND wp.DeletedDate IS NULL
-		`;
+            SELECT
+                wp.*,
+                COALESCE(w."Name", wp."CustomName") AS "Name",
+                w."ImageUrl",
+                w."UserId" AS "WishOwnerId",
+                w."Link",
+                COALESCE(u."Name", wp."ReceiverName") AS "ReceiverName"
+            FROM "WishPurchase" wp
+            LEFT JOIN "Wish" w
+                ON w."Id" = wp."WishId"
+            LEFT JOIN "WishUser" u
+                ON u."Id" = w."UserId"
+            WHERE wp."UserId" = ${userId}::uuid
+            AND (w."Id" IS NOT NULL OR wp."IsCustom" = true)
+            AND wp."DeletedDate" IS NULL
+        `;
 
         return result;
     }
@@ -549,18 +549,18 @@ export class DbContext {
 
     async getWishTag(wishPurchaseId: string) {
         const result = await this._db.$queryRaw<WishTag[]>`
-			SELECT
-				COALESCE(wt.ToText, receiver.Name, wp.ReceiverName) AS toText,
-				COALESCE(wt.FromText, giver.Name) AS fromText,
-				receiver.Id AS toUserId,
-				giver.Id AS fromUserId,
-				CASE WHEN wp.GivenDate IS NULL THEN 1 ELSE 0 END AS locked
-			FROM WishPurchase wp
-			LEFT JOIN Wish w ON w.Id = wp.WishId
-			LEFT JOIN WishUser receiver ON receiver.Id = w.UserId
-			LEFT JOIN WishGiftTag wt ON wt.WishPurchaseId = wp.Id
-			JOIN WishUser giver ON giver.Id = wp.UserId
-			WHERE wp.Id = ${wishPurchaseId};
+            SELECT
+                COALESCE(wt."ToText", receiver."Name", wp."ReceiverName") AS "toText",
+                COALESCE(wt."FromText", giver."Name") AS "fromText",
+                receiver."Id" AS "toUserId",
+                giver."Id" AS "fromUserId",
+                CASE WHEN wp."GivenDate" IS NULL THEN 1 ELSE 0 END AS "locked"
+            FROM "WishPurchase" wp
+            LEFT JOIN "Wish" w ON w."Id" = wp."WishId"
+            LEFT JOIN "WishUser" receiver ON receiver."Id" = w."UserId"
+            LEFT JOIN "WishGiftTag" wt ON wt."WishPurchaseId" = wp."Id"
+            JOIN "WishUser" giver ON giver."Id" = wp."UserId"
+            WHERE wp."Id" = ${wishPurchaseId}::uuid;
 		`;
 
         return result.at(0);

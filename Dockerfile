@@ -2,47 +2,55 @@
 
 ARG NODE_VERSION=20.17.0
 
+#--------------------
+# Base Stage
+#--------------------
 FROM node:${NODE_VERSION}-slim as base
-
-ARG DATABASE_URL
-ARG SUPABASE_URL
-ARG SUPABASE_KEY
-ARG PORT=3000
-
 ENV NODE_ENV=production
-ENV DATABASE_URL=$DATABASE_URL
-ENV SUPABASE_URL=$SUPABASE_URL
-ENV SUPABASE_KEY=$SUPABASE_KEY
-
-#COPY --link . .
-COPY . .
 WORKDIR /src
 
-RUN echo "DATABASE_URL=\"$DATABASE_URL\"" >> .env
-
-# Build
+#--------------------
+# Build Stage
+# Installs devDependencies, builds the app, and prunes devDependencies
+#--------------------
 FROM base as build
 
+# Set NODE_ENV to development to install devDependencies (like 'prisma')
+ENV NODE_ENV=development
 RUN apt-get update -y && apt-get install -y openssl
 
-RUN npm install --production=false
+COPY package*.json ./
+
+# Install all dependencies (including dev)
+RUN npm install
+
+# Copy all source code
+COPY . .
+
+# Build the Nuxt app
 RUN npm run build
-RUN npm prune
 
-RUN node "./sql/migrate.js"
+# Remove devDependencies, leaving only production modules
+RUN npm prune --production
 
-# Run
+#--------------------
+# Run Stage
+# This is our final, slim production image
+#--------------------
 FROM base
 
+# ARG/ENV for non-secret variables
+ARG PORT=3000
 ENV PORT=$PORT
-ENV DATABASE_URL=$DATABASE_URL
-ENV SUPABASE_URL=$SUPABASE_URL
-ENV SUPABASE_KEY=$SUPABASE_KEY
 
+# Copy built app, node_modules, prisma schema, and entrypoint
 COPY --from=build /src/.output /src/.output
+COPY --from=build /src/node_modules /src/node_modules
+COPY --from=build /src/prisma /src/prisma
+COPY --from=build /src/entrypoint.sh /src/entrypoint.sh
+RUN chmod +x /src/entrypoint.sh
 
-# Install Google Chrome Stable and fonts
-# Note: this installs the necessary libs to make the browser work with Puppeteer.
+# Install Google Chrome
 RUN apt-get update && apt-get install gnupg wget -y && \
     wget --quiet --output-document=- https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/trusted.gpg.d/google-archive.gpg && \
     sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
@@ -50,5 +58,8 @@ RUN apt-get update && apt-get install gnupg wget -y && \
     apt-get install google-chrome-stable -y --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
-CMD [ "node", ".output/server/index.mjs" ]
+# This is the command that will run FIRST
+ENTRYPOINT [ "/src/entrypoint.sh" ]
 
+# This is the command that gets passed to the entrypoint script ("$@")
+CMD [ "node", ".output/server/index.mjs" ]
