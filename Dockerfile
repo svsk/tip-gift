@@ -28,6 +28,9 @@ RUN npm install
 # Copy all source code from the 'src' subfolder
 COPY src/. .
 
+# Generate the Prisma client so the Nuxt build can find it
+RUN npx prisma generate
+
 # Build the Nuxt app
 RUN npm run build
 

@@ -10,4 +10,4 @@ npx prisma migrate deploy
 # Start the application
 # "exec" replaces the shell process with the node process
 echo "Starting the application..."
-exec "$@"A
+exec "$@"
